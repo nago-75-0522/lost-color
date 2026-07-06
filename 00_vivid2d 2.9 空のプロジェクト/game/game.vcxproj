@@ -165,7 +165,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\scene_manager\scene\gamemain\gamemain.cpp" />
+    <ClCompile Include="src\game\scene_manager\scene\option_character\option.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\scene.cpp" />
+    <ClCompile Include="src\game\scene_manager\scene\stage\stage1\stage1.cpp" />
+    <ClCompile Include="src\game\scene_manager\scene\title\title.cpp" />
     <ClCompile Include="src\game\scene_manager\scene_manager.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -176,8 +180,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\scene_manager\scene\gamemain\gamemain.h" />
+    <ClInclude Include="src\game\scene_manager\scene\option_character\option.h" />
     <ClInclude Include="src\game\scene_manager\scene\scene.h" />
-    <ClInclude Include="src\game\scene_manager\scene_id.h" />
+    <ClInclude Include="src\game\scene_manager\scene\stage\stage1\stage1.h" />
+    <ClInclude Include="src\game\scene_manager\scene\title\title.h" />
+    <ClInclude Include="src\game\scene_manager\scene\scene_id.h" />
     <ClInclude Include="src\game\scene_manager\scene_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
