@@ -14,6 +14,7 @@ void CTitle::Initialize(void)
 
 void CTitle::Update(void)
 {
+	CSceneManager::GetInstance().ResetStageCount();//カウントリセット
 	
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
@@ -30,7 +31,7 @@ void CTitle::Update(void)
 
 void CTitle::Draw(void)
 {
-	vivid::DrawTexture("data\\abe.png", { 0.0f,0.0f });
+	vivid::DrawText(48, "title", { 0.0f,0.0f });
 }
 
 void CTitle::Finalize(void)

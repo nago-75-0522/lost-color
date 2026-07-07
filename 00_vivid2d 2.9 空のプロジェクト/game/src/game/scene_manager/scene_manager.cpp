@@ -2,10 +2,15 @@
 #include"scene/title/title.h"
 #include"scene/option_character/option.h"
 #include"scene/gamemain/gamemain.h"
+#include"scene/stage/stage1/stage1.h"
+#include"scene/stage/stage2/stage2.h"
+#include"scene/stage/stage3/stage3.h"
+#include"scene/result/result.h"
 
 
 CSceneManager::CSceneManager()
 	:m_Scene(nullptr)
+	,m_StageCount(0)
 {
 }
 
@@ -88,6 +93,23 @@ void CSceneManager::_ChangeScene()
 		m_Scene = new CGamemain();
 		break;
 
+	case SCENE_ID::STAGE1:
+		m_Scene = new CStage1();
+		break;
+
+	case SCENE_ID::STAGE2:
+		m_Scene = new CStage2();
+		break;
+
+	case SCENE_ID::STAGE3:
+		m_Scene = new CStage3();
+		break;
+
+	case SCENE_ID::RESULT:
+		m_Scene = new CResult();
+		break;
+
+
 	default:
 		break;
 	}
@@ -97,3 +119,22 @@ void CSceneManager::_ChangeScene()
 
 	m_CurrentID = m_NextID;
 }
+
+//ステージ回数加算
+void CSceneManager::AddStageCount(void)
+{
+	m_StageCount++;//回数加算
+}
+
+//終了するかの値を返す
+int CSceneManager::FinishStage()
+{
+	return m_StageCount;//ステージ回数値を返す
+}
+
+//回数リセット
+void CSceneManager::ResetStageCount()
+{
+	m_StageCount = 0;
+}
+

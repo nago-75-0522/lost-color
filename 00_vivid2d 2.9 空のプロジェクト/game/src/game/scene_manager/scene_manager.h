@@ -34,8 +34,17 @@ public:
 
 	void _ChangeScene();
 
+	//ステージクリア回数
+	void AddStageCount(void);//加算
+
+	int FinishStage();//終了時
+
+	void ResetStageCount();//タイトルに行ったらリセットをかける
+
+
 private:
 
+	
 
 	//コンストラクタ
 	CSceneManager(); //なにもしない
@@ -51,6 +60,8 @@ private:
 	IScene* m_Scene;
 	SCENE_ID m_CurrentID;//現在のシーンID
 	SCENE_ID m_NextID;//次のシーン
+
+	int m_StageCount;//ステージ回数
 
 };
 

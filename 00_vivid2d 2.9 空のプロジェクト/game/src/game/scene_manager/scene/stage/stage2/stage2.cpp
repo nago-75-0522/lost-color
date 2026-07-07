@@ -1,22 +1,25 @@
 #include"vivid.h"
-#include "stage1.h"
+#include "stage2.h"
 #include"..\..\..\scene_manager.h"
 
 
-CStage1& CStage1::GetInstance()
+CStage2& CStage2::GetInstance()
 {
-	static CStage1 instance;
+	static CStage2 instance;
 	return instance;
 
 }
 
-void CStage1::Initialize(void)
+void CStage2::Initialize(void)
 {
 
 }
 
-void CStage1::Update(void)
+void CStage2::Update(void)
 {
+
+	//CSceneManager::GetInstance().AddStageCount();//加算
+
 	// デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
 	{
@@ -25,14 +28,10 @@ void CStage1::Update(void)
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 	}
 
-
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
-		
 
-#if 1
-		//CSceneManager::GetInstance().AddStageCount();//加算
 		//4回目からリザルト
 		if (CSceneManager::GetInstance().FinishStage() >= 3)
 		{
@@ -43,19 +42,10 @@ void CStage1::Update(void)
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 		}
 
-#endif 1
-		
 	}
 	//コントローラー用
 	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 	{
-		// デバッグ用：Dキーでクリア回数を+1
-		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
-		{
-			CSceneManager::GetInstance().AddStageCount();
-
-			vivid::DrawText(30, "ClearCount +1", { 0,50 });
-		}
 
 		//4回目からリザルト
 		if (CSceneManager::GetInstance().FinishStage() >= 3)
@@ -69,12 +59,12 @@ void CStage1::Update(void)
 	}
 }
 
-void CStage1::Draw(void)
+void CStage2::Draw(void)
 {
-	vivid::DrawText(48, "stage1", { 0.0f,0.0f });
+	vivid::DrawText(48, "stage2", { 0.0f,0.0f });
 }
 
-void CStage1::Finalize(void)
+void CStage2::Finalize(void)
 {
 }
 
