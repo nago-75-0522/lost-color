@@ -37,7 +37,7 @@ void CGamemain::Initialize(void)
 	m_Finger_Pos.y = m_button_y;									//指のy座標の初期化
 
 
-	vivid::Vector2 m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);//スティック
+	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);//スティック
 
 }
 
@@ -103,22 +103,21 @@ void CGamemain::StageSelect(void)
 	static float prev_stick_x = 0.0f;
 
 	//左スティック入力取得
-	vivid::Vector2 m_stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 
 	//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
-	if (prev_stick_x <= DEAD_ZONE && m_stick.x > DEAD_ZONE)
+	if (prev_stick_x <= DEAD_ZONE && m_Stick.x > DEAD_ZONE)
 	{
 		m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
 	}
 
 	// 左に倒した瞬間
-	else if (prev_stick_x >= -DEAD_ZONE && m_stick.x < -DEAD_ZONE)
+	else if (prev_stick_x >= -DEAD_ZONE && m_Stick.x < -DEAD_ZONE)
 	{
 		m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
 	}
 
 	// 現在の値を保存
-	prev_stick_x = m_stick.x;
+	prev_stick_x = m_Stick.x;
 
 
 

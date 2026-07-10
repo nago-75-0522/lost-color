@@ -70,7 +70,13 @@ private:
 	static const int m_button_y;									//ボタンのy座標
 
 	/* コントローラー */
-	vivid::Vector2 m_Stic;//スティックx左右 y上下
+	vivid::Vector2 m_Stick;//スティックx左右 y上下
+
+
+	//どこからでも呼び出せるようにする
+	CGamemain(const CGamemain& rhs) = delete;//コピーの禁止
+	CGamemain& operator =(const CGamemain& rhs) = delete;//代入の禁止
+
 
 #endif
 	

@@ -19,7 +19,6 @@ void CTitle::Update(void)
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
-
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
 	}
 	//コントローラー用
@@ -32,6 +31,7 @@ void CTitle::Update(void)
 void CTitle::Draw(void)
 {
 	vivid::DrawText(48, "title", { 0.0f,0.0f });
+	vivid::DrawTexture("data\\title_lf.png", {100,vivid::WINDOW_HEIGHT * 1 / 5 });
 }
 
 void CTitle::Finalize(void)

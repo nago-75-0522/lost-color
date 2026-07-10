@@ -7,68 +7,147 @@
 #include"scene/stage/stage3/stage3.h"
 #include"scene/result/result.h"
 
+const float CSceneManager::m_fade_speed = 1.0f;
 
+//コンストラクタ
 CSceneManager::CSceneManager()
 	:m_Scene(nullptr)
 	,m_StageCount(0)
 {
 }
 
+//インスタンス
 CSceneManager& CSceneManager::GetInstance()
 {
 	static CSceneManager instance;//CSceneManager型のインスタンスの作成
 	return instance;//インスタンスを返す
 }
 
+//初期化
 void CSceneManager::Initialize()
 {
+	//フェードインから開始
+	m_FadeState = FADE::FADE_IN;
+	m_FadeAlpha = 1.0f;
+
 	m_NextID =(SCENE_ID::TITLE);//最初の画面の設定
 
 	_ChangeScene();
+
 	if (m_Scene)
 	{
 		m_Scene->Initialize();
 		m_CurrentID = m_NextID;
 	}
-	
 
 }
 
+//更新
 void CSceneManager::Update()
 {
-	if (m_CurrentID != m_NextID)
-	{
-		_ChangeScene();
-		if (m_Scene)
-			m_Scene->Initialize();
+	
+		switch (m_FadeState)
+		{
+		case FADE::FADE_NOME:
+			
+				if (!m_Scene)
+					return;
+				m_Scene->Update();
+		
+				
+			break;
+
+		case FADE::FADE_IN:
+			//画面を明るくする
+			m_FadeAlpha -= m_fade_speed * vivid::GetDeltaTime();
+
+			if (m_FadeAlpha <= 0.0f)
+			{
+				m_FadeAlpha = 0.0f;
+
+				//フェード完了　通常にする
+				m_FadeState = FADE::FADE_NOME;
+
+			}
+
+			break;
+
+		case FADE::FADE_OUT:
+			//画面を暗くする
+			m_FadeAlpha += m_fade_speed * vivid::GetDeltaTime();
+
+			if (m_FadeAlpha >= 1.0f)
+			{
+				m_FadeAlpha = 1.0f;
+
+
+				//シーン変更
+				_ChangeScene();
+
+				//明るくする
+				m_FadeState = FADE::FADE_IN;
+#if 0
+				if (m_CurrentID != m_NextID)
+				{
+					_ChangeScene();
+					if (m_Scene)
+						m_Scene->Initialize();
+				}
+
+#endif 0
+			}
+			break;
+
+		default:
+			break;
+		
+
 	}
-
-	if (!m_Scene)
-		return;
-
-	m_Scene->Update();
-
 }
 
+//描画
 void CSceneManager::Draw()
 {
 	if (m_Scene)
 		m_Scene->Draw();
+
+	// フェード中なら黒画像を重ねる
+	if (m_FadeState != FADE::FADE_NOME)
+	{
+		//0.0～1.0を0～255に変換
+		unsigned int alpha = static_cast<unsigned int>(m_FadeAlpha * 255.0f);
+
+		//ARGB形式のアルファ値を作成
+		unsigned int color = (alpha << 24);
+
+		vivid::DrawTexture("data\\fade.png", vivid::Vector2::ZERO, color);
+	}
 }
 
+//解放
 void CSceneManager::Finalize()
 {
 
 }
 
+//次に行くシーンの設定
 void CSceneManager::Change(SCENE_ID id)
 {
+	
+
+	// 同じシーンなら何もしない
+	if (m_CurrentID == id)
+		return;
 
 	//呼び出されたシーンをいれる
 	m_NextID = id;//id次のやつ
 
+	// フェードアウト開始
+	m_FadeState = FADE::FADE_OUT;
+
 }
 
+//切り替え処理
 void CSceneManager::_ChangeScene()
 {
 	if (m_Scene)

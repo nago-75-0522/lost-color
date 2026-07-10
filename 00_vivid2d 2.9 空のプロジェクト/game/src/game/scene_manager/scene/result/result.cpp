@@ -36,6 +36,7 @@ void CResult::Update(void)
 //描画
 void CResult::Draw(void)
 {
+	vivid::DrawTexture("data\\result.png", { 0.0f,0.0f });
 	vivid::DrawText(48, "Result", { 0.0f,0.0f });
 }
 
