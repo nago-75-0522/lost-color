@@ -165,6 +165,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\fall\fall.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\minigame_manager.cpp" />
+    <ClCompile Include="src\game\object\player_manager\player1\player1.cpp" />
+    <ClCompile Include="src\game\object\player_manager\player2\player2.cpp" />
+    <ClCompile Include="src\game\object\player_manager\player_manager.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\gamemain\gamemain.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\option_character\option.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\result\result.cpp" />
@@ -183,6 +188,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\object\minigame_manager\fall\fall.h" />
+    <ClInclude Include="src\game\object\minigame_manager\fall\fall_chip.h" />
+    <ClInclude Include="src\game\object\minigame_manager\minigame_manager.h" />
+    <ClInclude Include="src\game\object\player_manager\player1\player1.h" />
+    <ClInclude Include="src\game\object\player_manager\player2\player2.h" />
+    <ClInclude Include="src\game\object\player_manager\player_manager.h" />
     <ClInclude Include="src\game\scene_manager\scene\gamemain\gamemain.h" />
     <ClInclude Include="src\game\scene_manager\scene\option_character\option.h" />
     <ClInclude Include="src\game\scene_manager\scene\result\result.h" />

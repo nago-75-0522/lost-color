@@ -1,8 +1,10 @@
-#include"vivid.h"
+﻿#include"vivid.h"
 #include "stage1.h"
 #include"..\..\..\scene_manager.h"
-
-
+#include"../../../../object/minigame_manager/minigame_manager.h"
+#include"../../../../object/player_manager/player_manager.h"
+#include"../../../../object/player_manager/player1/player1.h"
+#include"../../../../object/player_manager/player2/player2.h"
 CStage1& CStage1::GetInstance()
 {
 	static CStage1 instance;
@@ -12,11 +14,16 @@ CStage1& CStage1::GetInstance()
 
 void CStage1::Initialize(void)
 {
-
+	CMinigame_Manager::GetInstance().Initialize();
+	CPlayer_Manager::GetInstance().Initialize();
 }
 
 void CStage1::Update(void)
 {
+	CMinigame_Manager::GetInstance().Update();
+	CPlayer_Manager::GetInstance().Update();
+
+#if 0
 	// デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
 	{
@@ -24,12 +31,11 @@ void CStage1::Update(void)
 
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 	}
-
+#endif
 
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
-		
 
 #if 1
 		//CSceneManager::GetInstance().AddStageCount();//加算
@@ -43,20 +49,15 @@ void CStage1::Update(void)
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 		}
 
-#endif 1
+#endif 
 		
 	}
 	//コントローラー用
-	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
+	if (CPlayer2_Character::GetInstance().GetScale().x <= 0 || CPlayer1_Character::GetInstance().GetScale().x<=0)
 	{
-		// デバッグ用：Dキーでクリア回数を+1
-		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
-		{
-			CSceneManager::GetInstance().AddStageCount();
+		CSceneManager::GetInstance().AddStageCount();
 
-			vivid::DrawText(30, "ClearCount +1", { 0,50 });
-		}
-
+		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 		//4回目からリザルト
 		if (CSceneManager::GetInstance().FinishStage() >= 3)
 		{
@@ -64,6 +65,8 @@ void CStage1::Update(void)
 		}
 		else//達成してなければステージ選択
 		{
+			CMinigame_Manager::GetInstance().Initialize();
+			CPlayer_Manager::GetInstance().Initialize();
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 		}
 	}
@@ -71,6 +74,8 @@ void CStage1::Update(void)
 
 void CStage1::Draw(void)
 {
+	CMinigame_Manager::GetInstance().Draw();
+	CPlayer_Manager::GetInstance().Draw();
 	vivid::DrawText(48, "stage1", { 0.0f,0.0f });
 }
 
