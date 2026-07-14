@@ -5,21 +5,21 @@
 #include"..\..\scene_manager.h"
 #include"vivid.h"
 
-//コンストラクタ
 COption::COption()
 {
+
 }
 
 //初期化
 void COption::Initialize(void)
 {
-	
+
 }
 
 //更新
 void COption::Update(void)
 {
-	
+
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
@@ -42,6 +42,12 @@ void COption::Draw(void)
 //解放
 void COption::Finalize(void)
 {
+}
+
+COption& COption::GetInstance()
+{
+	static COption instance;
+	return instance;
 }
 
 

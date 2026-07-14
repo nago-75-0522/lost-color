@@ -3,7 +3,7 @@
 #include"..\..\scene_manager.h"
 #include"..\stage\stage1\stage1.h"
 
- 
+
 //定数
 const vivid::Vector2 CGamemain::m_bg_pos(0.0f, 0.0f);			//
 const int CGamemain::m_button_x[] = { 100,490,880 };			//ステージの配置位置
@@ -24,6 +24,13 @@ CGamemain& CGamemain::GetInstance()
 	return instance;
 }
 
+CGamemain::CGamemain()
+	: m_Now_Select(STAGE_SELECT::MAX)
+{
+}
+
+
+
 //初期化
 void CGamemain::Initialize(void)
 {
@@ -37,7 +44,8 @@ void CGamemain::Initialize(void)
 	m_Finger_Pos.y = m_button_y;									//指のy座標の初期化
 
 
-	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);//スティック
+	//左スティック入力取得
+	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 
 }
 
@@ -57,14 +65,14 @@ void CGamemain::Update(void)
 void CGamemain::Draw(void)
 {
 	vivid::DrawText(48, "gamemain", { 0.0f,0.0f });
-	
+
 	//背景画像
 	vivid::DrawTexture("data\\select_bg.png", { 0.0f,0.0f });
 
 	//vivid::DrawTexture("data\\arrow.png", m_Finger_Pos); 指
 
 
-	
+
 	for (int i = 0; i < (int)STAGE_SELECT::MAX; i++)
 	{
 		//ボタン座標を入れる
@@ -102,7 +110,7 @@ void CGamemain::StageSelect(void)
 	//前フレームのスティックXを保持
 	static float prev_stick_x = 0.0f;
 
-	//左スティック入力取得
+
 
 	//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
 	if (prev_stick_x <= DEAD_ZONE && m_Stick.x > DEAD_ZONE)
@@ -137,7 +145,7 @@ void CGamemain::StageSelect(void)
 		//選択ボタンの変更
 		m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
 
-		//指の位置変更
+		//指の位置変更A
 		//m_Finger_Pos = vivid::Vector2(m_button_x[(int)m_Now_Select] - m_finger_width, m_button_y);
 
 	}
@@ -176,7 +184,7 @@ void CGamemain::StagePic(void)
 		switch (m_Now_Select)
 		{
 		case STAGE_SELECT::STAGE1:
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
 		case STAGE_SELECT::STAGE2:
@@ -201,7 +209,7 @@ void CGamemain::StagePic(void)
 		switch (m_Now_Select)
 		{
 		case STAGE_SELECT::STAGE1:
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
 		case STAGE_SELECT::STAGE2:
@@ -221,5 +229,10 @@ void CGamemain::StagePic(void)
 	}
 
 
+}
+
+STAGE_SELECT CGamemain::GetStageSelect()
+{
+	return m_Now_Select;
 }
 

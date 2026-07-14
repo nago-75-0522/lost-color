@@ -12,6 +12,11 @@ CStage1& CStage1::GetInstance()
 
 }
 
+CStage1::CStage1()
+{
+
+}
+
 void CStage1::Initialize(void)
 {
 	CMinigame_Manager::GetInstance().Initialize();
@@ -50,10 +55,10 @@ void CStage1::Update(void)
 		}
 
 #endif 
-		
+
 	}
 	//コントローラー用
-	if (CPlayer2_Character::GetInstance().GetScale().x <= 0 || CPlayer1_Character::GetInstance().GetScale().x<=0)
+	if (CPlayer2_Character::GetInstance().GetScale().x <= 0 || CPlayer1_Character::GetInstance().GetScale().x <= 0)
 	{
 		CSceneManager::GetInstance().AddStageCount();
 

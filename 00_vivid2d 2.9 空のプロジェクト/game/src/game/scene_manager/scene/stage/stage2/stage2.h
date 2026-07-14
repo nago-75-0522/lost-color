@@ -6,16 +6,6 @@
 class CStage2 :public IScene
 {
 public:
-
-	//インスタンス呼び出す
-	static CStage2& GetInstance();
-
-	//コンストラクタ
-	CStage2() = default;
-
-	//デストラクタ
-	~CStage2() = default;
-
 	//初期化
 	void Initialize(void)override;//多重定義
 	//更新
@@ -24,7 +14,14 @@ public:
 	void Draw(void)override;
 	//解放
 	void Finalize(void)override;
-
+	//インスタンス呼び出す
+	static CStage2& GetInstance();
 private:
+	CStage2(void);
+	//コピーコンストラクタ
+	CStage2(const CStage2& rhp) = delete;
 
+	CStage2& operator=(const CStage2& rhp) = delete;
+
+	~CStage2(void) = default;
 };

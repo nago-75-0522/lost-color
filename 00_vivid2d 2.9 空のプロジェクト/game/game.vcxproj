@@ -170,6 +170,7 @@
     <ClCompile Include="src\game\object\player_manager\player1\player1.cpp" />
     <ClCompile Include="src\game\object\player_manager\player2\player2.cpp" />
     <ClCompile Include="src\game\object\player_manager\player_manager.cpp" />
+    <ClCompile Include="src\game\scene_manager\scene\color_select\color_select.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\gamemain\gamemain.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\option_character\option.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\result\result.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="src\game\object\player_manager\player1\player1.h" />
     <ClInclude Include="src\game\object\player_manager\player2\player2.h" />
     <ClInclude Include="src\game\object\player_manager\player_manager.h" />
+    <ClInclude Include="src\game\scene_manager\scene\color_select\color_select.h" />
     <ClInclude Include="src\game\scene_manager\scene\gamemain\gamemain.h" />
     <ClInclude Include="src\game\scene_manager\scene\option_character\option.h" />
     <ClInclude Include="src\game\scene_manager\scene\result\result.h" />

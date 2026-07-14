@@ -9,7 +9,10 @@ CStage2& CStage2::GetInstance()
 	return instance;
 
 }
+CStage2::CStage2()
+{
 
+}
 void CStage2::Initialize(void)
 {
 

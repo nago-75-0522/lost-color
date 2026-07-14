@@ -10,6 +10,10 @@ CStage3& CStage3::GetInstance()
 
 }
 
+CStage3::CStage3()
+{
+
+}
 void CStage3::Initialize(void)
 {
 
@@ -19,7 +23,7 @@ void CStage3::Update(void)
 {
 
 	//CSceneManager::GetInstance().AddStageCount();//加算
-	
+
 	//デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
 	{

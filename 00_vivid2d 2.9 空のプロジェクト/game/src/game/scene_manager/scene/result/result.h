@@ -5,14 +5,8 @@ class CResult :public IScene
 {
 public:
 
-	//インスタンス呼び出す
-	static CResult& GetInstance();
 
-	//コンストラクタ
-	CResult() = default;
 
-	//デストラクタ
-	~CResult() = default;
 
 	//初期化
 	void Initialize(void)override;//多重定義
@@ -23,6 +17,15 @@ public:
 	//解放
 	void Finalize(void)override;
 
+	//インスタンス呼び出す
+	static CResult& GetInstance();
 private:
+	CResult(void);
+	//コピーコンストラクタ
+	CResult(const CResult& rhp) = delete;
+
+	CResult& operator=(const CResult& rhp) = delete;
+
+	~CResult(void) = default;
 
 };

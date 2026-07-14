@@ -6,13 +6,6 @@
 class CTitle :public IScene
 {
 public:
-
-	//コンストラクタ
-	CTitle();
-
-	//デストラクタ
-	~CTitle() = default;
-
 	//初期化
 	void Initialize(void)override;//多重定義
 	//更新
@@ -22,7 +15,15 @@ public:
 	//解放
 	void Finalize(void)override;
 
+	static CTitle& GetInstance();
 private:
+	CTitle(void);
+	//コピーコンストラクタ
+	CTitle(const CTitle& rhp) = delete;
+
+	CTitle& operator=(const CTitle& rhp) = delete;
+
+	~CTitle(void) = default;
 	//ロゴスタートの位置
-	 vivid::Vector2 m_start_logo;
+	vivid::Vector2 m_start_logo;
 };

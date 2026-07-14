@@ -7,11 +7,7 @@ class COption :public IScene
 {
 public:
 
-	//コンストラクタ
-	COption();
 
-	//デストラクタ
-	~COption() = default;
 
 	//初期化
 	void Initialize(void)override;//多重定義
@@ -25,5 +21,17 @@ public:
 	//解放
 	void Finalize(void)override;
 
+
+	//インスタンス呼び出す
+	static COption& GetInstance();
+
+
 private:
+	COption();
+	//コピーコンストラクタ
+	COption(const COption& rhp) = delete;
+
+	COption& operator=(const COption& rhp) = delete;
+
+	~COption(void) = default;
 };

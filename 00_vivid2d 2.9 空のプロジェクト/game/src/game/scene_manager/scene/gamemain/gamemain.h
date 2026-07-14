@@ -14,15 +14,8 @@ enum class STAGE_SELECT
 class CGamemain :public IScene
 {
 public:
-	//インスタンス呼び出す
-	static CGamemain& GetInstance();
 
-	//コンストラクタ
-	CGamemain() = default;
 
-	//デストラクタ
-	~CGamemain() = default;
-	
 
 	//初期化
 	void Initialize(void)override;//多重定義
@@ -42,14 +35,20 @@ public:
 	//決定処理
 	void StagePic(void);
 
-	
+	STAGE_SELECT GetStageSelect();
 
-
-	STAGE_SELECT m_Now_Select = STAGE_SELECT::MAX;//選択中のボタン
+	//インスタンス呼び出す
+	static CGamemain& GetInstance();
 
 
 private:
-	
+	CGamemain(void);
+	//コピーコンストラクタ
+	CGamemain(const CGamemain& rhp) = delete;
+
+	CGamemain& operator=(const CGamemain& rhp) = delete;
+
+	~CGamemain(void) = default;
 #if 1
 	/* 選択ボタン系 */
 	//定数
@@ -72,12 +71,9 @@ private:
 	/* コントローラー */
 	vivid::Vector2 m_Stick;//スティックx左右 y上下
 
-
-	//どこからでも呼び出せるようにする
-	CGamemain(const CGamemain& rhs) = delete;//コピーの禁止
-	CGamemain& operator =(const CGamemain& rhs) = delete;//代入の禁止
+	STAGE_SELECT m_Now_Select;//選択中のボタン
 
 
 #endif
-	
+
 };
