@@ -33,6 +33,7 @@ void CTitle::Update(void)
 void CTitle::Draw(void)
 {
 	vivid::DrawText(48, "title", { 0.0f,0.0f });
+	vivid::DrawTexture("data\\title_lf.png", { 100,vivid::WINDOW_HEIGHT * 1 / 5 });
 }
 
 void CTitle::Finalize(void)
