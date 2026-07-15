@@ -24,93 +24,81 @@ CSceneManager& CSceneManager::GetInstance()
 
 //初期化
 void CSceneManager::Initialize()
-{
-	//フェードインから開始
+{//フェードインから開始
 	m_FadeState = FADE::FADE_IN;
 	m_FadeAlpha = 1.0f;
 
 	m_NextID = (SCENE_ID::TITLE);//最初の画面の設定
 
 	_ChangeScene();
+
 	if (m_Scene)
 	{
 		m_Scene->Initialize();
 		m_CurrentID = m_NextID;
 	}
 
-}
 
+}
 void CSceneManager::Update()
 {
-	switch (m_FadeState)
-	{
-	case FADE::FADE_NOME:
-
-		if (!m_Scene)
-			return;
-		m_Scene->Update();
-
-
-		break;
-
-	case FADE::FADE_IN:
-		//画面を明るくする
-		m_FadeAlpha -= m_fade_speed * vivid::GetDeltaTime();
-
-		if (m_FadeAlpha <= 0.0f)
-		{
-			m_FadeAlpha = 0.0f;
-
-			//フェード完了　通常にする
-			m_FadeState = FADE::FADE_NOME;
-
-		}
-
-		break;
-
-	case FADE::FADE_OUT:
-		//画面を暗くする
-		m_FadeAlpha += m_fade_speed * vivid::GetDeltaTime();
-
-		if (m_FadeAlpha >= 1.0f)
-		{
-			m_FadeAlpha = 1.0f;
-
-
-			//シーン変更
-			_ChangeScene();
-
-			//明るくする
-			m_FadeState = FADE::FADE_IN;
-#if 0
-			if (m_CurrentID != m_NextID)
-			{
-				_ChangeScene();
-				if (m_Scene)
-					m_Scene->Initialize();
-			}
-
-#endif 0
-		}
-		break;
-
-	default:
-		break;
-
-
-	}
-
-	if (m_CurrentID != m_NextID)
-	{
-		_ChangeScene();
-		if (m_Scene)
-			m_Scene->Initialize();
-	}
+switch (m_FadeState)
+{
+case FADE::FADE_NOME:
 
 	if (!m_Scene)
 		return;
-
 	m_Scene->Update();
+
+
+	break;
+
+case FADE::FADE_IN:
+	//画面を明るくする
+	m_FadeAlpha -= m_fade_speed * vivid::GetDeltaTime();
+
+	if (m_FadeAlpha <= 0.0f)
+	{
+		m_FadeAlpha = 0.0f;
+
+		//フェード完了　通常にする
+		m_FadeState = FADE::FADE_NOME;
+
+	}
+
+	break;
+
+case FADE::FADE_OUT:
+	//画面を暗くする
+	m_FadeAlpha += m_fade_speed * vivid::GetDeltaTime();
+
+	if (m_FadeAlpha >= 1.0f)
+	{
+		m_FadeAlpha = 1.0f;
+
+
+		//シーン変更
+		_ChangeScene();
+
+		//明るくする
+		m_FadeState = FADE::FADE_IN;
+#if 0
+		if (m_CurrentID != m_NextID)
+		{
+			_ChangeScene();
+			if (m_Scene)
+				m_Scene->Initialize();
+		}
+
+#endif 0
+	}
+	break;
+
+default:
+	break;
+
+
+}
 }
 
 void CSceneManager::Draw()
