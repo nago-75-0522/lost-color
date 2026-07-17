@@ -70,8 +70,6 @@ void CStage1::Update(void)
 		}
 		else//達成してなければステージ選択
 		{
-			CMinigame_Manager::GetInstance().Initialize();
-			CPlayer_Manager::GetInstance().Initialize();
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 		}
 	}

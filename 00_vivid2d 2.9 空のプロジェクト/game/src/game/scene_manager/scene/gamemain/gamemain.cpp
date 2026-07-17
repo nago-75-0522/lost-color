@@ -43,7 +43,6 @@ void CGamemain::Initialize(void)
 	//矢印yは選択中ボタンの高さと変わらないため
 	m_Finger_Pos.y = m_button_y;									//指のy座標の初期化
 
-
 	//左スティック入力取得
 	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 
@@ -52,6 +51,9 @@ void CGamemain::Initialize(void)
 //更新
 void CGamemain::Update(void)
 {
+	namespace controller = vivid::controller;
+	// スティック入力取得
+	 m_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 
 	/* ステージカウントが1～3の時 */
 	//ステージ選択中処理
@@ -59,9 +61,6 @@ void CGamemain::Update(void)
 
 	//ステージ決定時の処理
 	StagePic();
-
-	/* スティック更新 */
-	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 }
 
 //描画
@@ -112,6 +111,7 @@ void CGamemain::StageSelect(void)
 
 	//前フレームのスティックXを保持
 	static float prev_stick_x = 0.0f;
+
 
 
 	//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）

@@ -90,7 +90,8 @@ void CPlayer1_Character::WaitCharacter()
 
 	if (!CFall::GetInstance().CheckEmpty(x,y))
 	{
-		if (keyboard::Button(keyboard::KEY_ID::W) || stick.y < -DEAD_ZONE)
+		if (keyboard::Button(keyboard::KEY_ID::W) || stick.y < -DEAD_ZONE ||
+			controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::UP))
 		{
 			m_Player1_Chara_Dir = CHARA_DIRECTION::UP;
 
@@ -101,7 +102,8 @@ void CPlayer1_Character::WaitCharacter()
 				m_Player1_Chara_State = CHARA_STATE::MOVE;
 			}
 		}
-		else if (keyboard::Button(keyboard::KEY_ID::S) || stick.y > DEAD_ZONE)
+		else if (keyboard::Button(keyboard::KEY_ID::S) || stick.y > DEAD_ZONE ||
+			controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::DOWN))
 		{
 			m_Player1_Chara_Dir = CHARA_DIRECTION::DOWN;
 
@@ -113,7 +115,8 @@ void CPlayer1_Character::WaitCharacter()
 			}
 		}
 
-		else if (keyboard::Button(keyboard::KEY_ID::D) || stick.x > DEAD_ZONE)
+		else if (keyboard::Button(keyboard::KEY_ID::D) || stick.x > DEAD_ZONE ||
+			controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
 		{
 			m_Player1_Chara_Dir = CHARA_DIRECTION::RIGHT;
 
@@ -124,7 +127,8 @@ void CPlayer1_Character::WaitCharacter()
 			}
 		}
 
-		else if (keyboard::Button(keyboard::KEY_ID::A) || stick.x < -DEAD_ZONE)
+		else if (keyboard::Button(keyboard::KEY_ID::A) || stick.x < -DEAD_ZONE ||
+			controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
 		{
 			m_Player1_Chara_Dir = CHARA_DIRECTION::LEFT;
 
