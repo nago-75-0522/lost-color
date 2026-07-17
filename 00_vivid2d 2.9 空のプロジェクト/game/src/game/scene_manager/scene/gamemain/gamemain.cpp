@@ -59,6 +59,9 @@ void CGamemain::Update(void)
 
 	//ステージ決定時の処理
 	StagePic();
+
+	/* スティック更新 */
+	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 }
 
 //描画
@@ -109,7 +112,6 @@ void CGamemain::StageSelect(void)
 
 	//前フレームのスティックXを保持
 	static float prev_stick_x = 0.0f;
-
 
 
 	//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
