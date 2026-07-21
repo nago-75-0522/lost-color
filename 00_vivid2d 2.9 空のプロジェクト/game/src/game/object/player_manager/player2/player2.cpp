@@ -8,6 +8,9 @@ const std::string CPlayer2_Character::m_player2_boy_path = "data\\character.png"
 const vivid::Vector2 CPlayer2_Character::m_player2_tree_size = { 64.0f,128.0f };
 const float CPlayer2_Character::m_player2_chara_move_speed = (float)CFall::GetInstance().GetMapChipSize()/ (float)m_player2_chara_move_time;
 const int CPlayer2_Character::m_player2_chara_center = 24;
+const std::string CPlayer2_Character::m_player2_marker_path = "data/logo/small_blue_2p.png";
+const vivid::Vector2 CPlayer2_Character::m_player2_marker_size = { 64.0f,40.0f };
+
 CPlayer2_Character::CPlayer2_Character()
 	: m_Player2_Chara_Pos{ 0.0f,0.0f }
 	, m_Player2_Chara_Rect{ 0,0,m_player2_chara_width,m_player2_chara_height }
@@ -18,7 +21,8 @@ CPlayer2_Character::CPlayer2_Character()
 	, m_Player2_Chara_Anchor(m_player2_chara_center, m_player2_chara_center)
 	, m_Player2_Chara_Scale(1.0, 1.0)
 	, m_Player2_Chara_Angle(0)
-	,m_Player2_Is_Win(false)
+	, m_Player2_Is_Win(false)
+	, m_Player2_Marker_Pos{ 0.0f,0.0f }
 {
 }
 
@@ -36,6 +40,7 @@ void CPlayer2_Character::Initialize()
 	m_Player2_Chara_Scale = { 1.0, 1.0 };
 	m_Player2_Chara_Angle = (0);
 	m_Player2_Is_Win = false;
+	m_Player2_Marker_Pos={ m_Player2_Chara_Pos.x,m_Player2_Chara_Pos.y - m_player2_marker_size.y };
 }
 
 void CPlayer2_Character::Update()
@@ -53,6 +58,9 @@ void CPlayer2_Character::Update()
 	//移動計算
 	m_Player2_Chara_Pos.x += m_Player2_Chara_Speed.x;
 	m_Player2_Chara_Pos.y += m_Player2_Chara_Speed.y;
+	//プレイヤーマーカー
+	m_Player2_Marker_Pos.x = m_Player2_Chara_Pos.x;
+	m_Player2_Marker_Pos.y = m_Player2_Chara_Pos.y - m_player2_marker_size.y;
 
 	int x = (int)((m_Player2_Chara_Pos.x + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 	int y = (int)((m_Player2_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
@@ -74,6 +82,7 @@ void CPlayer2_Character::Draw()
 	m_Player2_Chara_Rect.right = m_Player2_Chara_Rect.left + m_player2_chara_width;
 	m_Player2_Chara_Rect.top = (int)m_Player2_Chara_Dir * m_player2_chara_height;
 	m_Player2_Chara_Rect.bottom = m_Player2_Chara_Rect.top + m_player2_chara_height;
+	vivid::DrawTexture(m_player2_marker_path, m_Player2_Marker_Pos);
 
 	vivid::DrawTexture(m_player2_boy_path, m_Player2_Chara_Pos, 0xffffffff, m_Player2_Chara_Rect, m_Player2_Chara_Anchor, m_Player2_Chara_Scale);
 }

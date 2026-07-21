@@ -8,6 +8,8 @@ const std::string CPlayer1_Character::m_player1_boy_path = "data\\character.png"
 const vivid::Vector2 CPlayer1_Character::m_player1_tree_size = { 64.0f,128.0f };
 const float CPlayer1_Character::m_player1_chara_move_speed = (float)CFall::GetInstance().GetMapChipSize() / (float)m_player1_chara_move_time;
 const int CPlayer1_Character::m_player1_chara_center = 24;
+const std::string CPlayer1_Character::m_player1_marker_path = "data/logo/small_pink_1p.png";
+const vivid::Vector2 CPlayer1_Character::m_player1_marker_size = { 64.0f,40.0f };
 
 CPlayer1_Character::CPlayer1_Character()
 	: m_Player1_Chara_Pos{ 0.0f,0.0f }
@@ -20,6 +22,7 @@ CPlayer1_Character::CPlayer1_Character()
 	, m_Player1_Chara_Scale(1.0, 1.0)
 	, m_Player1_Chara_Angle(0)
 	, m_Player1_Is_Win(true)
+	,m_Player1_Marker_Pos{0.0f,0.0f}
 {
 }
 
@@ -30,13 +33,14 @@ void CPlayer1_Character::Initialize()
 	m_Player1_Chara_Dir = CHARA_DIRECTION::DOWN;
 	m_Player1_Chara_Rect={ 0,0,m_player1_chara_width,m_player1_chara_height };
 	m_Player1_Chara_Speed={ 0.0f,0.0f };
-	m_Player1_Chara_Anime_Frame=(0);
-	m_Player1_Chara_Anime_Timer=(0);
-	m_Player1_Chara_Move_Timer=(0);
+	m_Player1_Chara_Anime_Frame= 0;
+	m_Player1_Chara_Anime_Timer= 0;
+	m_Player1_Chara_Move_Timer= 0;
 	m_Player1_Chara_Anchor = { m_player1_chara_center, m_player1_chara_center };
 	m_Player1_Chara_Scale = { 1.0, 1.0 };
-	m_Player1_Chara_Angle=(0);
+	m_Player1_Chara_Angle= 0;
 	m_Player1_Is_Win=true;
+	m_Player1_Marker_Pos = {m_Player1_Chara_Pos.x,m_Player1_Chara_Pos.y-m_player1_marker_size.y};
 }
 
 void CPlayer1_Character::Update()
@@ -54,6 +58,9 @@ void CPlayer1_Character::Update()
 	//移動計算
 	m_Player1_Chara_Pos.x += m_Player1_Chara_Speed.x;
 	m_Player1_Chara_Pos.y += m_Player1_Chara_Speed.y;
+	m_Player1_Marker_Pos.x = m_Player1_Chara_Pos.x;
+	m_Player1_Marker_Pos.y = m_Player1_Chara_Pos.y-m_player1_marker_size.y;
+
 	int x = (int)((m_Player1_Chara_Pos.x + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 	int y = (int)((m_Player1_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 
@@ -75,7 +82,7 @@ void CPlayer1_Character::Draw()
 	m_Player1_Chara_Rect.right = m_Player1_Chara_Rect.left + m_player1_chara_width;
 	m_Player1_Chara_Rect.top = (int)m_Player1_Chara_Dir * m_player1_chara_height;
 	m_Player1_Chara_Rect.bottom = m_Player1_Chara_Rect.top + m_player1_chara_height;
-
+	vivid::DrawTexture(m_player1_marker_path, m_Player1_Marker_Pos);
 	vivid::DrawTexture(m_player1_boy_path, m_Player1_Chara_Pos,0xffffffff,m_Player1_Chara_Rect, m_Player1_Chara_Anchor, m_Player1_Chara_Scale);
 }
 

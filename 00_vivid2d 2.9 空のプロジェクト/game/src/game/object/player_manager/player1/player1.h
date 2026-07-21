@@ -44,6 +44,8 @@ private:
 	static const vivid::Vector2 m_player1_tree_size;
 	static const std::string m_player1_boy_path;
 	static const int m_player1_chara_center;
+	static const std::string m_player1_marker_path;
+	static const vivid::Vector2 m_player1_marker_size;
 	//変数
 	CHARA_DIRECTION m_Player1_Chara_Dir;
 	CHARA_STATE m_Player1_Chara_State;
@@ -57,5 +59,6 @@ private:
 	vivid::Vector2 m_Player1_Chara_Anchor;
 	vivid::Vector2 m_Player1_Chara_Scale;
 	vivid::Rect m_Player1_Chara_Rect;
+	vivid::Vector2 m_Player1_Marker_Pos;
 
 };

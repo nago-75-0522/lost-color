@@ -43,6 +43,9 @@ private:
 	static const vivid::Vector2 m_player2_tree_size;
 	static const std::string m_player2_boy_path;
 	static const int m_player2_chara_center;
+	static const std::string m_player2_marker_path;
+	static const vivid::Vector2 m_player2_marker_size;
+
 	//変数
 	CHARA_DIRECTION m_Player2_Chara_Dir;
 	CHARA_STATE m_Player2_Chara_State;
@@ -52,10 +55,11 @@ private:
 	int m_Player2_Chara_Anime_Timer;
 	int m_Player2_Chara_Move_Timer;
 	bool m_Player2_Is_Win;
-
 	int m_Player2_Chara_Angle;
 	vivid::Vector2 m_Player2_Chara_Anchor;
 	vivid::Vector2 m_Player2_Chara_Scale;
 	vivid::Rect m_Player2_Chara_Rect;
+	vivid::Vector2 m_Player2_Marker_Pos;
+
 
 };
