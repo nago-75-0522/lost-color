@@ -13,6 +13,17 @@ void CColor_Select::Initialize()
 
 void CColor_Select::Update()
 {
+
+#if 0
+	//デバック用 全色表示
+	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
+	{
+		if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+	}
+
+#endif 0
+
 	//ステージから青色を消し、選ばれたステージにする
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::A))
 	{
