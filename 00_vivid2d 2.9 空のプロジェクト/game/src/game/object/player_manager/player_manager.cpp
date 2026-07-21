@@ -1,6 +1,4 @@
 #include "player_manager.h"
-#include"player1/player1.h"
-#include"player2/player2.h"
 CPlayer_Manager::CPlayer_Manager()
 {
 

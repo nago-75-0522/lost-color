@@ -1,5 +1,6 @@
 #include "../player1/player1.h"
 #include"../../minigame_manager/fall/fall.h"
+#include"../player2/player2.h"
 const int CPlayer1_Character::m_player1_chara_height = 48;
 const int CPlayer1_Character::m_player1_chara_width = 48;
 const int CPlayer1_Character::m_player1_chara_move_time = 12;
@@ -18,6 +19,7 @@ CPlayer1_Character::CPlayer1_Character()
 	, m_Player1_Chara_Anchor(m_player1_chara_center, m_player1_chara_center)
 	, m_Player1_Chara_Scale(1.0, 1.0)
 	, m_Player1_Chara_Angle(0)
+	, m_Player1_Is_Win(true)
 {
 }
 
@@ -34,6 +36,7 @@ void CPlayer1_Character::Initialize()
 	m_Player1_Chara_Anchor = { m_player1_chara_center, m_player1_chara_center };
 	m_Player1_Chara_Scale = { 1.0, 1.0 };
 	m_Player1_Chara_Angle=(0);
+	m_Player1_Is_Win=true;
 }
 
 void CPlayer1_Character::Update()
@@ -54,11 +57,16 @@ void CPlayer1_Character::Update()
 	int x = (int)((m_Player1_Chara_Pos.x + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 	int y = (int)((m_Player1_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 
-	if (CFall::GetInstance().CheckEmpty(x,y) && m_Player1_Chara_Scale.x >= 0)
+	if (CFall::GetInstance().CheckEmpty(x,y) && m_Player1_Chara_Scale.x >= 0 &&
+		CPlayer2_Character::GetInstance().GetScale().x >= 0)
 	{
 		m_Player1_Chara_Scale.x=m_Player1_Chara_Scale.y= cos((++m_Player1_Chara_Angle %= 720) * 3.14f / 360.0f);
 	}
+	if (m_Player1_Chara_Scale.x <= 0 )
+		m_Player1_Is_Win = false;
 	
+	else if (CPlayer2_Character::GetInstance().GetScale().x >= 0)
+		m_Player1_Is_Win = true;
 }
 
 void CPlayer1_Character::Draw()
@@ -168,6 +176,11 @@ void CPlayer1_Character::MoveCharacter()
 vivid::Vector2 CPlayer1_Character::GetScale()
 {
 	return m_Player1_Chara_Scale;
+}
+
+bool CPlayer1_Character::GetIsWin()
+{
+	return m_Player1_Is_Win;
 }
 
 CPlayer1_Character& CPlayer1_Character::GetInstance()

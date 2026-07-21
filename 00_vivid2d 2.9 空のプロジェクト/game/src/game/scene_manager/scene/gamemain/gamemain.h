@@ -69,8 +69,8 @@ private:
 	static const int m_button_y;									//ボタンのy座標
 
 	/* コントローラー */
-	vivid::Vector2 m_Stick;//スティックx左右 y上下
-
+	vivid::Vector2 m_Player1_Stick;//スティックx左右 y上下
+	vivid::Vector2 m_Player2_Stick;//スティックx左右 y上下
 	STAGE_SELECT m_Now_Select;//選択中のボタン
 
 

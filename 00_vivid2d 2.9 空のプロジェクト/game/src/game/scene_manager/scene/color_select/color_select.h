@@ -61,6 +61,7 @@ private:
 	bool m_Red;
 	vivid::Vector2 m_Button_Pos;//選択中のボタンの座標
 	vivid::Vector2 m_Finger_Pos;//選択印(指)の座標
-	vivid::Vector2 m_Stick;//スティックx左右 y上下
+	vivid::Vector2 m_Player1_Stick;//スティックx左右 y上下
+	vivid::Vector2 m_Player2_Stick;//スティックx左右 y上下
 	COLOR m_Now_Color;//選択中のボタン
 };

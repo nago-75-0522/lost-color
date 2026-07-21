@@ -1,6 +1,7 @@
 #include "color_select.h"
 #include"../gamemain/gamemain.h"
 #include"../../scene_manager.h"
+#include"../../../object/player_manager/player_manager.h"
 //定数
 const vivid::Vector2 CColor_Select::m_panel_pos(0.0f, 0.0f);			//
 const int CColor_Select::m_button_x[] = { 100,490,880 };			//ステージの配置位置
@@ -49,16 +50,16 @@ void CColor_Select::Initialize()
 	m_Finger_Pos.y = m_button_y;									//指のy座標の初期化
 
 	//左スティック入力取得
-	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
+	m_Player1_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
+	m_Player2_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER2);
 }
 
 void CColor_Select::Update()
 {
 	//左スティック入力取得
-	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
+	m_Player1_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
+	m_Player2_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER2);
 	ColorSel();
-
-	ColorPic();
 }
 
 //描画
@@ -105,66 +106,133 @@ void CColor_Select::ColorSel(void)
 	namespace keyboard = vivid::keyboard;
 	/* コントローラの実装 */
 		//デッドゾーンの設定
-	const float DEAD_ZONE = 0.5f;
+	const float DEAD_ZONE = 0.7f;
 
 	//前フレームのスティックXを保持
-	static float prev_stick_x = 0.0f;
+	static float player1_prev_stick_x = 0.0f;
+	static float player2_prev_stick_x = 0.0f;
 
 	//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
-	if (prev_stick_x <= DEAD_ZONE && m_Stick.x > DEAD_ZONE ||
-		controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
+	if (CPlayer1_Character::GetInstance().GetIsWin() == true)
 	{
-		m_Now_Color = (COLOR)(((int)m_Now_Color + 1) % (int)COLOR::MAX);
-	}
-
-	// 左に倒した瞬間
-	else if (prev_stick_x >= -DEAD_ZONE && m_Stick.x < -DEAD_ZONE ||
-		     controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
-	{
-		m_Now_Color = (COLOR)((((int)m_Now_Color - 1) + (int)COLOR::MAX) % (int)COLOR::MAX);
-	}
-
-	// 現在の値を保存
-	prev_stick_x = m_Stick.x;
-
-	if (keyboard::Trigger(keyboard::KEY_ID::RIGHT))
-	{
-		int color = (int)m_Now_Color;
-
-		for (int i = 0; i < (int)COLOR::MAX; i++)
+		ColorPic();
+		if (player1_prev_stick_x <= DEAD_ZONE && m_Player1_Stick.x > DEAD_ZONE ||
+			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
 		{
-			color = (color + 1) % (int)COLOR::MAX;
+			int color = (int)m_Now_Color;
 
-			if (IsEnableColor((COLOR)color))
+			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
-				m_Now_Color = (COLOR)color;
-				break;
+				color = (color + 1) % (int)COLOR::MAX;
+
+				if (IsEnableColor((COLOR)color))
+				{
+					m_Now_Color = (COLOR)color;
+					break;
+				}
+			}
+		}
+
+		// 左に倒した瞬間
+		else if (player1_prev_stick_x >= -DEAD_ZONE && m_Player1_Stick.x < -DEAD_ZONE ||
+			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
+		{
+			int color = (int)m_Now_Color;
+
+			for (int i = 0; i < (int)COLOR::MAX; i++)
+			{
+				color = (color - 1 + (int)COLOR::MAX) % (int)COLOR::MAX;
+
+				if (IsEnableColor((COLOR)color))
+				{
+					m_Now_Color = (COLOR)color;
+					break;
+				}
 			}
 		}
 	}
-	else if (keyboard::Trigger(vivid::keyboard::KEY_ID::LEFT))
-	{
-		int color = (int)m_Now_Color;
-
-		for (int i = 0; i < (int)COLOR::MAX; i++)
+		if (CPlayer2_Character::GetInstance().GetIsWin() == true)
 		{
-			color = (color - 1 + (int)COLOR::MAX) % (int)COLOR::MAX;
-
-			if (IsEnableColor((COLOR)color))
+			ColorPic();
+			//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
+			if (player2_prev_stick_x <= DEAD_ZONE && m_Player2_Stick.x > DEAD_ZONE ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT))
 			{
-				m_Now_Color = (COLOR)color;
-				break;
+				int color = (int)m_Now_Color;
+
+				for (int i = 0; i < (int)COLOR::MAX; i++)
+				{
+					color = (color + 1) % (int)COLOR::MAX;
+
+					if (IsEnableColor((COLOR)color))
+					{
+						m_Now_Color = (COLOR)color;
+						break;
+					}
+				}
+			}
+
+			// 左に倒した瞬間
+			else if (player2_prev_stick_x >= -DEAD_ZONE && m_Player2_Stick.x < -DEAD_ZONE ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT))
+			{
+				int color = (int)m_Now_Color;
+
+				for (int i = 0; i < (int)COLOR::MAX; i++)
+				{
+					color = (color - 1 + (int)COLOR::MAX) % (int)COLOR::MAX;
+
+					if (IsEnableColor((COLOR)color))
+					{
+						m_Now_Color = (COLOR)color;
+						break;
+					}
+				}
 			}
 		}
-	}
 
+		// 現在の値を保存
+		player1_prev_stick_x = m_Player1_Stick.x;
+		player2_prev_stick_x = m_Player2_Stick.x;
+
+		if (keyboard::Trigger(keyboard::KEY_ID::RIGHT))
+		{
+			int color = (int)m_Now_Color;
+
+			for (int i = 0; i < (int)COLOR::MAX; i++)
+			{
+				color = (color + 1) % (int)COLOR::MAX;
+
+				if (IsEnableColor((COLOR)color))
+				{
+					m_Now_Color = (COLOR)color;
+					break;
+				}
+			}
+		}
+		else if (keyboard::Trigger(vivid::keyboard::KEY_ID::LEFT))
+		{
+			int color = (int)m_Now_Color;
+
+			for (int i = 0; i < (int)COLOR::MAX; i++)
+			{
+				color = (color - 1 + (int)COLOR::MAX) % (int)COLOR::MAX;
+
+				if (IsEnableColor((COLOR)color))
+				{
+					m_Now_Color = (COLOR)color;
+					break;
+				}
+			}
+		}
+
+	
 }
-
 void CColor_Select::ColorPic(void)
 {
 	namespace controller = vivid::controller;
 	
-	//キーボード用
+	if(CPlayer1_Character::GetInstance().GetIsWin() == true)
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
 		|| controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B))
 	{
@@ -198,7 +266,41 @@ void CColor_Select::ColorPic(void)
 			break;
 		}
 	}
+	//キーボード用
+	if (CPlayer2_Character::GetInstance().GetIsWin() == true)
+		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
+			|| controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B))
+		{
+			switch (m_Now_Color)
+			{
+			case COLOR::BLUE:
+				if (!m_Blue)return;
+				m_Blue = false;
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				break;
 
+			case COLOR::YELLOW:
+				if (!m_Yellow)return;
+				m_Yellow = false;
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				break;
+
+			case COLOR::RED:
+				if (!m_Red)return;
+				m_Red = false;
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				break;
+
+
+			case COLOR::MAX:
+				break;
+			default:
+				break;
+			}
+		}
 }
 
 //色の初期化

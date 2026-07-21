@@ -11,6 +11,7 @@ public:
 	void WaitCharacter();
 	void MoveCharacter();
 	vivid::Vector2 GetScale();
+	bool GetIsWin();
 	static CPlayer1_Character& GetInstance();
 
 	vivid::Vector2 GetCharaPos() { return m_Player1_Chara_Pos; }
@@ -51,7 +52,7 @@ private:
 	int m_Player1_Chara_Anime_Frame;
 	int m_Player1_Chara_Anime_Timer;
 	int m_Player1_Chara_Move_Timer;
-
+	bool m_Player1_Is_Win;
 	int m_Player1_Chara_Angle;
 	vivid::Vector2 m_Player1_Chara_Anchor;
 	vivid::Vector2 m_Player1_Chara_Scale;

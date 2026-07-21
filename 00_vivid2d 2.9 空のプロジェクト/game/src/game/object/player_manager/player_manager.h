@@ -1,4 +1,6 @@
 #pragma once
+#include"player1/player1.h"
+#include"player2/player2.h"
 
 class CPlayer_Manager
 {

@@ -1,8 +1,8 @@
 //ステージ選択
 #include"gamemain.h"
 #include"..\..\scene_manager.h"
-#include"..\stage\stage1\stage1.h"
-
+#include"../../../object/player_manager/player1/player1.h"
+#include"../../../object/player_manager/player2/player2.h"
 
 //定数
 const vivid::Vector2 CGamemain::m_bg_pos(0.0f, 0.0f);			//
@@ -34,6 +34,8 @@ CGamemain::CGamemain()
 //初期化
 void CGamemain::Initialize(void)
 {
+	namespace controller = vivid::controller;
+
 	m_Now_Select = STAGE_SELECT::STAGE1;//stage1選択スタート
 
 	m_Button_Pos = vivid::Vector2::ZERO;//位置
@@ -42,10 +44,10 @@ void CGamemain::Initialize(void)
 	m_Finger_Pos.x = m_button_x[(int)m_Now_Select] - m_finger_width;//指のｘ座標の初期化
 	//矢印yは選択中ボタンの高さと変わらないため
 	m_Finger_Pos.y = m_button_y;									//指のy座標の初期化
-
+	
 	//左スティック入力取得
-	m_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
-
+	m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
+	m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
 }
 
 //更新
@@ -53,14 +55,13 @@ void CGamemain::Update(void)
 {
 	namespace controller = vivid::controller;
 	// スティック入力取得
-	 m_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
-
+	 m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
+	 m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
 	/* ステージカウントが1～3の時 */
 	//ステージ選択中処理
 	StageSelect();
 
-	//ステージ決定時の処理
-	StagePic();
+	
 }
 
 //描画
@@ -104,74 +105,88 @@ void CGamemain::Finalize(void)
 //選択処理
 void CGamemain::StageSelect(void)
 {
+	namespace controller = vivid::controller;
+	namespace keyboard = vivid::keyboard;
 
 	/* コントローラの実装 */
 		//デッドゾーンの設定
 	const float DEAD_ZONE = 0.7f;
 
 	//前フレームのスティックXを保持
-	static float prev_stick_x = 0.0f;
+	static float player1_prev_stick_x = 0.0f;
+	static float player2_prev_stick_x = 0.0f;
 
-
-
-	//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
-	if (prev_stick_x <= DEAD_ZONE && m_Stick.x > DEAD_ZONE)
+	if (CPlayer1_Character::GetInstance().GetIsWin() == true)
 	{
-		m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+		StagePic();
+		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
+		if (player1_prev_stick_x <= DEAD_ZONE && m_Player1_Stick.x > DEAD_ZONE)
+		{
+			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+		}
+
+		// 左に倒した瞬間
+		else if (player1_prev_stick_x >= -DEAD_ZONE && m_Player1_Stick.x < -DEAD_ZONE)
+		{
+			m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
+		}
+
+		/* 十字キー実装 */
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
+		{
+			//選択ボタンの変更
+			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+		}
+
+		else if (controller::Trigger(controller::DEVICE_ID::PLAYER1,controller::BUTTON_ID::LEFT))
+		{
+			//選択ボタンの変更
+			m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
+		}
 	}
 
-	// 左に倒した瞬間
-	else if (prev_stick_x >= -DEAD_ZONE && m_Stick.x < -DEAD_ZONE)
+	if (CPlayer2_Character::GetInstance().GetIsWin() == true)
 	{
-		m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
-	}
+		StagePic();
+		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
+		if (player2_prev_stick_x <= DEAD_ZONE && m_Player2_Stick.x > DEAD_ZONE)
+		{
+			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+		}
 
+		// 左に倒した瞬間
+		else if (player2_prev_stick_x >= -DEAD_ZONE && m_Player2_Stick.x < -DEAD_ZONE)
+		{
+			m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
+		}
+
+		/* 十字キー実装 */
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT))
+		{
+			//選択ボタンの変更
+			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+		}
+
+		else if (controller::Trigger(controller::DEVICE_ID::PLAYER2,controller::BUTTON_ID::LEFT))
+		{
+			//選択ボタンの変更
+			m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
+		}
+	}
 	// 現在の値を保存
-	prev_stick_x = m_Stick.x;
-
-
-
-	/* 十字キー実装 */
-	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::RIGHT))
-	{
-		//選択ボタンの変更
-		m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
-
-		//指の位置変更
-		//m_Finger_Pos = vivid::Vector2(m_button_x[(int)m_Now_Select] - m_finger_width, m_button_y);
-
-	}
-
-	else if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::LEFT))
-	{
-		//選択ボタンの変更
-		m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
-
-		//指の位置変更A
-		//m_Finger_Pos = vivid::Vector2(m_button_x[(int)m_Now_Select] - m_finger_width, m_button_y);
-
-	}
-
-
-
+	player1_prev_stick_x = m_Player1_Stick.x;
+	player2_prev_stick_x = m_Player2_Stick.x;
 	/* 選択中 */
-	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::RIGHT))
+	if (keyboard::Trigger(keyboard::KEY_ID::RIGHT))
 	{
 		//選択ボタンの変更
 		m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
-
-		//指の位置変更
-		//m_Finger_Pos = vivid::Vector2(m_button_x[(int)m_Now_Select] - m_finger_width, m_button_y);
-
 	}
 
-	else if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::LEFT))
+	else if (keyboard::Trigger(keyboard::KEY_ID::LEFT))
 	{
 		//選択ボタンの変更
 		m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
-
-		//指の位置変更
-		//m_Finger_Pos = vivid::Vector2(m_button_x[(int)m_Now_Select] - m_finger_width, m_button_y);
 	}
 
 }
@@ -179,8 +194,8 @@ void CGamemain::StageSelect(void)
 //ステージ決定
 void CGamemain::StagePic(void)
 {
-
 	//コントローラー用
+	if (CPlayer1_Character::GetInstance().GetIsWin() == true)
 	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 	{
 		switch (m_Now_Select)
@@ -205,6 +220,31 @@ void CGamemain::StagePic(void)
 		}
 	}
 
+	//コントローラー用
+	if (CPlayer2_Character::GetInstance().GetIsWin() == true)
+		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+		{
+			switch (m_Now_Select)
+			{
+			case STAGE_SELECT::STAGE1:
+				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				break;
+
+			case STAGE_SELECT::STAGE2:
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+				break;
+
+			case STAGE_SELECT::STAGE3:
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE3);
+				break;
+
+
+			case STAGE_SELECT::MAX:
+				break;
+			default:
+				break;
+			}
+		}
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
