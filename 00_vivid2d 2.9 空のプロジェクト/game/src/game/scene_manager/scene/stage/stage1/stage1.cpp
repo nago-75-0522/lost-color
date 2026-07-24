@@ -70,7 +70,7 @@ void CStage1::Update(void)
 		}
 		else//達成してなければステージ選択
 		{
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+			CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
 		}
 	}
 }

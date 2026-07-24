@@ -113,7 +113,7 @@ void CColor_Select::ColorSel(void)
 	static float player2_prev_stick_x = 0.0f;
 
 	//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
-	if (CPlayer1_Character::GetInstance().GetIsWin() == true)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 	{
 		ColorPic();
 		if (player1_prev_stick_x <= DEAD_ZONE && m_Player1_Stick.x > DEAD_ZONE ||
@@ -151,7 +151,7 @@ void CColor_Select::ColorSel(void)
 			}
 		}
 	}
-		if (CPlayer2_Character::GetInstance().GetIsWin() == true)
+		if (CPlayer_Manager::GetInstance().Player2_Win() == true)
 		{
 			ColorPic();
 			//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -232,7 +232,7 @@ void CColor_Select::ColorPic(void)
 {
 	namespace controller = vivid::controller;
 	
-	if(CPlayer1_Character::GetInstance().GetIsWin() == true)
+	if(CPlayer_Manager::GetInstance().Player1_Win() == true)
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
 		|| controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B))
 	{
@@ -267,7 +267,7 @@ void CColor_Select::ColorPic(void)
 		}
 	}
 	//キーボード用
-	if (CPlayer2_Character::GetInstance().GetIsWin() == true)
+	if (CPlayer_Manager::GetInstance().Player2_Win() == true)
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
 			|| controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B))
 		{
