@@ -26,8 +26,7 @@ void CStage2::Update(void)
 	m_ball_timer.Update();
 	CMinigame_Manager::GetInstance().Update();
 
-	//CSceneManager::GetInstance().AddStageCount();//加算
-
+#if 0
 	// デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
 	{
@@ -35,10 +34,11 @@ void CStage2::Update(void)
 
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 	}
-
+#endif
 	//キーボード用
-	if (m_ball_timer.IsTimeUp())
+	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
+
 		CSceneManager::GetInstance().AddStageCount();
 
 		//4回目からリザルト
@@ -65,6 +65,7 @@ void CStage2::Update(void)
 		}
 		else//達成してなければステージ選択
 		{
+
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 		}
 	}
