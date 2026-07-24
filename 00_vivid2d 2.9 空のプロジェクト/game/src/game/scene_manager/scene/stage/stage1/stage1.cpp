@@ -19,6 +19,7 @@ CStage1::CStage1()
 
 void CStage1::Initialize(void)
 {
+	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::FALL);
 	CMinigame_Manager::GetInstance().Initialize();
 	CPlayer_Manager::GetInstance().Initialize();
 }
@@ -70,7 +71,7 @@ void CStage1::Update(void)
 		}
 		else//達成してなければステージ選択
 		{
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+			CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
 		}
 	}
 }

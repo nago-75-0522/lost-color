@@ -1,8 +1,7 @@
 //ステージ選択
 #include"gamemain.h"
 #include"..\..\scene_manager.h"
-#include"../../../object/player_manager/player1/player1.h"
-#include"../../../object/player_manager/player2/player2.h"
+#include"../../../object/player_manager/player_manager.h"
 
 //定数
 const vivid::Vector2 CGamemain::m_bg_pos(0.0f, 0.0f);			//
@@ -116,7 +115,7 @@ void CGamemain::StageSelect(void)
 	static float player1_prev_stick_x = 0.0f;
 	static float player2_prev_stick_x = 0.0f;
 
-	if (CPlayer1_Character::GetInstance().GetIsWin() == true)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -145,7 +144,7 @@ void CGamemain::StageSelect(void)
 		}
 	}
 
-	if (CPlayer2_Character::GetInstance().GetIsWin() == true)
+	if (CPlayer_Manager::GetInstance().Player2_Win() == true)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -195,8 +194,8 @@ void CGamemain::StageSelect(void)
 void CGamemain::StagePic(void)
 {
 	//コントローラー用
-	if (CPlayer1_Character::GetInstance().GetIsWin() == true)
-	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
+		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 	{
 		switch (m_Now_Select)
 		{
@@ -221,7 +220,7 @@ void CGamemain::StagePic(void)
 	}
 
 	//コントローラー用
-	if (CPlayer2_Character::GetInstance().GetIsWin() == true)
+	if (CPlayer_Manager::GetInstance().Player2_Win() == true)
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{
 			switch (m_Now_Select)
@@ -255,11 +254,11 @@ void CGamemain::StagePic(void)
 			break;
 
 		case STAGE_SELECT::STAGE2:
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
 		case STAGE_SELECT::STAGE3:
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE3);
+			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
 

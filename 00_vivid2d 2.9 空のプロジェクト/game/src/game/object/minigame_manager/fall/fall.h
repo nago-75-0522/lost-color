@@ -37,13 +37,15 @@ private:
 	static const int m_chara_center;//キャラの中心
 	static const int m_map_width;//横のマスの数
 	static const int m_map_height;//縦のマスの数
-
+	static const int m_max_player;
 
 
 	//変数
 	std::vector<std::vector<unsigned char>>m_Map;//二次元配列 : 見た目
 	std::vector<std::vector<unsigned char>>m_Now_Map;//二次元配列　：　データ上
-
+	int m_Floor_Timer[2];
+	int m_Old_X[2];
+	int m_Old_Y[2];
 	MAP_CHIP_ID m_Map_Chip_ID;
 
 

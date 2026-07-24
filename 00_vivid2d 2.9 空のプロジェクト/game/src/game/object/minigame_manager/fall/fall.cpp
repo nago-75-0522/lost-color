@@ -16,19 +16,22 @@ const int CFall::m_map_height = 12;//縦のマスの数
 //コンストラクタ
 CFall::CFall()
 	:m_Map(0)
-	, m_Now_Map(0)
-
+	,m_Now_Map(0)
 {
 }
 
 //初期化
 void CFall::Initialize()
 {
-
+	m_Old_X[0] = { -1 };//前回のxを保存
+	m_Old_X[1] = { -1 };//前回のxを保存
+	m_Old_Y[0] = { -1 };//前回のyを保存
+	m_Old_Y[1] = { -1 };//前回のyを保存
 	m_Map = std::vector<std::vector<unsigned char>>(m_map_height, std::vector<unsigned char>(m_map_width));
 	m_Now_Map = std::vector<std::vector<unsigned char>>(m_map_height, std::vector<unsigned char>(m_map_width));
 	m_Map_Chip_ID = MAP_CHIP_ID::BLUE;
-
+	m_Floor_Timer[0] = m_floor_time;
+	m_Floor_Timer[1] = m_floor_time;
 	/*** ファイル操作 ***/
 	FILE* fp = nullptr;
 
@@ -105,16 +108,14 @@ void CFall::Update()
 		(int)(CPlayer2_Character::GetInstance().GetCharaPos().y + m_chara_center) / m_map_chip_size
 	};
 
-	static int oldX[2] = { -1, -1 };//前回のxを保存
-	static int oldY[2] = { -1, -1 };//前回のyを保存
-	static int Floor_Timer[] = { m_floor_time, m_floor_time };
+	
 
 	for (int i = 0; i < 2; i++)
 	{
-		if (x[i] != oldX[i] || y[i] != oldY[i] || --Floor_Timer[i] < 0)
+		if (x[i] != m_Old_X[i] || y[i] != m_Old_Y[i] || --m_Floor_Timer[i] < 0)
 		{
 
-			Floor_Timer[i] = m_floor_time;
+			m_Floor_Timer[i] = m_floor_time;
 
 			switch ((MAP_CHIP_ID)m_Map[y[i]][x[i]])
 			{
@@ -171,8 +172,8 @@ void CFall::Update()
 					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
 
 			}
-			oldX[i] = x[i];
-			oldY[i] = y[i];
+			m_Old_X[i] = x[i];
+			m_Old_Y[i] = y[i];
 		}
 	}
 

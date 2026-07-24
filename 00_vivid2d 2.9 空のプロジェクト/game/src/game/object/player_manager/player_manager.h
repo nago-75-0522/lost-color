@@ -10,6 +10,10 @@ public:
 	void Draw();
 	void Finalize();
 	static CPlayer_Manager& GetInstance();
+
+	bool Player1_Win();
+	bool Player2_Win();
+	bool Draw_Battle();
 private:
 	CPlayer_Manager(void);
 	//コピーコンストラクタ
@@ -18,4 +22,9 @@ private:
 	CPlayer_Manager& operator=(const CPlayer_Manager& rhp) = delete;
 
 	~CPlayer_Manager(void) = default;
+
+	//変数
+	bool m_Player1_Win;
+	bool m_Player2_Win;
+	bool m_Draw;
 };

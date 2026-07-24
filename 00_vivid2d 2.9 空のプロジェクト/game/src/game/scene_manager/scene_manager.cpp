@@ -3,6 +3,7 @@
 #include"scene/option_character/option.h"
 #include"../scene_manager/scene/color_select/color_select.h"
 #include"scene/gamemain/gamemain.h"
+#include"scene/game_risult/game_risult.h"
 #include"scene/stage/stage1/stage1.h"
 #include"scene/stage/stage2/stage2.h"
 #include"scene/stage/stage3/stage3.h"
@@ -160,6 +161,10 @@ void CSceneManager::_ChangeScene()
 
 	case SCENE_ID::GAMEMAIN:
 		m_Scene = &CGamemain::GetInstance();
+		break;
+
+	case SCENE_ID::GAMERISULT:
+		m_Scene = &CGame_Result::GetInstance();
 		break;
 
 	case SCENE_ID::COLOR_SELECT:
