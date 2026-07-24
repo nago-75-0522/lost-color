@@ -1,6 +1,7 @@
 #include"vivid.h"
 #include "stage2.h"
 #include"..\..\..\scene_manager.h"
+#include"../../../../object/minigame_manager/minigame_manager.h"
 
 
 CStage2& CStage2::GetInstance()
@@ -15,11 +16,15 @@ CStage2::CStage2()
 }
 void CStage2::Initialize(void)
 {
-
+	m_ball_timer.Initialize();
+	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::BALL);
+	CMinigame_Manager::GetInstance().Initialize();
 }
 
 void CStage2::Update(void)
 {
+	m_ball_timer.Update();
+	CMinigame_Manager::GetInstance().Update();
 
 	//CSceneManager::GetInstance().AddStageCount();//加算
 
@@ -32,8 +37,9 @@ void CStage2::Update(void)
 	}
 
 	//キーボード用
-	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
+	if (m_ball_timer.IsTimeUp())
 	{
+		CSceneManager::GetInstance().AddStageCount();
 
 		//4回目からリザルト
 		if (CSceneManager::GetInstance().FinishStage() >= 3)
@@ -42,13 +48,15 @@ void CStage2::Update(void)
 		}
 		else//達成してなければステージ選択
 		{
+
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 		}
 
 	}
 	//コントローラー用
-	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
+	if (m_ball_timer.IsTimeUp())
 	{
+		CSceneManager::GetInstance().AddStageCount();
 
 		//4回目からリザルト
 		if (CSceneManager::GetInstance().FinishStage() >= 3)
@@ -64,6 +72,9 @@ void CStage2::Update(void)
 
 void CStage2::Draw(void)
 {
+	m_ball_timer.Draw();
+	CMinigame_Manager::GetInstance().Draw();
+
 	vivid::DrawText(48, "stage2", { 0.0f,0.0f });
 }
 

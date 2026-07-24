@@ -254,11 +254,11 @@ void CGamemain::StagePic(void)
 			break;
 
 		case STAGE_SELECT::STAGE2:
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
 		case STAGE_SELECT::STAGE3:
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE3);
+			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
 

@@ -242,21 +242,33 @@ void CColor_Select::ColorPic(void)
 			if (!m_Blue)return;
 			m_Blue = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);			
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);	
+
+			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
 			break;
 
 		case COLOR::YELLOW:
 			if (!m_Yellow)return;
 			m_Yellow = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);			
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);		
+
+			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
 			break;
 
 		case COLOR::RED:
 			if (!m_Red)return;
 			m_Red = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);			
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);	
+
+			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
 			break;
 
 
@@ -278,6 +290,10 @@ void CColor_Select::ColorPic(void)
 				m_Blue = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
 				break;
 
 			case COLOR::YELLOW:
@@ -285,6 +301,10 @@ void CColor_Select::ColorPic(void)
 				m_Yellow = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
 				break;
 
 			case COLOR::RED:
@@ -292,6 +312,10 @@ void CColor_Select::ColorPic(void)
 				m_Red = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
 				break;
 
 

@@ -19,6 +19,7 @@ CStage1::CStage1()
 
 void CStage1::Initialize(void)
 {
+	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::FALL);
 	CMinigame_Manager::GetInstance().Initialize();
 	CPlayer_Manager::GetInstance().Initialize();
 }
