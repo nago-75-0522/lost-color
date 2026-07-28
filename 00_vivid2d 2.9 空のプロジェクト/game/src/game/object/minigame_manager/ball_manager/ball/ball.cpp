@@ -63,9 +63,9 @@ void CBall::Update(void)
 //描画
 void CBall::Draw(void)
 {
-	bool BlueEnable = CColor_Select::GetInstance().GetBlue();
+	bool BlueEnable = CColor_Select::GetInstance().GetCyan();
 	bool YellowEnable = CColor_Select::GetInstance().GetYellow();
-	bool RedEnable = CColor_Select::GetInstance().GetRed();
+	bool RedEnable = CColor_Select::GetInstance().GetMagenta();
 
 	vivid::Rect rect = { 0,0,m_ball_width,m_ball_height };
 

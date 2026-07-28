@@ -73,7 +73,7 @@ void CFall::Initialize()
 	//一時的なデータを削除
 	delete[] buf;
 
-	if (CColor_Select::GetInstance().GetBlue() == false)
+	if (CColor_Select::GetInstance().GetCyan() == false)
 	{
 		for (int i = 1; i < m_map_chip_count_height - 1; ++i)
 		{
@@ -90,9 +90,9 @@ void CFall::Initialize()
 void CFall::Update()
 {
 
-	bool Get_Floor_Color[3] = { CColor_Select::GetInstance().GetBlue(),
+	bool Get_Floor_Color[3] = { CColor_Select::GetInstance().GetCyan(),
 								CColor_Select::GetInstance().GetYellow(),
-								CColor_Select::GetInstance().GetRed() };
+								CColor_Select::GetInstance().GetMagenta() };
 
 
 	//配列で1P,2Pの位置を記憶
