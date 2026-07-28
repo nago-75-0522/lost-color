@@ -15,8 +15,8 @@ public:
 	void ColorPic(void);
 
 	void IniColor();
-	bool GetBlue() { return m_Blue; }
-	bool GetRed() { return m_Red; }
+	bool GetCyan() { return m_Cyan; }
+	bool GetMagenta() { return m_Magenta; }
 	bool GetYellow() { return m_Yellow; }
 	static CColor_Select& GetInstance();
 
@@ -49,16 +49,16 @@ private:
 	static const std::string m_button_file[(int)COLOR::MAX];//ボタン画像名
 	static const int m_button_x[(int)COLOR::MAX];			//ボタンのx座標
 	static const int m_button_y;						    //ボタンのy座標
-	static const vivid::Vector2 m_Blue_Pos;
+	static const vivid::Vector2 m_Cyan_Pos;
 	static const vivid::Vector2 m_Yellow_Pos;
-	static const vivid::Vector2 m_Red_Pos;
+	static const vivid::Vector2 m_Magenta_Pos;
 	static const unsigned int m_selected_color;//一回選ばれたことのある色用
 	
 	//変数
 	vivid::Vector2 m_color_pos;
-	bool m_Blue;
+	bool m_Cyan;
 	bool m_Yellow;
-	bool m_Red;
+	bool m_Magenta;
 	vivid::Vector2 m_Button_Pos;//選択中のボタンの座標
 	vivid::Vector2 m_Finger_Pos;//選択印(指)の座標
 	vivid::Vector2 m_Player1_Stick;//スティックx左右 y上下

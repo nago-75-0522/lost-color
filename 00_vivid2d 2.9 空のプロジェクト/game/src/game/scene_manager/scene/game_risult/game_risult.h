@@ -17,4 +17,21 @@ private:
 	CGame_Result& operator=(const CGame_Result& rhp) = delete;
 
 	~CGame_Result(void) = default;
+
+	//定数
+	static	const int m_max_score;//最大スコア
+	static	const int m_max_score_digiit;//表示桁数
+	static	const int m_digit_width;
+	static	const int m_digit_height;
+
+	//変数
+	bool m_Player1_Ready;
+	bool m_Player2_Ready;
+	int m_Player1_Score;
+	int m_Player2_Score;
+	vivid::Vector2 m_Player1_Score_Pos;
+	vivid::Vector2 m_Player2_Score_Pos;
+
+	bool m_;
+
 };

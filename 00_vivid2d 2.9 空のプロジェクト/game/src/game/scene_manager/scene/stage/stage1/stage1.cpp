@@ -65,7 +65,7 @@ void CStage1::Update(void)
 
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 		//4回目からリザルト
-		if (CSceneManager::GetInstance().FinishStage() >= 3)
+		if (CSceneManager::GetInstance().FinishStage() >= 4)
 		{
 			CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
 		}
