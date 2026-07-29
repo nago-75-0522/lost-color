@@ -39,6 +39,7 @@ void CPlayer1_Character::Initialize()
 	m_Player1_Chara_Scale = { 1.0, 1.0 };
 	m_Player1_Chara_Angle= 0;
 	m_Player1_Marker_Pos = {m_Player1_Chara_Pos.x,m_Player1_Chara_Pos.y-m_player1_marker_size.y};
+	m_Player1_Fall_Sound = true;
 }
 
 void CPlayer1_Character::Update()
@@ -64,6 +65,11 @@ void CPlayer1_Character::Update()
 
 	if (CFall::GetInstance().CheckEmpty(x,y) && m_Player1_Chara_Scale.x >= 0)
 	{
+		if (m_Player1_Fall_Sound)
+		{
+			m_Player1_Fall_Sound = false;
+			vivid::PlaySound("data\\sound\\fall.wav", false);
+		}
 		m_Player1_Chara_Scale.x=m_Player1_Chara_Scale.y= cos((++m_Player1_Chara_Angle %= 720) * 3.14f / 360.0f);
 	}
 }

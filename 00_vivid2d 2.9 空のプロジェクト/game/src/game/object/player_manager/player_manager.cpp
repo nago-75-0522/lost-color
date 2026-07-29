@@ -7,6 +7,7 @@ CPlayer_Manager::CPlayer_Manager()
 }
 void CPlayer_Manager::Initialize()
 {
+	vivid::LoadSound("data\\sound\\fall.wav");
 	CPlayer1_Character::GetInstance().Initialize();
 	CPlayer2_Character::GetInstance().Initialize();
 	

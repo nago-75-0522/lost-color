@@ -33,6 +33,7 @@ CGamemain::CGamemain()
 //初期化
 void CGamemain::Initialize(void)
 {
+
 	namespace controller = vivid::controller;
 
 	m_Now_Select = STAGE_SELECT::STAGE1;//stage1選択スタート

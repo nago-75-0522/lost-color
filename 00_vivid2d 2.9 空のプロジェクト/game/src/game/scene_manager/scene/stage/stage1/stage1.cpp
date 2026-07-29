@@ -22,6 +22,8 @@ void CStage1::Initialize(void)
 	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::FALL);
 	CMinigame_Manager::GetInstance().Initialize();
 	CPlayer_Manager::GetInstance().Initialize();
+	vivid::LoadSound("data\\sound\\FALL_BGM.wav");
+	vivid::PlaySound("data\\sound\\FALL_BGM.wav", true);
 }
 
 void CStage1::Update(void)
@@ -44,6 +46,7 @@ void CStage1::Update(void)
 	{
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 		CSceneManager::GetInstance().AddStageCount();
+		vivid::StopSound("data\\sound\\FALL_BGM.wav");
 		CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
 		
 	}
