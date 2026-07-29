@@ -22,9 +22,9 @@ public:
 
 	enum class COLOR
 	{
-		BLUE,
+		CYAN,
 		YELLOW,
-		RED,
+		MAGENTA,
 		MAX,
 	};
 
@@ -64,4 +64,8 @@ private:
 	vivid::Vector2 m_Player1_Stick;//スティックx左右 y上下
 	vivid::Vector2 m_Player2_Stick;//スティックx左右 y上下
 	COLOR m_Now_Color;//選択中のボタン
+	
+	bool m_Stage1_Chosen;
+	bool m_Stage2_Chosen;
+	bool m_Stage3_Chosen;
 };

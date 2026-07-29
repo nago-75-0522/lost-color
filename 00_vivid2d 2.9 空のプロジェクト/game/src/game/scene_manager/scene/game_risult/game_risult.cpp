@@ -38,7 +38,10 @@ void CGame_Result::Update()
 	if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B) || keyboard::Trigger(keyboard::KEY_ID::SPACE))
 		m_Player2_Ready = true;
 	if (m_Player1_Ready && m_Player2_Ready)
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+	{
+		CColor_Select::GetInstance().IniColor();
+		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+	}
 
 	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 	{

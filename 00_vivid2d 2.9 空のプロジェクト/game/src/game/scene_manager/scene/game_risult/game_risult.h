@@ -9,6 +9,7 @@ public:
 	void Finalize();
 	//インスタンス呼び出す
 	static CGame_Result& GetInstance();
+	
 private:
 	CGame_Result(void);
 	//コピーコンストラクタ
