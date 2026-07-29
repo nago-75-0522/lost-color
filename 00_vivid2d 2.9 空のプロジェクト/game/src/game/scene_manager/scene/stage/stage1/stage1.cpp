@@ -39,40 +39,13 @@ void CStage1::Update(void)
 	}
 #endif
 
-	//キーボード用
-	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
-	{
-
-#if 1
-		//CSceneManager::GetInstance().AddStageCount();//加算
-		//4回目からリザルト
-		if (CSceneManager::GetInstance().FinishStage() >= 3)
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
-		}
-		else//達成してなければステージ選択
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
-		}
-
-#endif 
-
-	}
 	//コントローラー用
-	if (CPlayer2_Character::GetInstance().GetScale().x <= 0 || CPlayer1_Character::GetInstance().GetScale().x <= 0)
+	if (CPlayer1_Character::GetInstance().GetScale().x <= 0||CPlayer2_Character::GetInstance().GetScale().x <= 0)
 	{
-		CSceneManager::GetInstance().AddStageCount();
-
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
-		//4回目からリザルト
-		if (CSceneManager::GetInstance().FinishStage() >= 4)
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
-		}
-		else//達成してなければステージ選択
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
-		}
+		CSceneManager::GetInstance().AddStageCount();
+		CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
+		
 	}
 }
 

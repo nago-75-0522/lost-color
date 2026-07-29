@@ -29,6 +29,7 @@ void CResult::Update(void)
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
 		CColor_Select::GetInstance().IniColor();//色初期化
+		CColor_Select::GetInstance().IniOld();
 		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
 	}
 	//コントローラー用

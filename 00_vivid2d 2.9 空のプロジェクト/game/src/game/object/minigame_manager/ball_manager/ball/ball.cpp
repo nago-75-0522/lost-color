@@ -63,9 +63,9 @@ void CBall::Update(void)
 //描画
 void CBall::Draw(void)
 {
-	bool BlueEnable = CColor_Select::GetInstance().GetCyan();
+	bool CyanEnable = CColor_Select::GetInstance().GetCyan();
 	bool YellowEnable = CColor_Select::GetInstance().GetYellow();
-	bool RedEnable = CColor_Select::GetInstance().GetMagenta();
+	bool MagentaEnable = CColor_Select::GetInstance().GetMagenta();
 
 	vivid::Rect rect = { 0,0,m_ball_width,m_ball_height };
 
@@ -81,7 +81,7 @@ void CBall::Draw(void)
 		{
 		case BALL_COLOR::MAGENTA:
 
-			if (!RedEnable)
+			if (!MagentaEnable)
 			{
 				vivid::DrawTexture("data\\ball.png", ball.m_pos, 0xFF808080);
 			}
@@ -93,7 +93,7 @@ void CBall::Draw(void)
 
 		case BALL_COLOR::CYAN:
 
-			if (!BlueEnable)
+			if (!CyanEnable)
 			{
 				vivid::DrawTexture("data\\ball.png", ball.m_pos, 0xFF808080);
 			}

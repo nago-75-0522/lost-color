@@ -28,13 +28,18 @@ void CStage2::Update(void)
 
 	//CSceneManager::GetInstance().AddStageCount();//加算
 
+<<<<<<< Updated upstream
+=======
+#if 0
+>>>>>>> Stashed changes
 	// デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
 	{
 		CSceneManager::GetInstance().AddStageCount();
 
-		vivid::DrawText(100, "ClearCount +1", { 0,50 });
+		
 	}
+<<<<<<< Updated upstream
 
 	//キーボード用
 	if (m_ball_timer.IsTimeUp())
@@ -53,10 +58,16 @@ void CStage2::Update(void)
 		}
 
 	}
+=======
+#endif
+	
+>>>>>>> Stashed changes
 	//コントローラー用
 	if (m_ball_timer.IsTimeUp())
 	{
+		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 		CSceneManager::GetInstance().AddStageCount();
+<<<<<<< Updated upstream
 
 		//4回目からリザルト
 		if (CSceneManager::GetInstance().FinishStage() >= 3)
@@ -67,6 +78,10 @@ void CStage2::Update(void)
 		{
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 		}
+=======
+	    CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
+		
+>>>>>>> Stashed changes
 	}
 }
 

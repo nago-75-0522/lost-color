@@ -33,9 +33,11 @@ void CGame_Result::Update()
 	{
 		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 	}
-	if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||keyboard::Trigger(keyboard::KEY_ID::SPACE))
+	if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||
+		keyboard::Trigger(keyboard::KEY_ID::SPACE))
 		m_Player1_Ready = true;
-	if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B) || keyboard::Trigger(keyboard::KEY_ID::SPACE))
+	if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B) || 
+		keyboard::Trigger(keyboard::KEY_ID::SPACE))
 		m_Player2_Ready = true;
 	if (m_Player1_Ready && m_Player2_Ready)
 	{
@@ -43,7 +45,7 @@ void CGame_Result::Update()
 		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 	}
 
-	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true&&!CPlayer_Manager::GetInstance().Draw_Battle())
 	{
 		if (!CColor_Select::GetInstance().GetCyan() &&
 			!CColor_Select::GetInstance().GetYellow() &&
@@ -81,7 +83,7 @@ void CGame_Result::Update()
 
 		}
 	}
-	if (CPlayer_Manager::GetInstance().Player2_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player2_Win() == true&&!CPlayer_Manager::GetInstance().Draw_Battle())
 	{
 		if (!CColor_Select::GetInstance().GetCyan() &&
 			!CColor_Select::GetInstance().GetYellow() &&
@@ -119,7 +121,13 @@ void CGame_Result::Update()
 
 		}
 	}
-	
+	if(keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)||
+		controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B))
+	//4回目からリザルト
+	if (CSceneManager::GetInstance().FinishStage() >= 3)
+	{
+		CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
+	}
 }
 
 void CGame_Result::Draw()
