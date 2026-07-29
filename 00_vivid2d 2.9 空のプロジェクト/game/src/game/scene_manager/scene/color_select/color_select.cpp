@@ -39,12 +39,7 @@ CColor_Select::CColor_Select()
 
 void CColor_Select::Initialize()
 {
-	if (!m_Cyan && !m_Yellow)
-		m_Now_Color = COLOR::MAGENTA;
-	else if (!m_Cyan)
-		m_Now_Color = COLOR::YELLOW;
-	else if (m_Cyan)
-		m_Now_Color = COLOR::CYAN;//stage1選択スタート
+	
 	
 	m_Button_Pos = vivid::Vector2::ZERO;//位置
 
@@ -63,14 +58,50 @@ void CColor_Select::Initialize()
 		m_Yellow = CFall::GetInstance().GetOldYellow();
 		m_Magenta = CFall::GetInstance().GetOldMagenta();
 	}
+	if (!m_Cyan && !m_Yellow)
+		m_Now_Color = COLOR::MAGENTA;
+	else if (!m_Cyan)
+		m_Now_Color = COLOR::YELLOW;
+	else if (m_Cyan)
+		m_Now_Color = COLOR::CYAN;//stage1選択スタート
 }
 
 void CColor_Select::Update()
 {
+	namespace controller = vivid::controller;
+	namespace keyboard = vivid::keyboard;
 	//左スティック入力取得
 	m_Player1_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER2);
 	ColorSel();
+
+	if (!m_Cyan && !m_Yellow && !m_Magenta)
+	{
+		if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+		{
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
+				&&CPlayer_Manager::GetInstance().Player1_Win())
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
+				&& CPlayer_Manager::GetInstance().Player1_Win())
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+		}
+		else if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+		{
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
+				&& CPlayer_Manager::GetInstance().Player1_Win())
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
+				&& CPlayer_Manager::GetInstance().Player1_Win())
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+		}
+	}
 }
 
 //描画
@@ -367,6 +398,13 @@ void CColor_Select::ColorPic(void)
 				break;
 			}
 		}
+}
+
+void CColor_Select::IniOld()
+{
+	m_Stage1_Chosen=false;
+	m_Stage2_Chosen=false;
+	m_Stage3_Chosen=false;
 }
 
 //色の初期化
