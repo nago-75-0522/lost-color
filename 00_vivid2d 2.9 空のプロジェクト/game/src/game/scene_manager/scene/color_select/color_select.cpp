@@ -2,6 +2,7 @@
 #include"../gamemain/gamemain.h"
 #include"../../scene_manager.h"
 #include"../../../object/player_manager/player_manager.h"
+#include"../../../object/minigame_manager/minigame_manager.h"
 //定数
 const vivid::Vector2 CColor_Select::m_panel_pos(0.0f, 0.0f);			//
 const int CColor_Select::m_button_x[] = { 100,490,880 };			//ステージの配置位置
@@ -20,9 +21,9 @@ bool CColor_Select::IsEnableColor(COLOR color)
 
 	switch (color)
 	{
-	case COLOR::BLUE:   return m_Cyan;
+	case COLOR::CYAN:   return m_Cyan;
 	case COLOR::YELLOW: return m_Yellow;
-	case COLOR::RED:    return m_Magenta;
+	case COLOR::MAGENTA:    return m_Magenta;
 	default:            return false;
 	}
 
@@ -30,17 +31,20 @@ bool CColor_Select::IsEnableColor(COLOR color)
 
 CColor_Select::CColor_Select()
 	:m_color_pos{ 0.0f,100.0f }
+	,m_Stage1_Chosen(false)
+	,m_Stage2_Chosen(false)
+	,m_Stage3_Chosen(false)
 {
 }
 
 void CColor_Select::Initialize()
 {
 	if (!m_Cyan && !m_Yellow)
-		m_Now_Color = COLOR::RED;
+		m_Now_Color = COLOR::MAGENTA;
 	else if (!m_Cyan)
 		m_Now_Color = COLOR::YELLOW;
 	else if (m_Cyan)
-		m_Now_Color = COLOR::BLUE;//stage1選択スタート
+		m_Now_Color = COLOR::CYAN;//stage1選択スタート
 	
 	m_Button_Pos = vivid::Vector2::ZERO;//位置
 
@@ -52,6 +56,13 @@ void CColor_Select::Initialize()
 	//左スティック入力取得
 	m_Player1_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER2);
+
+	if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1 &&m_Stage1_Chosen)
+	{
+		m_Cyan = CFall::GetInstance().GetOldCyan();
+		m_Yellow = CFall::GetInstance().GetOldYellow();
+		m_Magenta = CFall::GetInstance().GetOldMagenta();
+	}
 }
 
 void CColor_Select::Update()
@@ -238,14 +249,20 @@ void CColor_Select::ColorPic(void)
 	{
 		switch (m_Now_Color)
 		{
-		case COLOR::BLUE:
+		case COLOR::CYAN:
 			if (!m_Cyan)return;
 			m_Cyan = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);	
+			{
+				m_Stage1_Chosen =true;
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+			{
+				m_Stage2_Chosen =true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+			}
 
 			break;
 
@@ -253,22 +270,32 @@ void CColor_Select::ColorPic(void)
 			if (!m_Yellow)return;
 			m_Yellow = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);		
+			{
+				m_Stage1_Chosen = true;
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+			{
+				m_Stage2_Chosen = true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+			}
 			break;
 
-		case COLOR::RED:
+		case COLOR::MAGENTA:
 			if (!m_Magenta)return;
 			m_Magenta = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);	
+			{
+				m_Stage1_Chosen = true;
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+			{
+				m_Stage2_Chosen = true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+			}
 			break;
 
 
@@ -285,37 +312,52 @@ void CColor_Select::ColorPic(void)
 		{
 			switch (m_Now_Color)
 			{
-			case COLOR::BLUE:
+			case COLOR::CYAN:
 				if (!m_Cyan)return;
 				m_Cyan = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+				}
 				break;
 
 			case COLOR::YELLOW:
 				if (!m_Yellow)return;
 				m_Yellow = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+				}
 				break;
 
-			case COLOR::RED:
+			case COLOR::MAGENTA:
 				if (!m_Magenta)return;
 				m_Magenta = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+				}
 				break;
 
 

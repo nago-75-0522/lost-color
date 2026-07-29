@@ -1,6 +1,5 @@
 ﻿#include "minigame_manager.h"
-#include"fall/fall.h"
-#include"ball_manager/ball_manager.h"
+
 
 CMinigame_Manager::CMinigame_Manager()
 {

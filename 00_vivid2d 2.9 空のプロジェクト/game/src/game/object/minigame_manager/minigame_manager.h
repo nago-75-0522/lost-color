@@ -1,5 +1,6 @@
 ﻿#pragma once
-
+#include"fall/fall.h"
+#include"ball_manager/ball_manager.h"
 enum class MINIGAME_ID
 {
 	NONE,
