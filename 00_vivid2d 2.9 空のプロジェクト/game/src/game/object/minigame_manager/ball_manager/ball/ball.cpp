@@ -42,6 +42,9 @@ void CBall::Initialize(void)
 	}
 	m_BallSpawn = m_ball_spawn_interval;//生成タイマー初期化
 
+	//SEの読み込み
+	vivid::LoadSound("data\\sound\\ball.wav");//ballキャッチ時
+
 	m_Cyan = CColor_Select::GetInstance().GetCyan();
 	m_Yellow = CColor_Select::GetInstance().GetYellow();
 	m_Magenta = CColor_Select::GetInstance().GetMagenta();
@@ -130,20 +133,19 @@ void CBall::Draw(void)
 			break;
 		}
 	}
-	vivid::DrawText(
-		30,
-		("Save C=" + std::to_string(m_Old_Cyan) +
-			" Y=" + std::to_string(m_Old_Yellow) +
-			" M=" + std::to_string(m_Old_Magenta)).c_str(),
-		{ 100,100 }
-	);
-	vivid::DrawText(
-		30,
-		("Now C=" + std::to_string(m_Cyan) +
-			" Y=" + std::to_string(m_Yellow) +
-			" M=" + std::to_string(m_Magenta)).c_str(),
-		{ 100, 150 }
-	);
+#ifdef _DEBUG/*デバックビルドのときのみ有効*/
+	vivid::DrawText(30, ("Save C=" + std::to_string(m_Old_Cyan)
+		+ " Y=" + std::to_string(m_Old_Yellow) + " M=" + std::to_string(m_Old_Magenta)).c_str(), { 100,100 });
+	vivid::DrawText(30, ("Now C=" + std::to_string(m_Cyan)
+		+ " Y=" + std::to_string(m_Yellow) + " M=" + std::to_string(m_Magenta)).c_str(), { 100, 150 });
+	vivid::DrawText(30, ("m =" + std::to_string(CBallScore::GetInstance().GetPlayer1Magenta())
+		+ "c=" + std::to_string(CBallScore::GetInstance().GetPlayer1Cyan())
+		+ "y=" + std::to_string(CBallScore::GetInstance().GetPlayer1Yellow())).c_str(), { 100, 200 });
+	vivid::DrawText(30, ("m =" + std::to_string(CBallScore::GetInstance().GetPlayer2Magenta())
+		+ "c=" + std::to_string(CBallScore::GetInstance().GetPlayer2Cyan())
+		+ "y=" + std::to_string(CBallScore::GetInstance().GetPlayer2Yellow())).c_str(), { 100, 250 });
+
+#endif
 }
 //解放
 void CBall::Finalize(void)
@@ -195,18 +197,21 @@ bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 			// 両方の籠に入った場合はPlayer1優先
 			if (m_Player1BasketCheck && m_Player2BasketCheck)
 			{
+				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 1);//得点
 				ball.m_activeFlag = false;//消滅
 			}
 			// Player1のみ
 			else if (m_Player1BasketCheck)
 			{
+				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 1);//得点
 				ball.m_activeFlag = false;//消滅
 			}
 			// Player2のみ
 			else if (m_Player2BasketCheck)
 			{
+				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 2);
 				ball.m_activeFlag = false;
 			}
@@ -217,18 +222,21 @@ bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 			// 両方の籠に入った場合はPlayer2優先
 			if (m_Player1BasketCheck && m_Player2BasketCheck)
 			{
+				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 2);
 				ball.m_activeFlag = false;
 			}
 			// Player1のみ
 			else if (m_Player1BasketCheck)
 			{
+				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 1);
 				ball.m_activeFlag = false;
 			}
 			// Player2のみ
 			else if (m_Player2BasketCheck)
 			{
+				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 2);
 				ball.m_activeFlag = false;
 			}
@@ -246,12 +254,14 @@ bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 			//Player1のみ
 			else if (m_Player1BasketCheck)
 			{
+				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 1);
 				ball.m_activeFlag = false;
 			}
 			// Player2のみ
 			else if (m_Player2BasketCheck)
 			{
+				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 2);
 				ball.m_activeFlag = false;
 			}

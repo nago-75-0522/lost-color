@@ -4,6 +4,7 @@ const int CBallPlayer2::m_width = 280;
 const int CBallPlayer2::m_height = 140;
 const float CBallPlayer2::m_radius = 70.0f;
 const float CBallPlayer2::m_speed = 5.0;
+const vivid::Vector2 CBallPlayer2::m_player2_marker_size = { 64.0f,40.0f };
 
 //デバック用
 std::string Player2ID[] = { "STAND","RUN" };
@@ -22,6 +23,7 @@ CBallPlayer2::CBallPlayer2(void)
 	, m_AnimeFrame(0)
 	, m_AnimeTimer(0)
 	, m_MoveInput(false)
+	, m_Player2MarkerPos(0.0f,0.0f)
 {
 }
 
@@ -129,6 +131,10 @@ void CBallPlayer2::Update(void)
 	// 位置更新
 	m_Pos += m_Velocity;
 
+	//マーカーの位置
+	m_Player2MarkerPos.x = m_Pos.x + m_width/2 - m_player2_marker_size.x/2;
+	m_Player2MarkerPos.y = m_stageset.GroundLine();
+
 	//カゴ
 	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
 
@@ -201,7 +207,7 @@ void CBallPlayer2::Draw(void)
 	rect.top = (int)m_AnimeID * m_height;
 	rect.bottom = rect.top + m_height;
 
-	//vivid::DrawTexture("data\\kagami_shadow.png", m_ShadowPos);
+	vivid::DrawTexture("data\\logo\\small_blue_2p.png",m_Player2MarkerPos);
 	vivid::DrawTexture("data\\character1.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
 
 #ifdef _DEBUG/*デバックビルドのときのみ有効*/

@@ -41,8 +41,8 @@ private:
 	CBallScore(void);
 	~CBallScore(void) = default;
 
-	CBallScore(const CBallScore&) = default;//コピーコンストラクタ禁止
-	CBallScore& operator = (const CBallScore&) = default;//代入演算子禁止
+	CBallScore(const CBallScore&) = delete;//コピーコンストラクタ禁止
+	CBallScore& operator = (const CBallScore&) = delete;//代入演算子禁止
 
 	//定数
 	static const int m_max_score;		//最大スコア
