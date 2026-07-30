@@ -23,7 +23,6 @@ CBallPlayer2::CBallPlayer2(void)
 	, m_AnimeFrame(0)
 	, m_AnimeTimer(0)
 	, m_MoveInput(false)
-	, m_Player2MarkerPos(0.0f,0.0f)
 {
 }
 
@@ -48,6 +47,8 @@ void CBallPlayer2::Initialize(void)
 	m_Pos.x = vivid::GetWindowWidth() / 2.0f;
 	m_Pos.y = m_stageset.GroundLine() - m_height;
 	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
+	m_Player2MarkerPos.x = m_Pos.x + m_width / 2 - m_player2_marker_size.x / 2;
+	m_Player2MarkerPos.y = m_stageset.GroundLine();
 
 	// 速さ
 	m_Velocity.x = 0.0f;
