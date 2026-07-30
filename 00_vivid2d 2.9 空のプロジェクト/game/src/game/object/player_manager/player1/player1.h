@@ -58,4 +58,5 @@ private:
 	vivid::Vector2 m_Player1_Chara_Scale;
 	vivid::Rect m_Player1_Chara_Rect;
 	vivid::Vector2 m_Player1_Marker_Pos;
+	bool m_Player1_Fall_Sound;
 };

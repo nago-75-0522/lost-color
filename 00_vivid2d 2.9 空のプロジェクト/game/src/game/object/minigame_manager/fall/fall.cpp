@@ -17,6 +17,9 @@ const int CFall::m_map_height = 12;//縦のマスの数
 CFall::CFall()
 	:m_Map(0)
 	,m_Now_Map(0)
+	,m_Old_Cyan(true)
+	,m_Old_Yellow(true)
+	,m_Old_Magenta(true)
 {
 }
 
@@ -29,9 +32,18 @@ void CFall::Initialize()
 	m_Old_Y[1] = { -1 };//前回のyを保存
 	m_Map = std::vector<std::vector<unsigned char>>(m_map_height, std::vector<unsigned char>(m_map_width));
 	m_Now_Map = std::vector<std::vector<unsigned char>>(m_map_height, std::vector<unsigned char>(m_map_width));
-	m_Map_Chip_ID = MAP_CHIP_ID::BLUE;
+	m_Map_Chip_ID = MAP_CHIP_ID::CYAN;
 	m_Floor_Timer[0] = m_floor_time;
 	m_Floor_Timer[1] = m_floor_time;
+	m_Cyan = CColor_Select::GetInstance().GetCyan();
+	m_Yellow = CColor_Select::GetInstance().GetYellow();
+	m_Magenta = CColor_Select::GetInstance().GetMagenta();
+	if (!m_Old_Cyan)
+		m_Cyan = m_Old_Cyan;
+	if (!m_Old_Yellow)
+		m_Yellow = m_Old_Yellow;
+	if (!m_Old_Magenta)
+		m_Magenta = m_Old_Magenta;
 	/*** ファイル操作 ***/
 	FILE* fp = nullptr;
 
@@ -73,13 +85,13 @@ void CFall::Initialize()
 	//一時的なデータを削除
 	delete[] buf;
 
-	if (CColor_Select::GetInstance().GetBlue() == false)
+	if (CColor_Select::GetInstance().GetCyan() == false)
 	{
 		for (int i = 1; i < m_map_chip_count_height - 1; ++i)
 		{
 			for (int k = 1; k < m_map_chip_count_width - 1; ++k)
 			{
-				m_Now_Map[i][k] = (unsigned char)(MAP_CHIP_ID::BLUE);
+				m_Now_Map[i][k] = (unsigned char)(MAP_CHIP_ID::CYAN);
 				m_Map[i][k] = (unsigned char)MAP_CHIP_ID::GLAY;
 			}
 		}
@@ -89,11 +101,14 @@ void CFall::Initialize()
 //更新
 void CFall::Update()
 {
-
-	bool Get_Floor_Color[3] = { CColor_Select::GetInstance().GetBlue(),
-								CColor_Select::GetInstance().GetYellow(),
-								CColor_Select::GetInstance().GetRed() };
-
+	if (m_Old_Cyan)
+		m_Old_Cyan = CColor_Select::GetInstance().GetCyan();
+	if (m_Old_Yellow)
+		m_Old_Yellow = CColor_Select::GetInstance().GetYellow();
+	if (m_Old_Magenta)
+		m_Old_Magenta = CColor_Select::GetInstance().GetMagenta();
+	
+	
 
 	//配列で1P,2Pの位置を記憶
 	int x[2] =
@@ -119,9 +134,9 @@ void CFall::Update()
 
 			switch ((MAP_CHIP_ID)m_Map[y[i]][x[i]])
 			{
-			case MAP_CHIP_ID::BLUE:
+			case MAP_CHIP_ID::CYAN:
 				//黄色が消されているなら
-				if (Get_Floor_Color[1] == false)
+				if (m_Yellow == false)
 				{
 					m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;//次の色が黄色であることを保存
 					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;//見た目は灰色
@@ -133,42 +148,42 @@ void CFall::Update()
 
 			case MAP_CHIP_ID::YELLOW:
 				//赤が消されてるなら
-				if (Get_Floor_Color[2] == false)
+				if (m_Magenta == false)
 				{
-					m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::RED;//次の色が赤であることを保存
+					m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;//次の色が赤であることを保存
 					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;//見た目は灰色
 					break;
 				}
 				//何もなければ赤
-				m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::RED;
+				m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;
 				break;
 
-			case MAP_CHIP_ID::RED:
+			case MAP_CHIP_ID::MAGENTA:
 
 				m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
 				break;
 
 			case MAP_CHIP_ID::GLAY:
 				//青と黄色がない場合　青から黄色
-				if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::BLUE) && Get_Floor_Color[1] == false)
+				if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::CYAN) && m_Yellow == false)
 				{
 					m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::YELLOW);
 					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;
 				}
 				//青がない場合に黄色に変える
-				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::BLUE))
+				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::CYAN))
 					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;
 				//黄色と赤がない場合　黄色から赤
-				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW) && Get_Floor_Color[2] == false)
+				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW) && m_Magenta == false)
 				{
-					m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::RED);
+					m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::MAGENTA);
 					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;
 				}
 				//黄色がない場合に赤に変える
 				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW))
-					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::RED;
+					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;
 				//赤が無い場合　床を消す
-				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::RED))
+				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::MAGENTA))
 					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
 
 			}
@@ -263,6 +278,13 @@ CFall& CFall::GetInstance()
 {
 	static CFall instance;
 	return instance;
+}
+
+void CFall::IniOld()
+{
+	m_Old_Cyan = true;
+	m_Old_Yellow = true;
+	m_Old_Magenta = true;
 }
 
 //IDを取得

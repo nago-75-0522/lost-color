@@ -1,6 +1,6 @@
 ﻿#include"ball_timer.h"
 
-const int CBallTimer::play_time = 15;
+const int CBallTimer::play_time = 30;
 
 CBallTimer::CBallTimer(void)
 	: m_TimerPos(vivid::Vector2(0.0f, 0.0f))

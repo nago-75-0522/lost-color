@@ -1,7 +1,8 @@
-#include"vivid.h"
+﻿#include"vivid.h"
 #include "stage2.h"
 #include"..\..\..\scene_manager.h"
 #include"../../../../object/minigame_manager/minigame_manager.h"
+#include"../../../../object/minigame_manager/ball_manager/ball_score/ball_score.h"
 
 
 CStage2& CStage2::GetInstance()
@@ -11,70 +12,93 @@ CStage2& CStage2::GetInstance()
 
 }
 CStage2::CStage2()
+	: m_State(STAGE2_STATE::MAIN)
+	, m_ResultTimer(0)
 {
-
 }
 void CStage2::Initialize(void)
 {
+	m_State = STAGE2_STATE::MAIN;
+	m_ResultTimer = 0;
+
 	m_ball_timer.Initialize();
 	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::BALL);
 	CMinigame_Manager::GetInstance().Initialize();
+	vivid::LoadSound("data\\sound\\BALL_BGM.wav");
+	vivid::PlaySound("data\\sound\\BALL_BGM.wav", true);
 }
 
 void CStage2::Update(void)
 {
-	m_ball_timer.Update();
-	CMinigame_Manager::GetInstance().Update();
+	switch (m_State)
+	{
+	case STAGE2_STATE::MAIN:
+		m_ResultTimer = 0;
+		m_ball_timer.Update();
+		CMinigame_Manager::GetInstance().Update();
 
-	//CSceneManager::GetInstance().AddStageCount();//加算
+		//コントローラー用
+		if (m_ball_timer.IsTimeUp())
+		{
+			m_State = STAGE2_STATE::RESULT;
+			vivid::StopSound("data\\sound\\BALL_BGM.wav");
+		}
+		break;
 
+	case STAGE2_STATE::RESULT:
+		++m_ResultTimer;
+		if (m_ResultTimer >= 120
+			|| vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
+			|| vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B)
+			|| vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+		{
+			vivid::DrawText(100, "ClearCount +1", { 0,50 });
+			CSceneManager::GetInstance().AddStageCount();
+			CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
+		}
+		break;
+	}
+#if 0
 	// デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
 	{
 		CSceneManager::GetInstance().AddStageCount();
-
-		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 	}
-
-	//キーボード用
-	if (m_ball_timer.IsTimeUp())
-	{
-		CSceneManager::GetInstance().AddStageCount();
-
-		//4回目からリザルト
-		if (CSceneManager::GetInstance().FinishStage() >= 3)
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
-		}
-		else//達成してなければステージ選択
-		{
-
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
-		}
-
-	}
-	//コントローラー用
-	if (m_ball_timer.IsTimeUp())
-	{
-		CSceneManager::GetInstance().AddStageCount();
-
-		//4回目からリザルト
-		if (CSceneManager::GetInstance().FinishStage() >= 3)
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
-		}
-		else//達成してなければステージ選択
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
-		}
-	}
+#endif
 }
 
 void CStage2::Draw(void)
 {
-	m_ball_timer.Draw();
-	CMinigame_Manager::GetInstance().Draw();
+	if (m_State == STAGE2_STATE::MAIN)
+	{
+		m_ball_timer.Draw();
+		CMinigame_Manager::GetInstance().Draw();
+	}
+	else
+	{
+		vivid::DrawText(60, "Player1", { 300.0f,50.0f });
+		vivid::DrawText(60, "Player2", { 900.0f,50.0f });
 
+		// 総得点
+		vivid::DrawText(50, "総得点", { 50.0f,200.0f });
+		CBallScore::GetInstance().Draw({ 200.0f,200.0f },CBallScore::GetInstance().GetPlayer1Score());
+		CBallScore::GetInstance().Draw({ 800.0f, 200.0f },CBallScore::GetInstance().GetPlayer2Score());
+
+		// マゼンタ
+		vivid::DrawText(50, "magenta", { 50.0f, 350.0f });
+		CBallScore::GetInstance().Draw({ 250.0f,350.0f },CBallScore::GetInstance().GetPlayer1Magenta());
+		CBallScore::GetInstance().Draw({ 850.0f,350.0f },CBallScore::GetInstance().GetPlayer2Magenta());
+
+		// シアン
+		vivid::DrawText(50, "cyan", { 50.0f, 500.0f });
+		CBallScore::GetInstance().Draw({ 250.0f,500.0f },CBallScore::GetInstance().GetPlayer1Cyan());
+		CBallScore::GetInstance().Draw({ 850.0f,500.0f },CBallScore::GetInstance().GetPlayer2Cyan());
+
+		// イエロー
+		vivid::DrawText(50, "yellow", { 50.0f, 650.0f });
+		CBallScore::GetInstance().Draw({ 250.0f,650.0f },CBallScore::GetInstance().GetPlayer1Yellow());
+		CBallScore::GetInstance().Draw({ 850.0f,650.0f },CBallScore::GetInstance().GetPlayer2Yellow());
+	}
 	vivid::DrawText(48, "stage2", { 0.0f,0.0f });
 }
 

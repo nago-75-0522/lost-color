@@ -13,6 +13,11 @@ public:
 	bool CheckEmpty(int x, int y);
 	bool CheckWall(int x, int y);
 	static CFall& GetInstance();
+	bool GetOldCyan() { return m_Old_Cyan; }
+	bool GetOldYellow() { return m_Old_Yellow; }
+	bool GetOldMagenta() { return m_Old_Magenta; }
+	void IniOld();
+
 
 	MAP_CHIP_ID GetMapChipID();
 
@@ -47,6 +52,12 @@ private:
 	int m_Old_X[2];
 	int m_Old_Y[2];
 	MAP_CHIP_ID m_Map_Chip_ID;
+	bool m_Cyan;
+	bool m_Yellow;
+	bool m_Magenta;
+	bool m_Old_Cyan;
+	bool m_Old_Yellow;
+	bool m_Old_Magenta;
 
 
 

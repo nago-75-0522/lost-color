@@ -53,6 +53,7 @@ private:
 	static const int   m_height;	// 高さ(フレーム)
 	static const float m_radius;	// 半径(当たり判定用)
 	static const float m_speed;		// 移動速度
+	static const vivid::Vector2 m_player2_marker_size;
 
 	static const int   m_anime_frame[];
 	static const int   m_anime_time[];
@@ -66,4 +67,5 @@ private:
 	int            m_AnimeFrame;	//フレーム
 	int            m_AnimeTimer;	//タイマー
 	bool		   m_MoveInput;		//ボタン判定
+	vivid::Vector2 m_Player2MarkerPos;//2P表示
 };

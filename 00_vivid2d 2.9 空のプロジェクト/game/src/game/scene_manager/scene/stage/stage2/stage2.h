@@ -26,6 +26,14 @@ private:
 
 	~CStage2(void) = default;
 
+	enum class STAGE2_STATE
+	{
+		MAIN,// ゲームメイン
+		RESULT,// リザルト
+	};
+	STAGE2_STATE m_State;
+
 	CBallTimer   m_ball_timer;
 
+	int m_ResultTimer;//画面切り替え時間
 };

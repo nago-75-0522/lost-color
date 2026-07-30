@@ -1,13 +1,29 @@
 ﻿#include "game_risult.h"
 #include"../../scene_manager.h"
 #include"../../../object/player_manager/player_manager.h"
-CGame_Result::CGame_Result()
-{
+#include"../color_select/color_select.h"
 
+	const int CGame_Result::m_max_score=999999999;//最大スコア
+	const int CGame_Result::m_max_score_digiit=9;//表示桁数
+	const int CGame_Result::m_digit_width=32;
+	const int CGame_Result::m_digit_height=48;
+
+CGame_Result::CGame_Result()
+	:m_Player1_Ready(false)
+	,m_Player2_Ready(false)
+	, m_ (false)
+	,m_Player1_Score(0)
+	,m_Player2_Score(0)
+{
 }
 
 void CGame_Result::Initialize()
 {
+	m_Player1_Ready = false;
+	m_Player2_Ready = false;
+	m_Player1_Score_Pos = { 200,300 };
+	m_Player2_Score_Pos = {680,300};
+	m_ = false;
 }
 
 void CGame_Result::Update()
@@ -18,26 +34,188 @@ void CGame_Result::Update()
 	{
 		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 	}
-	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
-		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B))
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
-	 if (CPlayer_Manager::GetInstance().Player2_Win() == true)
-		if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B))
-			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+	if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||
+		keyboard::Trigger(keyboard::KEY_ID::SPACE))
+		m_Player1_Ready = true;
+	if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B) || 
+		keyboard::Trigger(keyboard::KEY_ID::SPACE))
+		m_Player2_Ready = true;
+	if (m_Player1_Ready && m_Player2_Ready)
+	{
+		CColor_Select::GetInstance().IniColor();
+		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+	}
+
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true&&!CPlayer_Manager::GetInstance().Draw_Battle())
+	{
+		if (!CColor_Select::GetInstance().GetCyan() &&
+			!CColor_Select::GetInstance().GetYellow() &&
+			!CColor_Select::GetInstance().GetMagenta())
+		{
+			if (m_)return;
+			m_Player1_Score += 30;
+			m_ = true;
+		}
+		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetYellow())
+		{
+			if (m_)return;
+			m_Player1_Score += 20;
+			m_ = true;
+		}
+		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetMagenta())
+		{
+			if (m_)return;
+			m_Player1_Score += 20;
+			m_ = true;
+		}
+		else if (!CColor_Select::GetInstance().GetYellow() && !CColor_Select::GetInstance().GetMagenta())
+		{
+			if (m_)return;
+			m_Player1_Score += 20;
+			m_ = true;
+		}
+		else if (!CColor_Select::GetInstance().GetCyan()
+			|| !CColor_Select::GetInstance().GetYellow()
+			|| !CColor_Select::GetInstance().GetMagenta())
+		{
+			if (m_)return;
+			m_Player1_Score += 10;
+			m_ = true;
+
+		}
+	}
+	if (CPlayer_Manager::GetInstance().Player2_Win() == true&&!CPlayer_Manager::GetInstance().Draw_Battle())
+	{
+		if (!CColor_Select::GetInstance().GetCyan() &&
+			!CColor_Select::GetInstance().GetYellow() &&
+			!CColor_Select::GetInstance().GetMagenta())
+		{
+			if (m_)return;
+			m_Player2_Score += 30;
+			m_ = true;
+		}
+		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetYellow())
+		{
+			if (m_)return;
+			m_Player2_Score += 20;
+			m_ = true;
+		}
+		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetMagenta())
+		{
+			if (m_)return;
+			m_Player2_Score += 20;
+			m_ = true;
+		}
+		else if (!CColor_Select::GetInstance().GetYellow() && !CColor_Select::GetInstance().GetMagenta())
+		{
+			if (m_)return;
+			m_Player2_Score += 20;
+			m_ = true;
+		}
+		else if (!CColor_Select::GetInstance().GetCyan()
+			|| !CColor_Select::GetInstance().GetYellow()
+			|| !CColor_Select::GetInstance().GetMagenta())
+		{
+			if (m_)return;
+			m_Player2_Score += 10;
+			m_ = true;
+
+		}
+	}
+	if(keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)||
+		controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B))
+	//4回目からリザルト
+	if (CSceneManager::GetInstance().FinishStage() >= 3)
+	{
+		CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
+	}
 }
 
 void CGame_Result::Draw()
 {
-	if (CPlayer_Manager::GetInstance().Draw_Battle() == true)
+	vivid::DrawText(40, "1P", vivid::Vector2{ 300,250 });
+	vivid::DrawText(40, "2P", vivid::Vector2{ 780,250 });
+
+	if (CPlayer_Manager::GetInstance().Draw_Battle())
 		vivid::DrawText(40, "DRAW", vivid::Vector2{ vivid::WINDOW_WIDTH * 0.5,vivid::WINDOW_HEIGHT * 0.5 });
-	 else if (CPlayer_Manager::GetInstance().Player1_Win() == true)
-		vivid::DrawText(40,"1PWIN", vivid::Vector2{ 350,250 });
-	 else if(CPlayer_Manager::GetInstance().Player2_Win() == true)
-		vivid::DrawText(40,"2PWIN", vivid::Vector2{830,250 });
+	 else if (CPlayer_Manager::GetInstance().Player1_Win())
+		vivid::DrawText(40,"WIN", vivid::Vector2{ 350,250 });
+	 else if(CPlayer_Manager::GetInstance().Player2_Win())
+		vivid::DrawText(40,"WIN", vivid::Vector2{830,250 });
+
+	if (m_Player1_Ready)
+		vivid::DrawText(40, "1POK", vivid::Vector2{ 350,350 });
+	if (m_Player2_Ready)
+		vivid::DrawText(40, "2POK", vivid::Vector2{ 830,350 });
+	
+
+	// 1P
+	{
+		m_Player1_Copy_Score = m_Player1_Score;
+		int digit_count = 1;
+
+		do
+		{
+			int digit = m_Player1_Copy_Score % 10;
+
+			vivid::Rect rect;
+			rect.left = digit * m_digit_width;
+			rect.right = rect.left + m_digit_width;
+			rect.top = 0;
+			rect.bottom = m_digit_height;
+
+			vivid::Vector2 pos;
+			pos.x = m_Player1_Score_Pos.x +
+				m_digit_width * (m_max_score_digiit - digit_count);
+			pos.y = m_Player1_Score_Pos.y;
+
+			vivid::DrawTexture("data/number.png", pos, 0xffffffff, rect);
+
+			m_Player1_Copy_Score /= 10;
+			++digit_count;
+
+		} while (m_Player1_Copy_Score > 0 && digit_count <= m_max_score_digiit);
+	}
+
+	// 2P
+	{
+		 m_Player2_Copy_Score = m_Player2_Score;
+		int digit_count = 1;
+
+		do
+		{
+			int digit = m_Player2_Copy_Score % 10;
+
+			vivid::Rect rect;
+			rect.left = digit * m_digit_width;
+			rect.right = rect.left + m_digit_width;
+			rect.top = 0;
+			rect.bottom = m_digit_height;
+
+			vivid::Vector2 pos;
+			pos.x = m_Player2_Score_Pos.x +
+				m_digit_width * (m_max_score_digiit - digit_count);
+			pos.y = m_Player2_Score_Pos.y;
+
+			vivid::DrawTexture("data/number.png", pos, 0xffffffff, rect);
+
+			m_Player2_Copy_Score /= 10;
+			++digit_count;
+
+		} while (m_Player2_Copy_Score > 0 && digit_count <= m_max_score_digiit);
+	}
+	
+	
 }
 
 void CGame_Result::Finalize()
 {
+}
+
+void CGame_Result::IniScore()
+{
+	m_Player1_Score = 0;
+	m_Player2_Score = 0;
 }
 
 CGame_Result& CGame_Result::GetInstance()

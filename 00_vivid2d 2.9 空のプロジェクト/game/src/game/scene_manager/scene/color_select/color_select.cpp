@@ -2,27 +2,28 @@
 #include"../gamemain/gamemain.h"
 #include"../../scene_manager.h"
 #include"../../../object/player_manager/player_manager.h"
+#include"../../../object/minigame_manager/minigame_manager.h"
 //定数
 const vivid::Vector2 CColor_Select::m_panel_pos(0.0f, 0.0f);			//
 const int CColor_Select::m_button_x[] = { 100,490,880 };			//ステージの配置位置
 const int CColor_Select ::m_button_y(100);							//ステージの配置高さ
 const int CColor_Select::m_finger_width(100);						//選択やじるし
 const std::string CColor_Select::m_button_file[] =
-{ "data\\B.png","data\\Y.png","data\\R.png" };//色のパネル画像
+{ "data\\C.png","data\\Y.png","data\\M.png" };//色のパネル画像
 const unsigned int CColor_Select::m_select_color(0xff4c444d);
 const const unsigned int CColor_Select::m_selected_color(0xff000000);
-const vivid::Vector2 CColor_Select::m_Blue_Pos = { (float)m_button_x[0],(float)m_button_y };
+const vivid::Vector2 CColor_Select::m_Cyan_Pos = { (float)m_button_x[0],(float)m_button_y };
 const vivid::Vector2 CColor_Select::m_Yellow_Pos = { (float)m_button_x[1],(float)m_button_y };
-const vivid::Vector2 CColor_Select::m_Red_Pos = { (float)m_button_x[2],(float)m_button_y };
+const vivid::Vector2 CColor_Select::m_Magenta_Pos = { (float)m_button_x[2],(float)m_button_y };
 
 bool CColor_Select::IsEnableColor(COLOR color)
 {
 
 	switch (color)
 	{
-	case COLOR::BLUE:   return m_Blue;
+	case COLOR::CYAN:   return m_Cyan;
 	case COLOR::YELLOW: return m_Yellow;
-	case COLOR::RED:    return m_Red;
+	case COLOR::MAGENTA:    return m_Magenta;
 	default:            return false;
 	}
 
@@ -30,17 +31,15 @@ bool CColor_Select::IsEnableColor(COLOR color)
 
 CColor_Select::CColor_Select()
 	:m_color_pos{ 0.0f,100.0f }
+	,m_Stage1_Chosen(false)
+	,m_Stage2_Chosen(false)
+	,m_Stage3_Chosen(false)
 {
 }
 
 void CColor_Select::Initialize()
 {
-	if (!m_Blue && !m_Yellow)
-		m_Now_Color = COLOR::RED;
-	else if (!m_Blue)
-		m_Now_Color = COLOR::YELLOW;
-	else if (m_Blue)
-		m_Now_Color = COLOR::BLUE;//stage1選択スタート
+	
 	
 	m_Button_Pos = vivid::Vector2::ZERO;//位置
 
@@ -52,14 +51,64 @@ void CColor_Select::Initialize()
 	//左スティック入力取得
 	m_Player1_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER2);
+
+	if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1 &&m_Stage1_Chosen)
+	{
+		m_Cyan = CFall::GetInstance().GetOldCyan();
+		m_Yellow = CFall::GetInstance().GetOldYellow();
+		m_Magenta = CFall::GetInstance().GetOldMagenta();
+	}
+	else if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2 && m_Stage2_Chosen)
+	{
+		m_Cyan = CBall::GetInstance().GetOldCyan();
+		m_Yellow = CBall::GetInstance().GetOldYellow();
+		m_Magenta = CBall::GetInstance().GetOldMagenta();
+	}
+
+	if (!m_Cyan && !m_Yellow)
+		m_Now_Color = COLOR::MAGENTA;
+	else if (!m_Cyan)
+		m_Now_Color = COLOR::YELLOW;
+	else if (m_Cyan)
+		m_Now_Color = COLOR::CYAN;//stage1選択スタート
 }
 
 void CColor_Select::Update()
 {
+	namespace controller = vivid::controller;
+	namespace keyboard = vivid::keyboard;
 	//左スティック入力取得
 	m_Player1_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER2);
 	ColorSel();
+
+	if (!m_Cyan && !m_Yellow && !m_Magenta)
+	{
+		if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+		{
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
+				&&CPlayer_Manager::GetInstance().Player1_Win())
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
+				&& CPlayer_Manager::GetInstance().Player1_Win())
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+		}
+		else if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+		{
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
+				&& CPlayer_Manager::GetInstance().Player1_Win())
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
+				&& CPlayer_Manager::GetInstance().Player1_Win())
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+		}
+	}
 }
 
 //描画
@@ -69,7 +118,7 @@ void CColor_Select::Draw()
 
 	//背景画像
 	vivid::DrawTexture("data\\select_bg.png", { 0.0f,0.0f });
-	for (int i = 0; i < (int)STAGE_SELECT::MAX; i++)
+	for (int i = 0; i < (int)COLOR::MAX; i++)
 	{
 		//ボタン座標を入れる
 		m_Button_Pos = vivid::Vector2(m_button_x[i], m_button_y);
@@ -85,12 +134,12 @@ void CColor_Select::Draw()
 			vivid::DrawTexture(m_button_file[i], m_Button_Pos);
 		}
 	}
-	if (!m_Blue)
-		vivid::DrawTexture(m_button_file[0], m_Blue_Pos,m_selected_color);
+	if (!m_Cyan)
+		vivid::DrawTexture(m_button_file[0], m_Cyan_Pos,m_selected_color);
 	if(!m_Yellow)
 		vivid::DrawTexture(m_button_file[1], m_Yellow_Pos, m_selected_color);
-	if(!m_Red)
-		vivid::DrawTexture(m_button_file[2], m_Red_Pos, m_selected_color);
+	if(!m_Magenta)
+		vivid::DrawTexture(m_button_file[2], m_Magenta_Pos, m_selected_color);
 
 
 }
@@ -238,14 +287,20 @@ void CColor_Select::ColorPic(void)
 	{
 		switch (m_Now_Color)
 		{
-		case COLOR::BLUE:
-			if (!m_Blue)return;
-			m_Blue = false;
+		case COLOR::CYAN:
+			if (!m_Cyan)return;
+			m_Cyan = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);	
+			{
+				m_Stage1_Chosen =true;
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+			{
+				m_Stage2_Chosen =true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+			}
 
 			break;
 
@@ -253,22 +308,32 @@ void CColor_Select::ColorPic(void)
 			if (!m_Yellow)return;
 			m_Yellow = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);		
+			{
+				m_Stage1_Chosen = true;
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+			{
+				m_Stage2_Chosen = true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+			}
 			break;
 
-		case COLOR::RED:
-			if (!m_Red)return;
-			m_Red = false;
+		case COLOR::MAGENTA:
+			if (!m_Magenta)return;
+			m_Magenta = false;
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);	
+			{
+				m_Stage1_Chosen = true;
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+			{
+				m_Stage2_Chosen = true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+			}
 			break;
 
 
@@ -285,37 +350,52 @@ void CColor_Select::ColorPic(void)
 		{
 			switch (m_Now_Color)
 			{
-			case COLOR::BLUE:
-				if (!m_Blue)return;
-				m_Blue = false;
+			case COLOR::CYAN:
+				if (!m_Cyan)return;
+				m_Cyan = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+				}
 				break;
 
 			case COLOR::YELLOW:
 				if (!m_Yellow)return;
 				m_Yellow = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+				}
 				break;
 
-			case COLOR::RED:
-				if (!m_Red)return;
-				m_Red = false;
+			case COLOR::MAGENTA:
+				if (!m_Magenta)return;
+				m_Magenta = false;
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-
+				}
 				break;
 
 
@@ -327,12 +407,19 @@ void CColor_Select::ColorPic(void)
 		}
 }
 
+void CColor_Select::IniChosen()
+{
+	m_Stage1_Chosen=false;
+	m_Stage2_Chosen=false;
+	m_Stage3_Chosen=false;
+}
+
 //色の初期化
 void CColor_Select::IniColor()
 {
-	m_Blue = true;
+	m_Cyan = true;
 	m_Yellow = true;
-	m_Red = true;
+	m_Magenta = true;
 }
 
 CColor_Select& CColor_Select::GetInstance()

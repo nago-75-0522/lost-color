@@ -4,6 +4,7 @@ const int CBallPlayer1::m_width = 280;
 const int CBallPlayer1::m_height = 140;
 const float CBallPlayer1::m_radius = 70.0f;
 const float CBallPlayer1::m_speed = 5.0;
+const vivid::Vector2 CBallPlayer1::m_player1_marker_size = { 64.0f,40.0f };
 
 //デバック用
 std::string Player1ID[] = { "STAND","RUN" };
@@ -14,7 +15,7 @@ const int CBallPlayer1::m_anime_frame[] = { 4,6 };
 const int CBallPlayer1::m_anime_time[] = { 10,10 };
 
 CBallPlayer1::CBallPlayer1(void)
-	:m_Pos(0.0f, 0.0f)
+	: m_Pos(0.0f, 0.0f)
 	, m_Velocity(0.0f, 0.0f)
 	, m_Direction(CHARACTER_DIR::LEFT)
 	, m_DirectionNext(CHARACTER_DIR::LEFT)
@@ -46,6 +47,8 @@ void CBallPlayer1::Initialize(void)
 	m_Pos.x = vivid::GetWindowWidth() / 4.0f;
 	m_Pos.y = m_stageset.GroundLine() - m_height;
 	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
+	m_Player1MarkerPos.x = m_Pos.x + m_width / 2 - m_player1_marker_size.x / 2;
+	m_Player1MarkerPos.y = m_stageset.GroundLine();
 
 	// 速さ
 	m_Velocity.x = 0.0f;
@@ -62,56 +65,44 @@ void CBallPlayer1::Initialize(void)
 
 void CBallPlayer1::Update(void)
 {
-#if 0
 	namespace controller = vivid::controller;
+	namespace keyboard = vivid::keyboard;
 
 	// 左スティック取得
 	vivid::Vector2 stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 
 	// デッドゾーン設定
-	const float DEAD_ZONE = 0.7f;
+	const float DEAD_ZONE = 0.5f;
+
+	m_MoveInput = false;
 
 	// 移動方法
-	if (controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
+	if (keyboard::Button(keyboard::KEY_ID::D) || stick.x > DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
 	{
 		m_MoveInput = true;
-
-		m_Velocity.x = m_speed;
+		if (stick.x > DEAD_ZONE)
+		{
+			m_Velocity.x = m_speed * stick.x;
+		}
+		else
+		{
+			m_Velocity.x = m_speed;
+		}
 		m_DirectionNext = CHARACTER_DIR::RIGHT;
 	}
-	else if (controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
+	else if (keyboard::Button(keyboard::KEY_ID::A) || stick.x < -DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
 	{
 		m_MoveInput = true;
-
-		m_Velocity.x = -m_speed;
-		m_DirectionNext = CHARACTER_DIR::LEFT;
-	}
-
-	// 左スティック
-	if (stick.x > DEAD_ZONE)
-	{
-		m_MoveInput = true;
-		m_Velocity.x += m_speed * stick.x;
-		m_DirectionNext = CHARACTER_DIR::RIGHT;
-	}
-	else if (stick.x < -DEAD_ZONE)
-	{
-		m_MoveInput = true;
-		m_Velocity.x += m_speed * stick.x;
-		m_DirectionNext = CHARACTER_DIR::LEFT;
-	}
-#endif
-	// 移動方法
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::RIGHT))
-	{
-		m_Velocity.x = m_speed;
-
-		m_DirectionNext = CHARACTER_DIR::RIGHT;
-	}
-	else if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::LEFT))
-	{
-		m_Velocity.x = -m_speed;
-
+		if (stick.x < -DEAD_ZONE)
+		{
+			m_Velocity.x = m_speed * stick.x;
+		}
+		else
+		{
+			m_Velocity.x = -m_speed;
+		}
 		m_DirectionNext = CHARACTER_DIR::LEFT;
 	}
 	else
@@ -127,6 +118,10 @@ void CBallPlayer1::Update(void)
 
 	// 位置更新
 	m_Pos += m_Velocity;
+
+	//マーカーの位置
+	m_Player1MarkerPos.x = m_Pos.x + m_width / 2 - m_player1_marker_size.x / 2;
+	m_Player1MarkerPos.y = m_stageset.GroundLine();
 
 	//カゴ
 	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
@@ -153,22 +148,8 @@ void CBallPlayer1::Update(void)
 		m_Velocity.y = 0.0f;
 	}
 
-
-#if 0
 	// アニメーション
 	if (m_MoveInput)
-	{
-		ChangeAnime(ANIME_ID::RUN);
-	}
-	else
-	{
-		ChangeAnime(ANIME_ID::STAND);
-	}
-#endif
-	// アニメーション
-
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::RIGHT) ||
-		vivid::keyboard::Button(vivid::keyboard::KEY_ID::LEFT))
 	{
 		ChangeAnime(ANIME_ID::RUN);
 	}
@@ -203,12 +184,11 @@ void CBallPlayer1::Draw(void)
 	rect.top = (int)m_AnimeID * m_height;
 	rect.bottom = rect.top + m_height;
 
-	//vivid::DrawTexture("data\\kagami_shadow.png", m_ShadowPos);
+	vivid::DrawTexture("data\\logo\\small_pink_1p.png", m_Player1MarkerPos);
 	vivid::DrawTexture("data\\character1.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
 
 #ifdef _DEBUG/*デバックビルドのときのみ有効*/
 	vivid::DrawText(40, Player1ID[(int)m_AnimeID], vivid::Vector2(0.0f, 100.0f));//表示アニメーション
-
 	vivid::DrawText(40, std::to_string(m_Velocity.x), { 0.0f, 50.0f });//速さ
 #endif
 }
