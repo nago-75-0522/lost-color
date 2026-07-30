@@ -58,6 +58,13 @@ void CColor_Select::Initialize()
 		m_Yellow = CFall::GetInstance().GetOldYellow();
 		m_Magenta = CFall::GetInstance().GetOldMagenta();
 	}
+	else if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2 && m_Stage2_Chosen)
+	{
+		m_Cyan = CBall::GetInstance().GetOldCyan();
+		m_Yellow = CBall::GetInstance().GetOldYellow();
+		m_Magenta = CBall::GetInstance().GetOldMagenta();
+	}
+
 	if (!m_Cyan && !m_Yellow)
 		m_Now_Color = COLOR::MAGENTA;
 	else if (!m_Cyan)

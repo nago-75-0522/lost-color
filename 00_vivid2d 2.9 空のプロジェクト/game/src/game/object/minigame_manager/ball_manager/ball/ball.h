@@ -13,9 +13,14 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-	//当たり判定
+
+	//当たり判定	
 	bool CheckHit(const CBasket& basket1, const CBasket& basket2);
 	static CBall& GetInstance();
+
+	bool GetOldMagenta() { return m_Old_Magenta; }
+	bool GetOldCyan() { return m_Old_Cyan; }
+	bool GetOldYellow() { return m_Old_Yellow; }
 
 private:
 
@@ -89,7 +94,10 @@ private:
 	float m_OldBallCenterY;//前フレームの中心座標y
 	bool  m_Player1BasketCheck;//player1のかご判定
 	bool  m_Player2BasketCheck;//player2のかご判定
-	bool  m_EnableMagenta;//マゼンタ生成判定
-	bool  m_EnableCyan;//シアン生成判定
-	bool  m_EnableYellow;//イエロー生成判定
+	bool  m_Magenta;//マゼンタ生成判定
+	bool  m_Cyan;//シアン生成判定
+	bool  m_Yellow;//イエロー生成判定
+	bool  m_Old_Magenta;//
+	bool  m_Old_Cyan;//
+	bool  m_Old_Yellow;//
 };

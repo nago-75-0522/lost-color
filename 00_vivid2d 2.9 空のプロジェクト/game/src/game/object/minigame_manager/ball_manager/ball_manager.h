@@ -29,5 +29,4 @@ private:
 
 	CBallPlayer1 m_ball_player1;
 	CBallPlayer2 m_ball_player2;
-	CBall        m_ball;
 };

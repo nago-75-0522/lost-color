@@ -13,22 +13,22 @@ CBallManager::CBallManager(void)
 
 void CBallManager::Initialize(void)
 {
-	m_ball.Initialize();
+	CBall::GetInstance().Initialize();
 	m_ball_player1.Initialize();
 	m_ball_player2.Initialize();
 }
 
 void CBallManager::Update(void)
 {
-	m_ball.Update();
+	CBall::GetInstance().Update();
 	m_ball_player1.Update();
 	m_ball_player2.Update();
-	m_ball.CheckHit(m_ball_player1.GetBasket(), m_ball_player2.GetBasket());
+	CBall::GetInstance().CheckHit(m_ball_player1.GetBasket(), m_ball_player2.GetBasket());
 }
 
 void CBallManager::Draw(void)
 {
-	m_ball.Draw();
+	CBall::GetInstance().Draw();
 	m_ball_player2.Draw();
 	m_ball_player1.Draw();
 }
