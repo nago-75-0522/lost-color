@@ -37,6 +37,7 @@ Display(void)
 int WINAPI
 WinMain( _In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInst, _In_ LPSTR lpCmdLine, _In_ int nCmdShow )
 {
+
     (void)hPrevInst;
     (void)lpCmdLine;
     (void)nCmdShow;
