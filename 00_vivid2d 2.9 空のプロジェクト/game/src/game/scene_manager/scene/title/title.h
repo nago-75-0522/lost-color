@@ -24,18 +24,22 @@ private:
 	CTitle& operator=(const CTitle& rhp) = delete;
 
 	~CTitle(void) = default;
-
-	const std::string m_title_logo_file;		//ロゴ画像
+	
+	/* タイトル */
+	const std::string m_title_logo_file;		//タイトル画像
 	const int		  m_title_logo_width;		//幅
 	const int		  m_title_logo_height;		//高さ
 
-	//vivid::Vector2		  m_title_logo_anchor;		//中心点
-	vivid::Vector2			  m_TitlePos;			//タイトル画像表示位置
+	/* スタート */
+	const std::string m_start_logo_file;		//スタート画像
+	const int		  m_start_logo_width;		//幅
+	const int		  m_start_logo_height;		//高さ
 
+	vivid::Vector2			  m_TitlePos;			//タイトル画像表示位置
+	vivid::Vector2			  m_StartPos;			//ロゴスタートの位置
 
 	int m_Logo_Time;						//ロゴの表示時間
 	
-	vivid::Vector2 m_start_logo;			//ロゴスタートの位置
 
 	
 

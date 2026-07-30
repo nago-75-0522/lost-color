@@ -6,8 +6,11 @@
 CTitle::CTitle()
 	:m_Logo_Time(0)
 	,m_title_logo_file("data\\logo\\ge-mulogo1.png")
+	, m_start_logo_file("data\\logo\\startUI.png")
 	,m_title_logo_width(1000)
 	,m_title_logo_height(500)
+	,m_start_logo_width(420)
+	,m_start_logo_height(180)
 {
 }
 
@@ -16,7 +19,10 @@ void CTitle::Initialize(void)
 	
 	//画像の位置
 	m_TitlePos.x = vivid::WINDOW_WIDTH / 2 - (m_title_logo_width/2);
-	m_TitlePos.y = vivid::WINDOW_HEIGHT / 2 - (m_title_logo_height / 2);
+	m_TitlePos.y = vivid::WINDOW_HEIGHT * 2 / 5 - (m_title_logo_height / 2);
+
+	m_StartPos.x = vivid::WINDOW_WIDTH / 2 - (m_start_logo_width / 2);
+	m_StartPos.y = (vivid::WINDOW_HEIGHT * 2 / 3);
 
 
 }
@@ -79,7 +85,12 @@ void CTitle::Draw(void)
 
 	}
 
+	//タイトルロゴ
 	vivid::DrawTexture(m_title_logo_file, m_TitlePos);
+
+	//スタートロゴ
+	vivid::DrawTexture(m_start_logo_file, m_StartPos);
+
 
 }
 
