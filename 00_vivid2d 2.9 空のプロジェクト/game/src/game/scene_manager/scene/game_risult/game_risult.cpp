@@ -24,6 +24,8 @@ void CGame_Result::Initialize()
 	m_Player1_Score_Pos = { 200,300 };
 	m_Player2_Score_Pos = {680,300};
 	m_ = false;
+
+
 }
 
 void CGame_Result::Update()

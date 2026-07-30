@@ -20,7 +20,8 @@ CResult::CResult()
 //初期化
 void CResult::Initialize(void)
 {
-
+	vivid::LoadSound("data\\sound\\result.mp3");
+	vivid::PlaySound("data\\sound\\result.mp3", true);
 }
 
 //更新
@@ -36,6 +37,8 @@ void CResult::Update(void)
 		CBall::GetInstance().IniOld();
 		CGame_Result::GetInstance().IniScore();
 		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
+		vivid::StopSound("data\\sound\\result.mp3");
+
 	}
 	//コントローラー用
 	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
@@ -46,6 +49,7 @@ void CResult::Update(void)
 		CBall::GetInstance().IniOld();
 		CGame_Result::GetInstance().IniScore();
 		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
+		vivid::StopSound("data\\sound\\result.mp3");
 	}
 }
 

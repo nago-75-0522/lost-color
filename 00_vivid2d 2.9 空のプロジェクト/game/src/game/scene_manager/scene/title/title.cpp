@@ -24,6 +24,11 @@ void CTitle::Initialize(void)
 	m_StartPos.x = vivid::WINDOW_WIDTH / 2 - (m_start_logo_width / 2);
 	m_StartPos.y = (vivid::WINDOW_HEIGHT * 2 / 3);
 
+	//音声
+	vivid::LoadSound("data\\sound\\title_bgm.mp3");
+	vivid::PlaySound("data\\sound\\title_bgm.mp3", true);
+	vivid::LoadSound("data\\sound\\click.mp3");
+
 
 }
 
@@ -36,14 +41,21 @@ void CTitle::Update(void)
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
+		vivid::PlaySound("data\\sound\\click.mp3", false);
+		vivid::StopSound("data\\sound\\title_bgm.mp3");
 		CColor_Select::GetInstance().IniColor();
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
+
 	}
+
 	//コントローラー用
 	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 	{
+		vivid::PlaySound("data\\sound\\click.mp3", false);
+		vivid::StopSound("data\\sound\\title_bgm.mp3");
 		CColor_Select::GetInstance().IniColor();
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
+
 	}
 
 }

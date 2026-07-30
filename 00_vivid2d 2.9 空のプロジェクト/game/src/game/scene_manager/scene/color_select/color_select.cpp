@@ -40,6 +40,8 @@ CColor_Select::CColor_Select()
 void CColor_Select::Initialize()
 {
 	
+	vivid::PlaySound("data\\sound\\title_bgm.mp3", true);
+	vivid::LoadSound("data\\sound\\click.mp3");
 	
 	m_Button_Pos = vivid::Vector2::ZERO;//位置
 
@@ -172,6 +174,7 @@ void CColor_Select::ColorSel(void)
 
 			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
+				vivid::PlaySound("data\\sound\\select.mp3", false);
 				color = (color + 1) % (int)COLOR::MAX;
 
 				if (IsEnableColor((COLOR)color))
@@ -190,6 +193,7 @@ void CColor_Select::ColorSel(void)
 
 			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
+				vivid::PlaySound("data\\sound\\select.mp3", false);
 				color = (color - 1 + (int)COLOR::MAX) % (int)COLOR::MAX;
 
 				if (IsEnableColor((COLOR)color))
@@ -211,6 +215,7 @@ void CColor_Select::ColorSel(void)
 
 				for (int i = 0; i < (int)COLOR::MAX; i++)
 				{
+					vivid::PlaySound("data\\sound\\select.mp3", false);
 					color = (color + 1) % (int)COLOR::MAX;
 
 					if (IsEnableColor((COLOR)color))
@@ -229,6 +234,7 @@ void CColor_Select::ColorSel(void)
 
 				for (int i = 0; i < (int)COLOR::MAX; i++)
 				{
+					vivid::PlaySound("data\\sound\\select.mp3", false);
 					color = (color - 1 + (int)COLOR::MAX) % (int)COLOR::MAX;
 
 					if (IsEnableColor((COLOR)color))
@@ -250,6 +256,7 @@ void CColor_Select::ColorSel(void)
 
 			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
+				vivid::PlaySound("data\\sound\\select.mp3", false);
 				color = (color + 1) % (int)COLOR::MAX;
 
 				if (IsEnableColor((COLOR)color))
@@ -265,6 +272,7 @@ void CColor_Select::ColorSel(void)
 
 			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
+				vivid::PlaySound("data\\sound\\select.mp3", false);
 				color = (color - 1 + (int)COLOR::MAX) % (int)COLOR::MAX;
 
 				if (IsEnableColor((COLOR)color))
@@ -294,12 +302,18 @@ void CColor_Select::ColorPic(void)
 			{
 				m_Stage1_Chosen =true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				vivid::PlaySound("data\\sound\\click.mp3", false);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+
 			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
 			{
 				m_Stage2_Chosen =true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+				vivid::PlaySound("data\\sound\\click.mp3", false);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+
 			}
 
 			break;
@@ -311,12 +325,18 @@ void CColor_Select::ColorPic(void)
 			{
 				m_Stage1_Chosen = true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				vivid::PlaySound("data\\sound\\click.mp3", false);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+
 			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
 			{
 				m_Stage2_Chosen = true;
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+				vivid::PlaySound("data\\sound\\click.mp3", false);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+
 			}
 			break;
 
@@ -326,13 +346,21 @@ void CColor_Select::ColorPic(void)
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
 			{
 				m_Stage1_Chosen = true;
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+				vivid::PlaySound("data\\sound\\click.mp3", false);
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				
+
 			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
 			{
 				m_Stage2_Chosen = true;
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+				vivid::PlaySound("data\\sound\\click.mp3", false);
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+				
+
 			}
 			break;
 
@@ -357,12 +385,14 @@ void CColor_Select::ColorPic(void)
 				{
 					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
 				{
 					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 				break;
 
@@ -373,12 +403,14 @@ void CColor_Select::ColorPic(void)
 				{
 					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
 				{
 					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 				break;
 
@@ -389,12 +421,14 @@ void CColor_Select::ColorPic(void)
 				{
 					m_Stage1_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 
 				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
 				{
 					m_Stage2_Chosen = true;
 					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 				break;
 
