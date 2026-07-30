@@ -65,56 +65,44 @@ void CBallPlayer1::Initialize(void)
 
 void CBallPlayer1::Update(void)
 {
-#if 0
 	namespace controller = vivid::controller;
+	namespace keyboard = vivid::keyboard;
 
 	// 左スティック取得
 	vivid::Vector2 stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 
 	// デッドゾーン設定
-	const float DEAD_ZONE = 0.7f;
+	const float DEAD_ZONE = 0.5f;
+
+	m_MoveInput = false;
 
 	// 移動方法
-	if (controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
+	if (keyboard::Button(keyboard::KEY_ID::D) || stick.x > DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
 	{
 		m_MoveInput = true;
-
-		m_Velocity.x = m_speed;
+		if (stick.x > DEAD_ZONE)
+		{
+			m_Velocity.x = m_speed * stick.x;
+		}
+		else
+		{
+			m_Velocity.x = m_speed;
+		}
 		m_DirectionNext = CHARACTER_DIR::RIGHT;
 	}
-	else if (controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
+	else if (keyboard::Button(keyboard::KEY_ID::A) || stick.x < -DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
 	{
 		m_MoveInput = true;
-
-		m_Velocity.x = -m_speed;
-		m_DirectionNext = CHARACTER_DIR::LEFT;
-	}
-
-	// 左スティック
-	if (stick.x > DEAD_ZONE)
-	{
-		m_MoveInput = true;
-		m_Velocity.x += m_speed * stick.x;
-		m_DirectionNext = CHARACTER_DIR::RIGHT;
-	}
-	else if (stick.x < -DEAD_ZONE)
-	{
-		m_MoveInput = true;
-		m_Velocity.x += m_speed * stick.x;
-		m_DirectionNext = CHARACTER_DIR::LEFT;
-	}
-#endif
-	// 移動方法
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::D))
-	{
-		m_Velocity.x = m_speed;
-
-		m_DirectionNext = CHARACTER_DIR::RIGHT;
-	}
-	else if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::A))
-	{
-		m_Velocity.x = -m_speed;
-
+		if (stick.x < -DEAD_ZONE)
+		{
+			m_Velocity.x = m_speed * stick.x;
+		}
+		else
+		{
+			m_Velocity.x = -m_speed;
+		}
 		m_DirectionNext = CHARACTER_DIR::LEFT;
 	}
 	else
@@ -160,22 +148,8 @@ void CBallPlayer1::Update(void)
 		m_Velocity.y = 0.0f;
 	}
 
-
-#if 0
 	// アニメーション
 	if (m_MoveInput)
-	{
-		ChangeAnime(ANIME_ID::RUN);
-	}
-	else
-	{
-		ChangeAnime(ANIME_ID::STAND);
-	}
-#endif
-	// アニメーション
-
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::D) ||
-		vivid::keyboard::Button(vivid::keyboard::KEY_ID::A))
 	{
 		ChangeAnime(ANIME_ID::RUN);
 	}

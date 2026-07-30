@@ -65,57 +65,44 @@ void CBallPlayer2::Initialize(void)
 
 void CBallPlayer2::Update(void)
 {
-#if 0
 	namespace controller = vivid::controller;
+	namespace keyboard = vivid::keyboard;
 
 	// 左スティック取得
 	vivid::Vector2 stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
 
 	// デッドゾーン設定
-	const float DEAD_ZONE = 0.7f;
+	const float DEAD_ZONE = 0.5f;
+
+	m_MoveInput = false;
 
 	// 移動方法
-	if (controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT))
+	if (keyboard::Button(keyboard::KEY_ID::RIGHT) || stick.x > DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT))
 	{
 		m_MoveInput = true;
-
-		m_Velocity.x = m_speed;
+		if (stick.x > DEAD_ZONE)
+		{
+			m_Velocity.x = m_speed * stick.x;
+		}
+		else
+		{
+			m_Velocity.x = m_speed;
+		}
 		m_DirectionNext = CHARACTER_DIR::RIGHT;
 	}
-	else if (controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT))
+	else if (keyboard::Button(keyboard::KEY_ID::LEFT) || stick.x < -DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT))
 	{
 		m_MoveInput = true;
-
-		if (m_SpeedCount <= m_speed)
-			m_SpeedCount += 0.1f;
-
-		m_Velocity.x = -m_speed;
-		m_DirectionNext = CHARACTER_DIR::LEFT;
-	}
-
-	// 左スティック
-	if (stick.x > DEAD_ZONE)
-	{
-		m_MoveInput = true;
-		m_Velocity.x += m_speed * stick.x;
-		m_DirectionNext = CHARACTER_DIR::RIGHT;
-	}
-	else if (stick.x < -DEAD_ZONE)
-	{
-		m_MoveInput = true;
-		m_Velocity.x += m_speed * stick.x;
-		m_DirectionNext = CHARACTER_DIR::LEFT;
-	}
-#endif
-	// 移動方法
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::RIGHT))
-	{
-		m_Velocity.x = m_speed;
-		m_DirectionNext = CHARACTER_DIR::RIGHT;
-	}
-	else if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::LEFT))
-	{
-		m_Velocity.x = -m_speed;
+		if (stick.x < -DEAD_ZONE)
+		{
+			m_Velocity.x = m_speed * stick.x;
+		}
+		else
+		{
+			m_Velocity.x = -m_speed;
+		}
 		m_DirectionNext = CHARACTER_DIR::LEFT;
 	}
 	else
@@ -133,7 +120,7 @@ void CBallPlayer2::Update(void)
 	m_Pos += m_Velocity;
 
 	//マーカーの位置
-	m_Player2MarkerPos.x = m_Pos.x + m_width/2 - m_player2_marker_size.x/2;
+	m_Player2MarkerPos.x = m_Pos.x + m_width / 2 - m_player2_marker_size.x / 2;
 	m_Player2MarkerPos.y = m_stageset.GroundLine();
 
 	//カゴ
@@ -156,21 +143,9 @@ void CBallPlayer2::Update(void)
 		m_Velocity.y = 0.0f;
 
 	}
-#if 0
+
 	// アニメーション
 	if (m_MoveInput)
-	{
-		ChangeAnime(ANIME_ID::RUN);
-	}
-	else
-	{
-		ChangeAnime(ANIME_ID::STAND);
-	}
-#endif
-	// アニメーション
-
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::RIGHT) ||
-		vivid::keyboard::Button(vivid::keyboard::KEY_ID::LEFT))
 	{
 		ChangeAnime(ANIME_ID::RUN);
 	}

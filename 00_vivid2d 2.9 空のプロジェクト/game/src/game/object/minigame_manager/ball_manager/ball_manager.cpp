@@ -1,5 +1,5 @@
 ﻿#include "ball_manager.h"
-
+#include "ball_score/ball_score.h"
 
 CBallManager& CBallManager::GetInstance()
 {
@@ -13,6 +13,7 @@ CBallManager::CBallManager(void)
 
 void CBallManager::Initialize(void)
 {
+	CBallScore::GetInstance().Initialize();
 	CBall::GetInstance().Initialize();
 	m_ball_player1.Initialize();
 	m_ball_player2.Initialize();
