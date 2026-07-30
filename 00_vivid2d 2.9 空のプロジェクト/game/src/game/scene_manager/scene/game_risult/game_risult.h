@@ -7,6 +7,7 @@ public:
 	void Update();
 	void Draw();
 	void Finalize();
+	void IniScore();
 	//インスタンス呼び出す
 	static CGame_Result& GetInstance();
 	
@@ -32,6 +33,8 @@ private:
 	int m_Player2_Score;
 	vivid::Vector2 m_Player1_Score_Pos;
 	vivid::Vector2 m_Player2_Score_Pos;
+	int m_Player1_Copy_Score;
+	int m_Player2_Copy_Score;
 
 	bool m_;
 

@@ -13,7 +13,7 @@ public:
 
 	//決定処理
 	void ColorPic(void);
-	void IniOld();
+	void IniChosen();
 	void IniColor();
 	bool GetCyan() { return m_Cyan; }
 	bool GetMagenta() { return m_Magenta; }

@@ -14,7 +14,7 @@ const int CBallPlayer1::m_anime_frame[] = { 4,6 };
 const int CBallPlayer1::m_anime_time[] = { 10,10 };
 
 CBallPlayer1::CBallPlayer1(void)
-	:m_Pos(0.0f, 0.0f)
+	: m_Pos(0.0f, 0.0f)
 	, m_Velocity(0.0f, 0.0f)
 	, m_Direction(CHARACTER_DIR::LEFT)
 	, m_DirectionNext(CHARACTER_DIR::LEFT)
@@ -102,13 +102,13 @@ void CBallPlayer1::Update(void)
 	}
 #endif
 	// 移動方法
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::RIGHT))
+	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::D))
 	{
 		m_Velocity.x = m_speed;
 
 		m_DirectionNext = CHARACTER_DIR::RIGHT;
 	}
-	else if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::LEFT))
+	else if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::A))
 	{
 		m_Velocity.x = -m_speed;
 
@@ -167,8 +167,8 @@ void CBallPlayer1::Update(void)
 #endif
 	// アニメーション
 
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::RIGHT) ||
-		vivid::keyboard::Button(vivid::keyboard::KEY_ID::LEFT))
+	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::D) ||
+		vivid::keyboard::Button(vivid::keyboard::KEY_ID::A))
 	{
 		ChangeAnime(ANIME_ID::RUN);
 	}

@@ -105,12 +105,12 @@ void CBallPlayer2::Update(void)
 	}
 #endif
 	// 移動方法
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::D))
+	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::RIGHT))
 	{
 		m_Velocity.x = m_speed;
 		m_DirectionNext = CHARACTER_DIR::RIGHT;
 	}
-	else if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::A))
+	else if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::LEFT))
 	{
 		m_Velocity.x = -m_speed;
 		m_DirectionNext = CHARACTER_DIR::LEFT;
@@ -162,8 +162,8 @@ void CBallPlayer2::Update(void)
 #endif
 	// アニメーション
 
-	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::D) ||
-		vivid::keyboard::Button(vivid::keyboard::KEY_ID::A))
+	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::RIGHT) ||
+		vivid::keyboard::Button(vivid::keyboard::KEY_ID::LEFT))
 	{
 		ChangeAnime(ANIME_ID::RUN);
 	}

@@ -19,9 +19,6 @@ void CStage2::Initialize(void)
 	m_ball_timer.Initialize();
 	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::BALL);
 	CMinigame_Manager::GetInstance().Initialize();
-	vivid::LoadSound("data\\sound\\BALL_BGM.wav");
-	vivid::PlaySound("data\\sound\\BALL_BGM.wav", true);
-
 }
 
 void CStage2::Update(void)
@@ -29,24 +26,25 @@ void CStage2::Update(void)
 	m_ball_timer.Update();
 	CMinigame_Manager::GetInstance().Update();
 
+	//CSceneManager::GetInstance().AddStageCount();//加算
+
 #if 0
 	// デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
 	{
 		CSceneManager::GetInstance().AddStageCount();
 
-
+		
 	}
 #endif
-
+	
 	//コントローラー用
 	if (m_ball_timer.IsTimeUp())
 	{
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 		CSceneManager::GetInstance().AddStageCount();
-		vivid::StopSound("data\\sound\\BALL_BGM.wav");
-		CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
-
+	    CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
+		
 	}
 }
 

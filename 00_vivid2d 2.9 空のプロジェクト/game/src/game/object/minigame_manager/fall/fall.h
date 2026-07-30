@@ -16,6 +16,7 @@ public:
 	bool GetOldCyan() { return m_Old_Cyan; }
 	bool GetOldYellow() { return m_Old_Yellow; }
 	bool GetOldMagenta() { return m_Old_Magenta; }
+	void IniOld();
 
 
 	MAP_CHIP_ID GetMapChipID();

@@ -2,6 +2,8 @@
 #include "Result.h"
 #include"..\..\scene_manager.h"
 #include"../color_select/color_select.h"
+#include"../../../object/minigame_manager/minigame_manager.h"
+#include"../game_risult/game_risult.h"
 //インスタンス取得
 CResult& CResult::GetInstance()
 {
@@ -29,13 +31,20 @@ void CResult::Update(void)
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
 		CColor_Select::GetInstance().IniColor();//色初期化
-		CColor_Select::GetInstance().IniOld();
+		CColor_Select::GetInstance().IniChosen();
+		CFall::GetInstance().IniOld();
+		CBall::GetInstance().IniOld();
+		CGame_Result::GetInstance().IniScore();
 		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
 	}
 	//コントローラー用
 	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 	{
 		CColor_Select::GetInstance().IniColor();
+		CColor_Select::GetInstance().IniChosen();
+		CFall::GetInstance().IniOld();
+		CBall::GetInstance().IniOld();
+		CGame_Result::GetInstance().IniScore();
 		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
 	}
 }

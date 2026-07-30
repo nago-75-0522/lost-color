@@ -280,6 +280,13 @@ CFall& CFall::GetInstance()
 	return instance;
 }
 
+void CFall::IniOld()
+{
+	m_Old_Cyan = true;
+	m_Old_Yellow = true;
+	m_Old_Magenta = true;
+}
+
 //IDを取得
 MAP_CHIP_ID CFall::GetMapChipID()
 {

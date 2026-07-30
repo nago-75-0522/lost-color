@@ -7,7 +7,7 @@ enum class STAGE_SELECT
 {
 	STAGE1,//止まるな危険
 	STAGE2,//玉入れ
-	STAGE3,//レース
+    //STAGE3,//レース
 	MAX,
 };
 

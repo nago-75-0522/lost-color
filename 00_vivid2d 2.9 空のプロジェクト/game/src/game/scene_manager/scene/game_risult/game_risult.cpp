@@ -12,7 +12,8 @@ CGame_Result::CGame_Result()
 	:m_Player1_Ready(false)
 	,m_Player2_Ready(false)
 	, m_ (false)
-
+	,m_Player1_Score(0)
+	,m_Player2_Score(0)
 {
 }
 
@@ -150,12 +151,12 @@ void CGame_Result::Draw()
 
 	// 1P
 	{
-		int score = m_Player1_Score;
+		m_Player1_Copy_Score = m_Player1_Score;
 		int digit_count = 1;
 
 		do
 		{
-			int digit = score % 10;
+			int digit = m_Player1_Copy_Score % 10;
 
 			vivid::Rect rect;
 			rect.left = digit * m_digit_width;
@@ -170,20 +171,20 @@ void CGame_Result::Draw()
 
 			vivid::DrawTexture("data/number.png", pos, 0xffffffff, rect);
 
-			score /= 10;
+			m_Player1_Copy_Score /= 10;
 			++digit_count;
 
-		} while (score > 0 && digit_count <= m_max_score_digiit);
+		} while (m_Player1_Copy_Score > 0 && digit_count <= m_max_score_digiit);
 	}
 
 	// 2P
 	{
-		int score = m_Player2_Score;
+		 m_Player2_Copy_Score = m_Player2_Score;
 		int digit_count = 1;
 
 		do
 		{
-			int digit = score % 10;
+			int digit = m_Player2_Copy_Score % 10;
 
 			vivid::Rect rect;
 			rect.left = digit * m_digit_width;
@@ -198,10 +199,10 @@ void CGame_Result::Draw()
 
 			vivid::DrawTexture("data/number.png", pos, 0xffffffff, rect);
 
-			score /= 10;
+			m_Player2_Copy_Score /= 10;
 			++digit_count;
 
-		} while (score > 0 && digit_count <= m_max_score_digiit);
+		} while (m_Player2_Copy_Score > 0 && digit_count <= m_max_score_digiit);
 	}
 	
 	
@@ -209,6 +210,12 @@ void CGame_Result::Draw()
 
 void CGame_Result::Finalize()
 {
+}
+
+void CGame_Result::IniScore()
+{
+	m_Player1_Score = 0;
+	m_Player2_Score = 0;
 }
 
 CGame_Result& CGame_Result::GetInstance()

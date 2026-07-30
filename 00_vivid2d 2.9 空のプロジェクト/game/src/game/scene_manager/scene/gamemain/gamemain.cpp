@@ -5,11 +5,11 @@
 
 //定数
 const vivid::Vector2 CGamemain::m_bg_pos(0.0f, 0.0f);			//
-const int CGamemain::m_button_x[] = { 100,490,880 };			//ステージの配置位置
+const int CGamemain::m_button_x[] = { 100,490 };//},880 };			//ステージの配置位置***
 const int CGamemain::m_button_y(100);							//ステージの配置高さ
 const int CGamemain::m_finger_width(100);						//選択やじるし
 const std::string CGamemain::m_button_file[] =
-{ "data\\stage1.png","data\\stage2.png","data\\stage3.png" };//ステージ画像
+{ "data\\stage1.png","data\\stage2.png" };//,"data\\stage3.png" };//ステージ画像***
 
 const unsigned int CGamemain::m_select_button_color(0xff0000cd);
 
@@ -208,10 +208,11 @@ void CGamemain::StagePic(void)
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
+			/*
 		case STAGE_SELECT::STAGE3:
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
-
+			*///*********
 
 		case STAGE_SELECT::MAX:
 			break;
@@ -234,10 +235,11 @@ void CGamemain::StagePic(void)
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 				break;
 
+				/*
 			case STAGE_SELECT::STAGE3:
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 				break;
-
+				*///******
 
 			case STAGE_SELECT::MAX:
 				break;
@@ -258,10 +260,11 @@ void CGamemain::StagePic(void)
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
+			/*
 		case STAGE_SELECT::STAGE3:
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
-
+			*///*******
 
 		case STAGE_SELECT::MAX:
 			break;

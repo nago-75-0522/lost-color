@@ -13,6 +13,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
+	void IniOld();
 
 	//当たり判定	
 	bool CheckHit(const CBasket& basket1, const CBasket& basket2);

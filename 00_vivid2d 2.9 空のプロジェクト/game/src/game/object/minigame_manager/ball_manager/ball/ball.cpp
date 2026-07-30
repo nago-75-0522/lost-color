@@ -42,9 +42,6 @@ void CBall::Initialize(void)
 	}
 	m_BallSpawn = m_ball_spawn_interval;//生成タイマー初期化
 
-	//SEの読み込み
-	vivid::LoadSound("data\\sound\\ball.wav");//ballキャッチ時
-
 	m_Cyan = CColor_Select::GetInstance().GetCyan();
 	m_Yellow = CColor_Select::GetInstance().GetYellow();
 	m_Magenta = CColor_Select::GetInstance().GetMagenta();
@@ -153,6 +150,13 @@ void CBall::Finalize(void)
 {
 }
 
+void CBall::IniOld()
+{
+	m_Old_Cyan = true;
+	m_Old_Yellow = true;
+	m_Old_Magenta = true;
+}
+
 
 //当たり判定
 //内容は(円)と籠(四角)の判定
@@ -191,21 +195,18 @@ bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 			// 両方の籠に入った場合はPlayer1優先
 			if (m_Player1BasketCheck && m_Player2BasketCheck)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 1);//得点
 				ball.m_activeFlag = false;//消滅
 			}
 			// Player1のみ
 			else if (m_Player1BasketCheck)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 1);//得点
 				ball.m_activeFlag = false;//消滅
 			}
 			// Player2のみ
 			else if (m_Player2BasketCheck)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 2);
 				ball.m_activeFlag = false;
 			}
@@ -216,21 +217,18 @@ bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 			// 両方の籠に入った場合はPlayer2優先
 			if (m_Player1BasketCheck && m_Player2BasketCheck)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 2);
 				ball.m_activeFlag = false;
 			}
 			// Player1のみ
 			else if (m_Player1BasketCheck)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 1);
 				ball.m_activeFlag = false;
 			}
 			// Player2のみ
 			else if (m_Player2BasketCheck)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 2);
 				ball.m_activeFlag = false;
 			}
@@ -248,14 +246,12 @@ bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 			//Player1のみ
 			else if (m_Player1BasketCheck)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 1);
 				ball.m_activeFlag = false;
 			}
 			// Player2のみ
 			else if (m_Player2BasketCheck)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
 				AddScore(ball, 2);
 				ball.m_activeFlag = false;
 			}

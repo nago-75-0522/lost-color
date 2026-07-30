@@ -1,4 +1,5 @@
 #include "player_manager.h"
+#include"../minigame_manager/ball_manager/ball_score/ball_score.h"
 CPlayer_Manager::CPlayer_Manager()
 	:m_Player1_Win(true)
 	,m_Player2_Win(false)
@@ -20,17 +21,26 @@ void CPlayer_Manager::Update()
 	CPlayer2_Character::GetInstance().Update();
 
 	if (CPlayer1_Character::GetInstance().GetScale().x <= 0 &&
-		CPlayer2_Character::GetInstance().GetScale().x <= 0)
+		CPlayer2_Character::GetInstance().GetScale().x <= 0||
+		CBallScore::GetInstance().GetPlayer1Cyan()== CBallScore::GetInstance().GetPlayer2Cyan()&&
+		CBallScore::GetInstance().GetPlayer1Yellow()== CBallScore::GetInstance().GetPlayer2Yellow()&&
+		CBallScore::GetInstance().GetPlayer1Magenta()== CBallScore::GetInstance().GetPlayer2Magenta())
 	{
 		m_Draw = true;
 		return;
 	}
-	else if (CPlayer2_Character::GetInstance().GetScale().x <= 0)
+	else if (CPlayer2_Character::GetInstance().GetScale().x <= 0||
+		CBallScore::GetInstance().GetPlayer1Cyan() >= CBallScore::GetInstance().GetPlayer2Cyan() ||
+		CBallScore::GetInstance().GetPlayer1Yellow() >= CBallScore::GetInstance().GetPlayer2Yellow() ||
+		CBallScore::GetInstance().GetPlayer1Magenta() >= CBallScore::GetInstance().GetPlayer2Magenta())
 	{
 		m_Player2_Win = false;
 		m_Player1_Win = true;
 	}
-	else if (CPlayer1_Character::GetInstance().GetScale().x <= 0)
+	else if (CPlayer1_Character::GetInstance().GetScale().x <= 0||
+		CBallScore::GetInstance().GetPlayer1Cyan() <= CBallScore::GetInstance().GetPlayer2Cyan() ||
+		CBallScore::GetInstance().GetPlayer1Yellow() <= CBallScore::GetInstance().GetPlayer2Yellow() ||
+		CBallScore::GetInstance().GetPlayer1Magenta() <= CBallScore::GetInstance().GetPlayer2Magenta())
 	{
 
 		m_Player1_Win = false;

@@ -118,7 +118,7 @@ void CColor_Select::Draw()
 
 	//背景画像
 	vivid::DrawTexture("data\\select_bg.png", { 0.0f,0.0f });
-	for (int i = 0; i < (int)STAGE_SELECT::MAX; i++)
+	for (int i = 0; i < (int)COLOR::MAX; i++)
 	{
 		//ボタン座標を入れる
 		m_Button_Pos = vivid::Vector2(m_button_x[i], m_button_y);
@@ -407,7 +407,7 @@ void CColor_Select::ColorPic(void)
 		}
 }
 
-void CColor_Select::IniOld()
+void CColor_Select::IniChosen()
 {
 	m_Stage1_Chosen=false;
 	m_Stage2_Chosen=false;
