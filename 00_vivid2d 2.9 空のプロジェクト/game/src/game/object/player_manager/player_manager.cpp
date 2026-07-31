@@ -21,26 +21,17 @@ void CPlayer_Manager::Update()
 	CPlayer2_Character::GetInstance().Update();
 
 	if (CPlayer1_Character::GetInstance().GetScale().x <= 0 &&
-		CPlayer2_Character::GetInstance().GetScale().x <= 0||
-		CBallScore::GetInstance().GetPlayer1Cyan()== CBallScore::GetInstance().GetPlayer2Cyan()&&
-		CBallScore::GetInstance().GetPlayer1Yellow()== CBallScore::GetInstance().GetPlayer2Yellow()&&
-		CBallScore::GetInstance().GetPlayer1Magenta()== CBallScore::GetInstance().GetPlayer2Magenta())
+		CPlayer2_Character::GetInstance().GetScale().x <= 0)
 	{
 		m_Draw = true;
 		return;
 	}
-	else if (CPlayer2_Character::GetInstance().GetScale().x <= 0||
-		CBallScore::GetInstance().GetPlayer1Cyan() >= CBallScore::GetInstance().GetPlayer2Cyan() ||
-		CBallScore::GetInstance().GetPlayer1Yellow() >= CBallScore::GetInstance().GetPlayer2Yellow() ||
-		CBallScore::GetInstance().GetPlayer1Magenta() >= CBallScore::GetInstance().GetPlayer2Magenta())
+	else if (CPlayer2_Character::GetInstance().GetScale().x <= 0)
 	{
 		m_Player2_Win = false;
 		m_Player1_Win = true;
 	}
-	else if (CPlayer1_Character::GetInstance().GetScale().x <= 0||
-		CBallScore::GetInstance().GetPlayer1Cyan() <= CBallScore::GetInstance().GetPlayer2Cyan() ||
-		CBallScore::GetInstance().GetPlayer1Yellow() <= CBallScore::GetInstance().GetPlayer2Yellow() ||
-		CBallScore::GetInstance().GetPlayer1Magenta() <= CBallScore::GetInstance().GetPlayer2Magenta())
+	else if (CPlayer1_Character::GetInstance().GetScale().x <= 0)
 	{
 
 		m_Player1_Win = false;
