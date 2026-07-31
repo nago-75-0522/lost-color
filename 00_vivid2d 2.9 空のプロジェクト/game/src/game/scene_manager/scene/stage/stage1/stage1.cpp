@@ -54,9 +54,11 @@ void CStage1::Update(void)
 
 void CStage1::Draw(void)
 {
+	vivid::DrawTexture("data\\stage_bg.png", { 0.0f,0.0f });
 	CMinigame_Manager::GetInstance().Draw();
 	CPlayer_Manager::GetInstance().Draw();
 	vivid::DrawText(48, "stage1", { 0.0f,0.0f });
+	
 }
 
 void CStage1::Finalize(void)
