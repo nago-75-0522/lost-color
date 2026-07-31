@@ -84,6 +84,8 @@ void CBall::Update(void)
 //描画
 void CBall::Draw(void)
 {
+	vivid::DrawTexture("data\\ball_bg.png", { 0.0f,0.0f });
+	m_ball_stageset.Draw();
 	vivid::Rect rect = { 0,0,m_ball_width,m_ball_height };
 
 	for (int i = 0; i < m_max_ball; ++i)
