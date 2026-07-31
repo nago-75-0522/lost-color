@@ -1,8 +1,8 @@
 #include "player_manager.h"
 #include"../minigame_manager/ball_manager/ball_score/ball_score.h"
 CPlayer_Manager::CPlayer_Manager()
-	:m_Player1_Win(true)
-	,m_Player2_Win(false)
+	:m_Player1_Win(false)
+	,m_Player2_Win(true)
 	,m_Draw(false)
 {
 }

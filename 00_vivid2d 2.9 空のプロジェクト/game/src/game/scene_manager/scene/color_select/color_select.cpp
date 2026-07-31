@@ -164,7 +164,7 @@ void CColor_Select::ColorSel(void)
 	static float player2_prev_stick_x = 0.0f;
 
 	//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
-	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
 	{
 		ColorPic();
 		if (player1_prev_stick_x <= DEAD_ZONE && m_Player1_Stick.x > DEAD_ZONE ||
@@ -204,7 +204,7 @@ void CColor_Select::ColorSel(void)
 			}
 		}
 	}
-		if (CPlayer_Manager::GetInstance().Player2_Win() == true)
+		if (CPlayer_Manager::GetInstance().Player2_Win() == false)
 		{
 			ColorPic();
 			//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -289,7 +289,7 @@ void CColor_Select::ColorPic(void)
 {
 	namespace controller = vivid::controller;
 	
-	if(CPlayer_Manager::GetInstance().Player1_Win() == true)
+	if(CPlayer_Manager::GetInstance().Player1_Win() == false)
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
 		|| controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B))
 	{
@@ -324,18 +324,20 @@ void CColor_Select::ColorPic(void)
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
 			{
 				m_Stage1_Chosen = true;
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
 				vivid::PlaySound("data\\sound\\click.mp3", false);
 				vivid::StopSound("data\\sound\\title_bgm.mp3");
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				
 
 			}
 
 			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
 			{
 				m_Stage2_Chosen = true;
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
 				vivid::PlaySound("data\\sound\\click.mp3", false);
 				vivid::StopSound("data\\sound\\title_bgm.mp3");
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+				
 
 			}
 			break;
@@ -372,7 +374,7 @@ void CColor_Select::ColorPic(void)
 		}
 	}
 	//キーボード用
-	if (CPlayer_Manager::GetInstance().Player2_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player2_Win() == false)
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
 			|| controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B))
 		{

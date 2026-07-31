@@ -124,7 +124,7 @@ void CGamemain::StageSelect(void)
 	static float player1_prev_stick_x = 0.0f;
 	static float player2_prev_stick_x = 0.0f;
 
-	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -159,7 +159,7 @@ void CGamemain::StageSelect(void)
 		}
 	}
 
-	if (CPlayer_Manager::GetInstance().Player2_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player2_Win() == false)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -215,7 +215,7 @@ void CGamemain::StageSelect(void)
 void CGamemain::StagePic(void)
 {
 	//コントローラー用
-	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 	{
 		switch (m_Now_Select)
@@ -248,18 +248,21 @@ void CGamemain::StagePic(void)
 	}
 
 	//コントローラー用
-	if (CPlayer_Manager::GetInstance().Player2_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player2_Win() == false)
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{
 			switch (m_Now_Select)
 			{
 			case STAGE_SELECT::STAGE1:
 				vivid::PlaySound("data\\sound\\click.mp3", false);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 				break;
 
 			case STAGE_SELECT::STAGE2:
 				vivid::PlaySound("data\\sound\\click.mp3", false);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 				break;
 
@@ -282,11 +285,15 @@ void CGamemain::StagePic(void)
 		{
 		case STAGE_SELECT::STAGE1:
 			vivid::PlaySound("data\\sound\\click.mp3", false);
+			vivid::StopSound("data\\sound\\title_bgm.mp3");
+
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
 		case STAGE_SELECT::STAGE2:
 			vivid::PlaySound("data\\sound\\click.mp3", false);
+			vivid::StopSound("data\\sound\\title_bgm.mp3");
+
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
