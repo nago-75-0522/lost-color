@@ -11,8 +11,8 @@ public:
 	void Finalize();
 	static CPlayer_Manager& GetInstance();
 
-	bool Player1_Win();
-	bool Draw_Battle();
+	bool Player1_Win() { return m_Player1_Win; }
+	bool Draw_Battle() { return m_Draw; }
 private:
 	CPlayer_Manager(void);
 	//コピーコンストラクタ

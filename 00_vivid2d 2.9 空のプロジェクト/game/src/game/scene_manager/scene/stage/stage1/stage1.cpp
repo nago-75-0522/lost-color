@@ -48,7 +48,6 @@ void CStage1::Update(void)
 		CSceneManager::GetInstance().AddStageCount();
 		vivid::StopSound("data\\sound\\FALL_BGM.wav");
 		CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
-		
 	}
 }
 

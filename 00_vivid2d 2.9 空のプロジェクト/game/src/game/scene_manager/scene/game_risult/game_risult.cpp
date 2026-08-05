@@ -11,7 +11,7 @@
 CGame_Result::CGame_Result()
 	:m_Player1_Ready(false)
 	,m_Player2_Ready(false)
-	, m_ (false)
+	, m_ScoreAdded (false)
 	,m_Player1_Score(0)
 	,m_Player2_Score(0)
 {
@@ -23,7 +23,7 @@ void CGame_Result::Initialize()
 	m_Player2_Ready = false;
 	m_Player1_Score_Pos = { 200,300 };
 	m_Player2_Score_Pos = {680,300};
-	m_ = false;
+	m_ScoreAdded = false;
 
 
 }
@@ -35,57 +35,58 @@ void CGame_Result::Update()
 
 	
 
-	if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
-	{
-		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
-	}
+	
 	if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||
-		keyboard::Trigger(keyboard::KEY_ID::SPACE))
+		keyboard::Trigger(keyboard::KEY_ID::S))
 		m_Player1_Ready = true;
 	if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B) || 
-		keyboard::Trigger(keyboard::KEY_ID::SPACE))
+		keyboard::Trigger(keyboard::KEY_ID::DOWN))
 		m_Player2_Ready = true;
-	if (m_Player1_Ready && m_Player2_Ready)
+
+	if (m_Player1_Ready && m_Player2_Ready &&
+		CSceneManager::GetInstance().FinishStage() >= 3)
+		CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
+	else if (m_Player1_Ready && m_Player2_Ready)
 	{
 		CColor_Select::GetInstance().IniColor();
 		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
 	}
-
+	
 	if (CPlayer_Manager::GetInstance().Player1_Win() == true&&!CPlayer_Manager::GetInstance().Draw_Battle())
 	{
 		if (!CColor_Select::GetInstance().GetCyan() &&
 			!CColor_Select::GetInstance().GetYellow() &&
 			!CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player1_Score += 30;
-			m_ = true;
+			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetYellow())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player1_Score += 20;
-			m_ = true;
+			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player1_Score += 20;
-			m_ = true;
+			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetYellow() && !CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player1_Score += 20;
-			m_ = true;
+			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan()
 			|| !CColor_Select::GetInstance().GetYellow()
 			|| !CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player1_Score += 10;
-			m_ = true;
+			m_ScoreAdded = true;
 
 		}
 	}
@@ -95,45 +96,39 @@ void CGame_Result::Update()
 			!CColor_Select::GetInstance().GetYellow() &&
 			!CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player2_Score += 30;
-			m_ = true;
+			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetYellow())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player2_Score += 20;
-			m_ = true;
+			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player2_Score += 20;
-			m_ = true;
+			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetYellow() && !CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player2_Score += 20;
-			m_ = true;
+			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan()
 			|| !CColor_Select::GetInstance().GetYellow()
 			|| !CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_)return;
+			if (m_ScoreAdded)return;
 			m_Player2_Score += 10;
-			m_ = true;
+			m_ScoreAdded = true;
 
 		}
 	}
-	if(keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)||
-		controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B))
-	//4回目からリザルト
-	if (CSceneManager::GetInstance().FinishStage() >= 3)
-	{
-		CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
-	}
+	
 }
 
 void CGame_Result::Draw()

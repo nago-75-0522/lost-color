@@ -21,7 +21,6 @@ Display(void)
 {
     CGame::GetInstance().Update();
     CGame::GetInstance().Draw();
-
 }
 
 /*!

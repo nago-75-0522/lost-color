@@ -5,9 +5,6 @@ class CResult :public IScene
 {
 public:
 
-
-
-
 	//初期化
 	void Initialize(void)override;//多重定義
 	//更新
@@ -28,4 +25,5 @@ private:
 
 	~CResult(void) = default;
 
+	static const vivid::Vector2 m_ScorePos;
 };

@@ -5,6 +5,9 @@
 #include"../../../object/minigame_manager/minigame_manager.h"
 #include"../game_risult/game_risult.h"
 #include"../stage/stage2/stage2.h"
+
+const vivid::Vector2 CResult::m_ScorePos = {420,300};
+
 //インスタンス取得
 CResult& CResult::GetInstance()
 {
@@ -15,7 +18,6 @@ CResult& CResult::GetInstance()
 
 CResult::CResult()
 {
-
 }
 
 //初期化
@@ -28,7 +30,6 @@ void CResult::Initialize(void)
 //更新
 void CResult::Update(void)
 {
-
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
@@ -59,6 +60,12 @@ void CResult::Update(void)
 void CResult::Draw(void)
 {
 	vivid::DrawText(48, "Result", { 0.0f,0.0f });
+	if (CGame_Result::GetInstance().Get_Player1_Score() == CGame_Result::GetInstance().Get_Player2_Score())
+		vivid::DrawText(110, "DRAW!!", { m_ScorePos });
+	else if(CGame_Result::GetInstance().Get_Player1_Score()> CGame_Result::GetInstance().Get_Player2_Score())
+		vivid::DrawText(110, "1PWIN!!", { m_ScorePos });
+	if (CGame_Result::GetInstance().Get_Player1_Score() < CGame_Result::GetInstance().Get_Player2_Score())
+		vivid::DrawText(110, "2PWIN!!", { m_ScorePos });
 }
 
 //解放

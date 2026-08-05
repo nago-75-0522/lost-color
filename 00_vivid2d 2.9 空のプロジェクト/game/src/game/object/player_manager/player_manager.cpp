@@ -64,15 +64,4 @@ CPlayer_Manager& CPlayer_Manager::GetInstance()
 	return instance;
 }
 
-bool CPlayer_Manager::Player1_Win()
-{
-	return m_Player1_Win;
-}
-
-
-
-bool CPlayer_Manager::Draw_Battle()
-{
-	return m_Draw;
-}
 

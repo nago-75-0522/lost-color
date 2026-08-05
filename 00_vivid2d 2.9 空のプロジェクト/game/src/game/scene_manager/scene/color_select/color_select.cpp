@@ -88,24 +88,24 @@ void CColor_Select::Update()
 	{
 		if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
 		{
-			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
 				&&CPlayer_Manager::GetInstance().Player1_Win())
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
 
-			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
 				&& CPlayer_Manager::GetInstance().Player1_Win())
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
 		}
 		else if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
 		{
-			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
 				&& CPlayer_Manager::GetInstance().Player1_Win())
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
 
-			if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE) ||
+			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
 				&& CPlayer_Manager::GetInstance().Player1_Win())
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
@@ -168,7 +168,8 @@ void CColor_Select::ColorSel(void)
 	{
 		ColorPic();
 		if (player1_prev_stick_x <= DEAD_ZONE && m_Player1_Stick.x > DEAD_ZONE ||
-			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
+			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT)||
+			keyboard::Trigger(keyboard::KEY_ID::D))
 		{
 			int color = (int)m_Now_Color;
 
@@ -187,7 +188,8 @@ void CColor_Select::ColorSel(void)
 
 		// 左に倒した瞬間
 		else if (player1_prev_stick_x >= -DEAD_ZONE && m_Player1_Stick.x < -DEAD_ZONE ||
-			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
+			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT)||
+			keyboard::Trigger(keyboard::KEY_ID::A))
 		{
 			int color = (int)m_Now_Color;
 
@@ -209,7 +211,8 @@ void CColor_Select::ColorSel(void)
 			ColorPic();
 			//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
 			if (player2_prev_stick_x <= DEAD_ZONE && m_Player2_Stick.x > DEAD_ZONE ||
-				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT))
+				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT)||
+				keyboard::Trigger(keyboard::KEY_ID::RIGHT))
 			{
 				int color = (int)m_Now_Color;
 
@@ -228,7 +231,8 @@ void CColor_Select::ColorSel(void)
 
 			// 左に倒した瞬間
 			else if (player2_prev_stick_x >= -DEAD_ZONE && m_Player2_Stick.x < -DEAD_ZONE ||
-				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT))
+				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT)||
+				keyboard::Trigger(keyboard::KEY_ID::LEFT))
 			{
 				int color = (int)m_Now_Color;
 
@@ -246,137 +250,112 @@ void CColor_Select::ColorSel(void)
 			}
 		}
 
-		// 現在の値を保存
-		player1_prev_stick_x = m_Player1_Stick.x;
-		player2_prev_stick_x = m_Player2_Stick.x;
-
-		if (keyboard::Trigger(keyboard::KEY_ID::RIGHT))
-		{
-			int color = (int)m_Now_Color;
-
-			for (int i = 0; i < (int)COLOR::MAX; i++)
-			{
-				vivid::PlaySound("data\\sound\\select.mp3", false);
-				color = (color + 1) % (int)COLOR::MAX;
-
-				if (IsEnableColor((COLOR)color))
-				{
-					m_Now_Color = (COLOR)color;
-					break;
-				}
-			}
-		}
-		else if (keyboard::Trigger(vivid::keyboard::KEY_ID::LEFT))
-		{
-			int color = (int)m_Now_Color;
-
-			for (int i = 0; i < (int)COLOR::MAX; i++)
-			{
-				vivid::PlaySound("data\\sound\\select.mp3", false);
-				color = (color - 1 + (int)COLOR::MAX) % (int)COLOR::MAX;
-
-				if (IsEnableColor((COLOR)color))
-				{
-					m_Now_Color = (COLOR)color;
-					break;
-				}
-			}
-		}
+		
 
 	
 }
 void CColor_Select::ColorPic(void)
 {
 	namespace controller = vivid::controller;
-	
-	if(CPlayer_Manager::GetInstance().Player1_Win() == false)
-	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
-		|| controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B))
+	namespace keyboard = vivid::keyboard;
+
+	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
 	{
-		switch (m_Now_Color)
+		if (keyboard::Trigger(keyboard::KEY_ID::W)||
+			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::A))
+			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B) ||
+			keyboard::Trigger(keyboard::KEY_ID::S))
 		{
-		case COLOR::CYAN:
-			if (!m_Cyan)return;
-			m_Cyan = false;
-			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+			switch (m_Now_Color)
 			{
-				m_Stage1_Chosen =true;
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-				vivid::StopSound("data\\sound\\title_bgm.mp3");
+			case COLOR::CYAN:
+				if (!m_Cyan)return;
+				m_Cyan = false;
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					vivid::PlaySound("data\\sound\\click.mp3", false);
+					vivid::StopSound("data\\sound\\title_bgm.mp3");
 
+				}
+
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					vivid::PlaySound("data\\sound\\click.mp3", false);
+					vivid::StopSound("data\\sound\\title_bgm.mp3");
+
+				}
+
+				break;
+
+			case COLOR::YELLOW:
+				if (!m_Yellow)return;
+				m_Yellow = false;
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
+					vivid::PlaySound("data\\sound\\click.mp3", false);
+					vivid::StopSound("data\\sound\\title_bgm.mp3");
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+
+
+				}
+
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
+					vivid::PlaySound("data\\sound\\click.mp3", false);
+					vivid::StopSound("data\\sound\\title_bgm.mp3");
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
+
+				}
+				break;
+
+			case COLOR::MAGENTA:
+				if (!m_Magenta)return;
+				m_Magenta = false;
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				{
+					m_Stage1_Chosen = true;
+					vivid::StopSound("data\\sound\\title_bgm.mp3");
+					vivid::PlaySound("data\\sound\\click.mp3", false);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+
+
+				}
+
+				if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				{
+					m_Stage2_Chosen = true;
+					vivid::StopSound("data\\sound\\title_bgm.mp3");
+					vivid::PlaySound("data\\sound\\click.mp3", false);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+
+
+				}
+				break;
+
+
+			case COLOR::MAX:
+				break;
+			default:
+				break;
 			}
-
-			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
-			{
-				m_Stage2_Chosen =true;
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-				vivid::StopSound("data\\sound\\title_bgm.mp3");
-
-			}
-
-			break;
-
-		case COLOR::YELLOW:
-			if (!m_Yellow)return;
-			m_Yellow = false;
-			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-			{
-				m_Stage1_Chosen = true;
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-				vivid::StopSound("data\\sound\\title_bgm.mp3");
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
-				
-
-			}
-
-			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
-			{
-				m_Stage2_Chosen = true;
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-				vivid::StopSound("data\\sound\\title_bgm.mp3");
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-				
-
-			}
-			break;
-
-		case COLOR::MAGENTA:
-			if (!m_Magenta)return;
-			m_Magenta = false;
-			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
-			{
-				m_Stage1_Chosen = true;
-				vivid::StopSound("data\\sound\\title_bgm.mp3");
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
-				
-
-			}
-
-			if (CGamemain::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
-			{
-				m_Stage2_Chosen = true;
-				vivid::StopSound("data\\sound\\title_bgm.mp3");
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
-				
-
-			}
-			break;
-
-
-		case COLOR::MAX:
-			break;
-		default:
-			break;
 		}
 	}
-	//キーボード用
+	//2P
 	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
-		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
-			|| controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B))
+	{
+		if (keyboard::Trigger(keyboard::KEY_ID::UP)||
+			controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::A))
+			CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B) ||
+			keyboard::Trigger(keyboard::KEY_ID::DOWN))
 		{
 			switch (m_Now_Color)
 			{
@@ -441,6 +420,7 @@ void CColor_Select::ColorPic(void)
 				break;
 			}
 		}
+	}
 }
 
 void CColor_Select::IniChosen()

@@ -144,14 +144,16 @@ void CGamemain::StageSelect(void)
 		}
 
 		/* 十字キー実装 */
-		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT)||
+			keyboard::Trigger(keyboard::KEY_ID::D))
 		{
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
 		}
 
-		else if (controller::Trigger(controller::DEVICE_ID::PLAYER1,controller::BUTTON_ID::LEFT))
+		else if (controller::Trigger(controller::DEVICE_ID::PLAYER1,controller::BUTTON_ID::LEFT)||
+			keyboard::Trigger(keyboard::KEY_ID::A))
 		{
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
@@ -159,7 +161,7 @@ void CGamemain::StageSelect(void)
 		}
 	}
 
-	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
+	else if (CPlayer_Manager::GetInstance().Player1_Win() == true) 
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -177,14 +179,16 @@ void CGamemain::StageSelect(void)
 		}
 
 		/* 十字キー実装 */
-		if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT))
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT)||
+			keyboard::Trigger(keyboard::KEY_ID::RIGHT))
 		{
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
 		}
 
-		else if (controller::Trigger(controller::DEVICE_ID::PLAYER2,controller::BUTTON_ID::LEFT))
+		else if (controller::Trigger(controller::DEVICE_ID::PLAYER2,controller::BUTTON_ID::LEFT)||
+			keyboard::Trigger(keyboard::KEY_ID::LEFT))
 		{
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
@@ -194,29 +198,18 @@ void CGamemain::StageSelect(void)
 	// 現在の値を保存
 	player1_prev_stick_x = m_Player1_Stick.x;
 	player2_prev_stick_x = m_Player2_Stick.x;
-	/* 選択中 */
-	if (keyboard::Trigger(keyboard::KEY_ID::RIGHT))
-	{
-		//選択ボタンの変更
-		m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
-		vivid::PlaySound("data\\sound\\select.mp3", false);
-	}
-
-	else if (keyboard::Trigger(keyboard::KEY_ID::LEFT))
-	{
-		//選択ボタンの変更
-		m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
-		vivid::PlaySound("data\\sound\\select.mp3", false);
-	}
-
 }
 
 //ステージ決定
 void CGamemain::StagePic(void)
 {
+	namespace controller = vivid::controller;
+	namespace keyboard = vivid::keyboard;
+
 	//コントローラー用
 	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
-		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||
+			keyboard::Trigger(keyboard::KEY_ID::S))
 	{
 		switch (m_Now_Select)
 		{
@@ -249,7 +242,8 @@ void CGamemain::StagePic(void)
 
 	//コントローラー用
 	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
-		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B)||
+			keyboard::Trigger(keyboard::KEY_ID::DOWN))
 		{
 			switch (m_Now_Select)
 			{
@@ -278,37 +272,7 @@ void CGamemain::StagePic(void)
 				break;
 			}
 		}
-	//キーボード用
-	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
-	{
-		switch (m_Now_Select)
-		{
-		case STAGE_SELECT::STAGE1:
-			vivid::PlaySound("data\\sound\\click.mp3", false);
-			vivid::StopSound("data\\sound\\title_bgm.mp3");
-
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
-			break;
-
-		case STAGE_SELECT::STAGE2:
-			vivid::PlaySound("data\\sound\\click.mp3", false);
-			vivid::StopSound("data\\sound\\title_bgm.mp3");
-
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
-			break;
-
-			/*
-		case STAGE_SELECT::STAGE3:
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
-			break;
-			*///*******
-
-		case STAGE_SELECT::MAX:
-			break;
-		default:
-			break;
-		}
-	}
+	
 
 
 }

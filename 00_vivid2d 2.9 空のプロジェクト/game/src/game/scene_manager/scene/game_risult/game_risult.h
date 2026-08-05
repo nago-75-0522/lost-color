@@ -8,6 +8,8 @@ public:
 	void Draw();
 	void Finalize();
 	void IniScore();
+	int Get_Player1_Score() { return m_Player1_Score; }
+	int Get_Player2_Score() { return m_Player2_Score; }
 	//インスタンス呼び出す
 	static CGame_Result& GetInstance();
 	
@@ -35,7 +37,6 @@ private:
 	vivid::Vector2 m_Player2_Score_Pos;
 	int m_Player1_Copy_Score;
 	int m_Player2_Copy_Score;
-
-	bool m_;
+	bool m_ScoreAdded;
 
 };
