@@ -12,7 +12,6 @@ public:
 	static CPlayer_Manager& GetInstance();
 
 	bool Player1_Win();
-	bool Player2_Win();
 	bool Draw_Battle();
 private:
 	CPlayer_Manager(void);
@@ -25,6 +24,5 @@ private:
 
 	//変数
 	bool m_Player1_Win;
-	bool m_Player2_Win;
 	bool m_Draw;
 };

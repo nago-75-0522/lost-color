@@ -17,6 +17,10 @@ public:
 	void Finalize(void)override;
 	//インスタンス呼び出す
 	static CStage2& GetInstance();
+
+	bool GetWinner();
+	bool GetDraw();
+	void RisultIni();
 private:
 	CStage2(void);
 	//コピーコンストラクタ
@@ -36,4 +40,6 @@ private:
 	CBallTimer   m_ball_timer;
 
 	int m_ResultTimer;//画面切り替え時間
+	bool m_Winner;
+	bool m_Draw;
 };

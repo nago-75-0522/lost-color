@@ -4,6 +4,7 @@
 #include"../color_select/color_select.h"
 #include"../../../object/minigame_manager/minigame_manager.h"
 #include"../game_risult/game_risult.h"
+#include"../stage/stage2/stage2.h"
 //インスタンス取得
 CResult& CResult::GetInstance()
 {
@@ -36,6 +37,7 @@ void CResult::Update(void)
 		CFall::GetInstance().IniOld();
 		CBall::GetInstance().IniOld();
 		CGame_Result::GetInstance().IniScore();
+		CStage2::GetInstance().RisultIni();
 		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
 		vivid::StopSound("data\\sound\\result.mp3");
 

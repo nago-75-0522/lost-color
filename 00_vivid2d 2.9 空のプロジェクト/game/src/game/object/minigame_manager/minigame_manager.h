@@ -17,6 +17,7 @@ public:
 	void Draw();
 	void Finalize();
 	void SetGame(MINIGAME_ID game);
+	MINIGAME_ID GetGame();
 	static CMinigame_Manager& GetInstance();
 
 private:

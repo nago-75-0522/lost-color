@@ -3,7 +3,7 @@
 #include"..\..\..\scene_manager.h"
 #include"../../../../object/minigame_manager/minigame_manager.h"
 #include"../../../../object/minigame_manager/ball_manager/ball_score/ball_score.h"
-
+#include"../../../../object/player_manager/player_manager.h"
 
 CStage2& CStage2::GetInstance()
 {
@@ -11,9 +11,12 @@ CStage2& CStage2::GetInstance()
 	return instance;
 
 }
+
 CStage2::CStage2()
 	: m_State(STAGE2_STATE::MAIN)
 	, m_ResultTimer(0)
+	,m_Winner(false)
+	,m_Draw(false)
 {
 }
 void CStage2::Initialize(void)
@@ -30,18 +33,25 @@ void CStage2::Initialize(void)
 
 void CStage2::Update(void)
 {
+	CPlayer_Manager::GetInstance().Update();
 	switch (m_State)
 	{
 	case STAGE2_STATE::MAIN:
 		m_ResultTimer = 0;
 		m_ball_timer.Update();
 		CMinigame_Manager::GetInstance().Update();
-
 		//コントローラー用
 		if (m_ball_timer.IsTimeUp())
 		{
-			m_State = STAGE2_STATE::RESULT;
+			if (CBallScore::GetInstance().GetPlayer1Score() == CBallScore::GetInstance().GetPlayer2Score())
+				m_Draw = true;
+			else if (CBallScore::GetInstance().GetPlayer1Score() > CBallScore::GetInstance().GetPlayer2Score())
+				m_Winner = true;
+			else if (CBallScore::GetInstance().GetPlayer1Score() < CBallScore::GetInstance().GetPlayer2Score())
+				m_Winner = false;
 			vivid::StopSound("data\\sound\\BALL_BGM.wav");
+			m_State = STAGE2_STATE::RESULT;
+			
 		}
 		break;
 
@@ -65,6 +75,8 @@ void CStage2::Update(void)
 		CSceneManager::GetInstance().AddStageCount();
 	}
 #endif
+
+	
 }
 
 void CStage2::Draw(void)
@@ -106,3 +118,18 @@ void CStage2::Finalize(void)
 {
 }
 
+bool CStage2::GetWinner()
+{
+	return m_Winner;
+}
+
+bool CStage2::GetDraw()
+{
+	return m_Draw;
+}
+
+void CStage2::RisultIni()
+{
+	m_Winner=false;
+	m_Draw = false;
+}

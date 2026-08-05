@@ -1,8 +1,8 @@
 #include "player_manager.h"
-#include"../minigame_manager/ball_manager/ball_score/ball_score.h"
+#include"../../scene_manager/scene/stage/stage2/stage2.h"
+#include"../minigame_manager/minigame_manager.h"
 CPlayer_Manager::CPlayer_Manager()
 	:m_Player1_Win(false)
-	,m_Player2_Win(true)
 	,m_Draw(false)
 {
 }
@@ -17,38 +17,45 @@ void CPlayer_Manager::Initialize()
 
 void CPlayer_Manager::Update()
 {
-	CPlayer1_Character::GetInstance().Update();
-	CPlayer2_Character::GetInstance().Update();
-
+	if (CMinigame_Manager::GetInstance().GetGame() == MINIGAME_ID::FALL)
+	{
+		CPlayer1_Character::GetInstance().Update();
+		CPlayer2_Character::GetInstance().Update();
+	}
 	if (CPlayer1_Character::GetInstance().GetScale().x <= 0 &&
-		CPlayer2_Character::GetInstance().GetScale().x <= 0)
+		CPlayer2_Character::GetInstance().GetScale().x <= 0 ||
+		CStage2::GetInstance().GetDraw()==true)
 	{
 		m_Draw = true;
-		return;
 	}
-	else if (CPlayer2_Character::GetInstance().GetScale().x <= 0)
+	else if (CPlayer2_Character::GetInstance().GetScale().x <= 0||
+		CStage2::GetInstance().GetWinner()==true)
 	{
-		m_Player2_Win = false;
 		m_Player1_Win = true;
 	}
-	else if (CPlayer1_Character::GetInstance().GetScale().x <= 0)
+	else if (CPlayer1_Character::GetInstance().GetScale().x <= 0||
+		CStage2::GetInstance().GetWinner() == false)
 	{
-
 		m_Player1_Win = false;
-		m_Player2_Win = true;
 	}
 }
 
 void CPlayer_Manager::Draw()
 {
-	CPlayer1_Character::GetInstance().Draw();
-	CPlayer2_Character::GetInstance().Draw();
+	if (CMinigame_Manager::GetInstance().GetGame() == MINIGAME_ID::FALL)
+	{
+		CPlayer1_Character::GetInstance().Draw();
+		CPlayer2_Character::GetInstance().Draw();
+	}
 }
 
 void CPlayer_Manager::Finalize()
 {
-	CPlayer1_Character::GetInstance().Finalize();
-	CPlayer2_Character::GetInstance().Finalize();
+	if (CMinigame_Manager::GetInstance().GetGame() == MINIGAME_ID::FALL)
+	{
+		CPlayer1_Character::GetInstance().Finalize();
+		CPlayer2_Character::GetInstance().Finalize();
+	}
 }
 
 CPlayer_Manager& CPlayer_Manager::GetInstance()
@@ -62,10 +69,7 @@ bool CPlayer_Manager::Player1_Win()
 	return m_Player1_Win;
 }
 
-bool CPlayer_Manager::Player2_Win()
-{
-	return m_Player2_Win;
-}
+
 
 bool CPlayer_Manager::Draw_Battle()
 {

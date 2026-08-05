@@ -12,7 +12,7 @@ CBallScore& CBallScore::GetInstance()
 
 //コンストラクタ
 CBallScore::CBallScore(void)
-	:m_Player1Score(0)
+	: m_Player1Score(0)
 	, m_Player2Score(0)
 	, m_Player1Magenta(0)
 	, m_Player1Cyan(0)

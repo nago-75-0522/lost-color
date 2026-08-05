@@ -32,6 +32,9 @@ void CGame_Result::Update()
 {
 	namespace controller = vivid::controller;
 	namespace keyboard = vivid::keyboard;
+
+	
+
 	if (keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
 	{
 		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
@@ -86,7 +89,7 @@ void CGame_Result::Update()
 
 		}
 	}
-	if (CPlayer_Manager::GetInstance().Player2_Win() == true&&!CPlayer_Manager::GetInstance().Draw_Battle())
+	if (CPlayer_Manager::GetInstance().Player1_Win() == false&&!CPlayer_Manager::GetInstance().Draw_Battle())
 	{
 		if (!CColor_Select::GetInstance().GetCyan() &&
 			!CColor_Select::GetInstance().GetYellow() &&
@@ -142,7 +145,7 @@ void CGame_Result::Draw()
 		vivid::DrawText(40, "DRAW", vivid::Vector2{ vivid::WINDOW_WIDTH * 0.5,vivid::WINDOW_HEIGHT * 0.5 });
 	 else if (CPlayer_Manager::GetInstance().Player1_Win())
 		vivid::DrawText(40,"WIN", vivid::Vector2{ 350,250 });
-	 else if(CPlayer_Manager::GetInstance().Player2_Win())
+	 else if(!CPlayer_Manager::GetInstance().Player1_Win())
 		vivid::DrawText(40,"WIN", vivid::Vector2{830,250 });
 
 	if (m_Player1_Ready)

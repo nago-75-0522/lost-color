@@ -46,6 +46,11 @@ void CMinigame_Manager::SetGame(MINIGAME_ID game)
 	m_Game = game;
 }
 
+MINIGAME_ID CMinigame_Manager::GetGame()
+{
+	return m_Game;
+}
+
 CMinigame_Manager& CMinigame_Manager::GetInstance()
 {
 	static CMinigame_Manager instance;

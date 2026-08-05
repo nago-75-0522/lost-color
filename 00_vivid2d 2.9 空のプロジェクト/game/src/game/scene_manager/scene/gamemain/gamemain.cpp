@@ -159,7 +159,7 @@ void CGamemain::StageSelect(void)
 		}
 	}
 
-	if (CPlayer_Manager::GetInstance().Player2_Win() == false)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -248,7 +248,7 @@ void CGamemain::StagePic(void)
 	}
 
 	//コントローラー用
-	if (CPlayer_Manager::GetInstance().Player2_Win() == false)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{
 			switch (m_Now_Select)
