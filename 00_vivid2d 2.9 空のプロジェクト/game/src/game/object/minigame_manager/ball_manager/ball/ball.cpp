@@ -163,7 +163,7 @@ void CBall::IniOld()
 
 
 //当たり判定
-//内容は(円)と籠(四角)の判定
+//内容は(矩形)と(矩形)の判定
 bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 {
 	for (int i = 0; i < m_max_ball; i++)
@@ -280,52 +280,170 @@ CBall& CBall::GetInstance()
 
 void CBall::AddScore(BALL& ball, int playerNo)
 {
-	switch (ball.m_color)
+	//個数
+	if (playerNo == 1)
 	{
-	case BALL_COLOR::MAGENTA:
+		switch (ball.m_color)
+		{
+		case BALL_COLOR::MAGENTA:
+			CBallScore::GetInstance().AddPlayer1Magenta();
+			break;
+		case BALL_COLOR::CYAN:
+			CBallScore::GetInstance().AddPlayer1Cyan();
+			break;
+		case BALL_COLOR::YELLOW:
+			CBallScore::GetInstance().AddPlayer1Yellow();
+			break;
+		}
+	}
+	else
+	{
+		switch (ball.m_color)
+		{
+		case BALL_COLOR::MAGENTA:
+			CBallScore::GetInstance().AddPlayer2Magenta();
+			break;
+		case BALL_COLOR::CYAN:
+			CBallScore::GetInstance().AddPlayer2Cyan();
+			break;
+		case BALL_COLOR::YELLOW:
+			CBallScore::GetInstance().AddPlayer2Yellow();
+			break;
+		}
+
+	}
+
+	//点数
+	COLOR_ROLE role = GetColorRole(ball.m_color);
+
+	//共通色のみ20点
+	int score = 10;
+	if(role == COLOR_ROLE::COMMON)
+		score = 20;
+
+	switch (role)
+	{
+	case COLOR_ROLE::PLAYER1:
 
 		//誰が取っても1Pの得点
-		CBallScore::GetInstance().AddPlayer1Score(ball.m_score);
-		if (playerNo == 1)
-		{
-			CBallScore::GetInstance().AddPlayer1Magenta();
-		}
-		else
-		{
-			CBallScore::GetInstance().AddPlayer2Magenta();
-		}
+		CBallScore::GetInstance().AddPlayer1Score(score);
 		break;
 
-	case BALL_COLOR::CYAN:
+	case COLOR_ROLE::PLAYER2:
 
 		//誰が取っても2Pの得点
-		CBallScore::GetInstance().AddPlayer2Score(ball.m_score);
-		if (playerNo == 1)
-		{
-			CBallScore::GetInstance().AddPlayer1Cyan();
-		}
-		else
-		{
-			CBallScore::GetInstance().AddPlayer2Cyan();
-		}
+		CBallScore::GetInstance().AddPlayer2Score(score);
 		break;
 
-	case BALL_COLOR::YELLOW:
+	case COLOR_ROLE::COMMON:
 
 		//取った人の得点
 		if (playerNo == 1)
 		{
-			CBallScore::GetInstance().AddPlayer1Score(ball.m_score);
-			CBallScore::GetInstance().AddPlayer1Yellow();
+			CBallScore::GetInstance().AddPlayer1Score(score);
 		}
 		else
 		{
-			CBallScore::GetInstance().AddPlayer2Score(ball.m_score);
-			CBallScore::GetInstance().AddPlayer2Yellow();
+			CBallScore::GetInstance().AddPlayer2Score(score);
 		}
 		break;
 	}
 }
+
+CBall::COLOR_ROLE CBall::GetColorRole(BALL_COLOR color)
+{
+	//全色無効
+	if (!m_Magenta && !m_Cyan && !m_Yellow)
+	{
+		if (color == BALL_COLOR::MAGENTA)
+			return COLOR_ROLE::PLAYER1;//マゼンタは1p用
+		if (color == BALL_COLOR::CYAN)
+			return COLOR_ROLE::PLAYER2;//シアンは2p用
+
+		return COLOR_ROLE::COMMON;//残り(イエロー)は共通
+	}
+
+	int disableCount = (!m_Magenta ? 1 : 0) + 
+		(!m_Cyan ? 1 : 0) + (!m_Yellow ? 1 : 0);
+
+	//全色有効
+	if (disableCount == 0)
+	{
+		if (color == BALL_COLOR::MAGENTA)
+			return COLOR_ROLE::PLAYER1;
+		if (color == BALL_COLOR::CYAN)
+			return COLOR_ROLE::PLAYER2;
+		
+		return COLOR_ROLE::COMMON;
+	}
+
+	//1色消滅
+	if (disableCount == 1)
+	{
+		if (!m_Magenta)//マゼンタが消えた場合
+		{
+			if (color == BALL_COLOR::MAGENTA)
+				return COLOR_ROLE::COMMON;//マゼンタを共通色に
+			if (color == BALL_COLOR::YELLOW)
+				return COLOR_ROLE::PLAYER1;//イエローを1p用に
+
+			return COLOR_ROLE::PLAYER2;//残りを2p用に
+		}
+		if (!m_Cyan)//シアンが消えた場合
+		{
+			if (color == BALL_COLOR::CYAN)
+				return COLOR_ROLE::COMMON;//シアンを共通色に
+			if (color == BALL_COLOR::MAGENTA)
+				return COLOR_ROLE::PLAYER1;//マゼンタを1p用に
+
+			return COLOR_ROLE::PLAYER2;//残りを2p用に
+		}
+		if (!m_Yellow)//イエローが消えた場合
+		{
+			if (color == BALL_COLOR::YELLOW)
+				return COLOR_ROLE::COMMON;//イエローを共通色に
+			if (color == BALL_COLOR::MAGENTA)
+				return COLOR_ROLE::PLAYER1;//マゼンタを1p用に
+
+			return COLOR_ROLE::PLAYER2;//残りを2p用に
+		}
+	}
+
+	//2色消滅
+	if (disableCount == 2)
+	{
+		if (m_Yellow)//イエローが残った場合
+		{
+			if (color == BALL_COLOR::YELLOW)
+				return COLOR_ROLE::COMMON;//イエローを共通色に
+			if (color == BALL_COLOR::MAGENTA)
+				return COLOR_ROLE::PLAYER1;//マゼンタを1p用に
+
+			return COLOR_ROLE::PLAYER2;//残りを2p用に
+		}
+		if (m_Cyan)//シアンが残った場合
+		{
+			if (color == BALL_COLOR::CYAN)
+				return COLOR_ROLE::COMMON;//シアンを共通色に
+			if (color == BALL_COLOR::MAGENTA)
+				return COLOR_ROLE::PLAYER1;//マゼンタを1p用に
+
+			return COLOR_ROLE::PLAYER2;//残りを2p用に
+		}
+		if (m_Magenta)//マゼンタが残った場合
+		{
+			if (color == BALL_COLOR::MAGENTA)
+				return COLOR_ROLE::COMMON;//マゼンタを共通色に
+			if (color == BALL_COLOR::YELLOW)
+				return COLOR_ROLE::PLAYER1;//イエローを1p用に
+
+			return COLOR_ROLE::PLAYER2;//残りを2p用に
+		}
+	}
+
+	return COLOR_ROLE::COMMON;
+}
+
 //球の出現管理
 void CBall::SpawnBall(void)
 {
@@ -357,23 +475,20 @@ void CBall::SpawnBall(void)
 			if (type < 4)
 			{
 				ball.m_color = BALL_COLOR::MAGENTA;
-				ball.m_score = 10;
 			}
 			else if (type < 8)
 			{
 				ball.m_color = BALL_COLOR::CYAN;
-				ball.m_score = 10;
 			}
 			else
 			{
 				ball.m_color = BALL_COLOR::YELLOW;
-				ball.m_score = 20;
 			}
+
 			// 1個生成したら終了
 			break;
 		}
 	}
-
 }
 // 球の更新
 void CBall::UpdateBall(BALL& ball)

@@ -31,7 +31,6 @@ private:
 	CBall& operator=(const CBall& rhp) = delete;
 
 
-
 	// ボールの色
 	enum class BALL_COLOR
 	{
@@ -39,6 +38,14 @@ private:
 		CYAN,
 		YELLOW,
 		MAX,
+	};
+
+	//色の役割
+	enum class COLOR_ROLE
+	{
+		PLAYER1,
+		PLAYER2,
+		COMMON,
 	};
 
 	//ボールの状態
@@ -56,7 +63,6 @@ private:
 		vivid::Vector2 m_velocity;	  //速さ
 		float          m_radius;	  //半径
 		bool           m_activeFlag;  //有効・無効
-		int            m_score;		  //スコア
 		bool           m_isLanding;	  //着地フラグ(地面についているか)
 		vivid::Vector2 m_anchor;	  //基準点
 		vivid::Vector2 m_scale;		  //拡大率
@@ -69,6 +75,8 @@ private:
 
 	//スコア加算
 	void AddScore(BALL& ball, int playerNo);
+	//色の役割取得
+	COLOR_ROLE GetColorRole(BALL_COLOR color);
 	//球の出現管理
 	void SpawnBall(void);
 	//球の更新
