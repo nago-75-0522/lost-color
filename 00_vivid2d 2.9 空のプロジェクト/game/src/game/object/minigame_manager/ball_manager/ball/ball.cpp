@@ -443,6 +443,22 @@ CBall::COLOR_ROLE CBall::GetColorRole(BALL_COLOR color)
 
 	return COLOR_ROLE::COMMON;
 }
+//1pの画像色
+CBall::BALL_COLOR CBall::GetPlayer1Color()
+{
+	if(GetColorRole(BALL_COLOR::MAGENTA)==COLOR_ROLE::PLAYER1)
+		return BALL_COLOR::MAGENTA;
+
+	return BALL_COLOR::YELLOW;
+}
+//2pの画像色
+CBall::BALL_COLOR CBall::GetPlayer2Color()
+{
+	if (GetColorRole(BALL_COLOR::CYAN) == COLOR_ROLE::PLAYER2)
+		return BALL_COLOR::CYAN;
+
+	return BALL_COLOR::YELLOW;
+}
 
 //球の出現管理
 void CBall::SpawnBall(void)

@@ -1,4 +1,5 @@
 ﻿#include"ball_player2.h"
+#include"../../ball/ball.h"
 
 const int CBallPlayer2::m_width = 280;
 const int CBallPlayer2::m_height = 140;
@@ -183,7 +184,18 @@ void CBallPlayer2::Draw(void)
 	rect.top = (int)m_AnimeID * m_height;
 	rect.bottom = rect.top + m_height;
 
-	vivid::DrawTexture("data\\logo\\small_blue_2p.png",m_Player2MarkerPos);
+	//マーク
+	switch (CBall::GetInstance().GetPlayer2Color())
+	{
+	case CBall::BALL_COLOR::CYAN:
+		vivid::DrawTexture("data\\logo\\small_blue_2p.png", m_Player2MarkerPos);
+		break;
+
+	case CBall::BALL_COLOR::YELLOW:
+		vivid::DrawTexture("data\\logo\\small_yellow_2p.png", m_Player2MarkerPos);
+		break;
+	}
+
 	vivid::DrawTexture("data\\character1.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
 
 #ifdef _DEBUG/*デバックビルドのときのみ有効*/

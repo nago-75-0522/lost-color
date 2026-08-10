@@ -57,8 +57,8 @@ void CStage2::Update(void)
 
 	case STAGE2_STATE::RESULT:
 		++m_ResultTimer;
-		if (//m_ResultTimer >= 120
-			vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
+		if (m_ResultTimer >= 120
+			|| vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE)
 			|| vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B)
 			|| vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{

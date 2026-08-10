@@ -23,14 +23,6 @@ public:
 	bool GetOldCyan() { return m_Old_Cyan; }
 	bool GetOldYellow() { return m_Old_Yellow; }
 
-private:
-
-	//コピーコンストラクタ
-	CBall(const CBall& rhp) = delete;
-
-	CBall& operator=(const CBall& rhp) = delete;
-
-
 	// ボールの色
 	enum class BALL_COLOR
 	{
@@ -47,6 +39,19 @@ private:
 		PLAYER2,
 		COMMON,
 	};
+
+	//色の役割取得
+	COLOR_ROLE GetColorRole(BALL_COLOR color);
+
+	BALL_COLOR GetPlayer1Color();//1pの色
+	BALL_COLOR GetPlayer2Color();//2pの色
+
+private:
+
+	//コピーコンストラクタ
+	CBall(const CBall& rhp) = delete;
+
+	CBall& operator=(const CBall& rhp) = delete;
 
 	//ボールの状態
 	enum BALL_STATE
@@ -75,8 +80,6 @@ private:
 
 	//スコア加算
 	void AddScore(BALL& ball, int playerNo);
-	//色の役割取得
-	COLOR_ROLE GetColorRole(BALL_COLOR color);
 	//球の出現管理
 	void SpawnBall(void);
 	//球の更新
