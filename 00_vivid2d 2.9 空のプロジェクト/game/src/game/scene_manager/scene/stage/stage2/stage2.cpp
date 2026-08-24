@@ -4,6 +4,7 @@
 #include"../../../../object/minigame_manager/minigame_manager.h"
 #include"../../../../object/minigame_manager/ball_manager/ball_score/ball_score.h"
 #include"../../../../object/player_manager/player_manager.h"
+#include"../../../../object/player_manager/player_manager.h"
 
 CStage2& CStage2::GetInstance()
 {
@@ -27,19 +28,22 @@ void CStage2::Initialize(void)
 	m_ball_timer.Initialize();
 	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::BALL);
 	CMinigame_Manager::GetInstance().Initialize();
+	CPlayer_Manager::GetInstance().Initialize();
+
 	vivid::LoadSound("data\\sound\\BALL_BGM.wav");
 	vivid::PlaySound("data\\sound\\BALL_BGM.wav", true);
 }
 
 void CStage2::Update(void)
 {
-	CPlayer_Manager::GetInstance().Update();
 	switch (m_State)
 	{
 	case STAGE2_STATE::MAIN:
 		m_ResultTimer = 0;
 		m_ball_timer.Update();
 		CMinigame_Manager::GetInstance().Update();
+		CPlayer_Manager::GetInstance().Update();
+
 		//コントローラー用
 		if (m_ball_timer.IsTimeUp())
 		{
@@ -84,6 +88,7 @@ void CStage2::Draw(void)
 	if (m_State == STAGE2_STATE::MAIN)
 	{
 		CMinigame_Manager::GetInstance().Draw();
+		CPlayer_Manager::GetInstance().Draw();
 		m_ball_timer.Draw();
 	}
 	else

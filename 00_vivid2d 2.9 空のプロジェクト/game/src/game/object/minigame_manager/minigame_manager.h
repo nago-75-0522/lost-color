@@ -1,12 +1,14 @@
 ﻿#pragma once
 #include"fall/fall.h"
 #include"ball_manager/ball_manager.h"
+#include"race/race_manager/race_manager.h"
+
 enum class MINIGAME_ID
 {
 	NONE,
 	FALL,//ステージ１
 	BALL,//ステージ２
-	RUN,//ステージ３
+	RACE,//ステージ３
 };
 
 class CMinigame_Manager

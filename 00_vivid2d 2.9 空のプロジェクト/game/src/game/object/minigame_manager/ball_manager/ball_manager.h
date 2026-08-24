@@ -1,9 +1,6 @@
 ﻿#pragma once
 #pragma once
 #include"ball/ball.h"
-#include"ball_player_manager/ball_player1/ball_player1.h"
-#include"ball_player_manager/ball_player2/ball_player2.h"
-
 
 class CBallManager
 {
@@ -26,7 +23,4 @@ private:
 	CBallManager& operator=(const CBallManager& rhp) = delete;
 
 	~CBallManager(void) = default;
-
-	CBallPlayer1 m_ball_player1;
-	CBallPlayer2 m_ball_player2;
 };

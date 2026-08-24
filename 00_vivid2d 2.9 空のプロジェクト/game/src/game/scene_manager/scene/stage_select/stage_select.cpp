@@ -1,39 +1,33 @@
 //ステージ選択
-#include"gamemain.h"
+#include"stage_select.h"
 #include"..\..\scene_manager.h"
-#include"../../../object/player_manager/player_manager.h"
+#include"../../../object/player_manager/fall_player_mana/fall_player_mana.h"
 
 //定数
-const vivid::Vector2 CGamemain::m_bg_pos(0.0f, 0.0f);			//
-const int CGamemain::m_button_x[] = { 100,490 };//},880 };			//ステージの配置位置***
-const int CGamemain::m_button_y(100);							//ステージの配置高さ
-const int CGamemain::m_finger_width(100);						//選択やじるし
-const std::string CGamemain::m_button_file[] =
-{ "data\\stage1.png","data\\stage2.png" };//,"data\\stage3.png" };//ステージ画像***
+const vivid::Vector2 CStage_Select::m_bg_pos(0.0f, 0.0f);			//
+const int CStage_Select::m_button_x[] = { 100, 490 ,880 };			//ステージの配置位置***
+const int CStage_Select::m_button_y(100);							//ステージの配置高さ
+const int CStage_Select::m_finger_width(100);						//選択やじるし
+const std::string CStage_Select::m_button_file[] =
+{ "data\\stage1.png","data\\stage2.png" ,"data\\stage3.png" };//ステージ画像***
 
-const unsigned int CGamemain::m_select_button_color(0xff0000cd);
-
-
-
+const unsigned int CStage_Select::m_select_button_color(0xff0000cd);
 
 //インスタンス取得
-CGamemain& CGamemain::GetInstance()
+CStage_Select& CStage_Select::GetInstance()
 {
-	static CGamemain instance;
+	static CStage_Select instance;
 	return instance;
 }
 
-CGamemain::CGamemain()
+CStage_Select::CStage_Select()
 	: m_Now_Select(STAGE_SELECT::MAX)
 {
 }
 
-
-
 //初期化
-void CGamemain::Initialize(void)
+void CStage_Select::Initialize(void)
 {
-
 	namespace controller = vivid::controller;
 
 	m_Now_Select = STAGE_SELECT::STAGE1;//stage1選択スタート
@@ -57,9 +51,8 @@ void CGamemain::Initialize(void)
 }
 
 //更新
-void CGamemain::Update(void)
-{
-	
+void CStage_Select::Update(void)
+{	
 	namespace controller = vivid::controller;
 	// スティック入力取得
 	 m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
@@ -67,13 +60,11 @@ void CGamemain::Update(void)
 	/* ステージカウントが1～3の時 */
 	//ステージ選択中処理
 	StageSelect();
-
-
 	
 }
 
 //描画
-void CGamemain::Draw(void)
+void CStage_Select::Draw(void)
 {
 	vivid::DrawText(48, "gamemain", { 0.0f,0.0f });
 
@@ -89,10 +80,7 @@ void CGamemain::Draw(void)
 		//ボタン座標を入れる
 		m_Button_Pos = vivid::Vector2(m_button_x[i], m_button_y);
 
-
-
 		//ボタンの描画
-
 		if (i == (int)m_Now_Select)
 		{
 			//選択しているボタンを灰色にする
@@ -106,12 +94,12 @@ void CGamemain::Draw(void)
 }
 
 //解放
-void CGamemain::Finalize(void)
+void CStage_Select::Finalize(void)
 {
 }
 
 //選択処理
-void CGamemain::StageSelect(void)
+void CStage_Select::StageSelect(void)
 {
 	namespace controller = vivid::controller;
 	namespace keyboard = vivid::keyboard;
@@ -124,7 +112,7 @@ void CGamemain::StageSelect(void)
 	static float player1_prev_stick_x = 0.0f;
 	static float player2_prev_stick_x = 0.0f;
 
-	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
+	if (CFall_Player_Manager::GetInstance().Player1_Win() == false)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -161,7 +149,7 @@ void CGamemain::StageSelect(void)
 		}
 	}
 
-	else if (CPlayer_Manager::GetInstance().Player1_Win() == true) 
+	else if (CFall_Player_Manager::GetInstance().Player1_Win() == true)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -201,13 +189,13 @@ void CGamemain::StageSelect(void)
 }
 
 //ステージ決定
-void CGamemain::StagePic(void)
+void CStage_Select::StagePic(void)
 {
 	namespace controller = vivid::controller;
 	namespace keyboard = vivid::keyboard;
 
 	//コントローラー用
-	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
+	if (CFall_Player_Manager::GetInstance().Player1_Win() == false)
 		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||
 			keyboard::Trigger(keyboard::KEY_ID::S))
 	{
@@ -227,11 +215,11 @@ void CGamemain::StagePic(void)
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
 
-			/*
+			
 		case STAGE_SELECT::STAGE3:
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			break;
-			*///*********
+		
 
 		case STAGE_SELECT::MAX:
 			break;
@@ -241,7 +229,7 @@ void CGamemain::StagePic(void)
 	}
 
 	//コントローラー用
-	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
+	if (CFall_Player_Manager::GetInstance().Player1_Win() == true)
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B)||
 			keyboard::Trigger(keyboard::KEY_ID::DOWN))
 		{
@@ -260,11 +248,11 @@ void CGamemain::StagePic(void)
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 				break;
 
-				/*
+		
 			case STAGE_SELECT::STAGE3:
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 				break;
-				*///******
+			
 
 			case STAGE_SELECT::MAX:
 				break;
@@ -277,7 +265,7 @@ void CGamemain::StagePic(void)
 
 }
 
-STAGE_SELECT CGamemain::GetStageSelect()
+STAGE_SELECT CStage_Select::GetStageSelect()
 {
 	return m_Now_Select;
 }

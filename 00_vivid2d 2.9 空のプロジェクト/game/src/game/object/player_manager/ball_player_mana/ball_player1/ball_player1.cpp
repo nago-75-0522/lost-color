@@ -1,22 +1,22 @@
-﻿#include"ball_player2.h"
-#include"../../ball/ball.h"
+﻿#include"ball_player1.h"
+#include"../../../minigame_manager/ball_manager/ball/ball.h"
 
-const int CBallPlayer2::m_width = 280;
-const int CBallPlayer2::m_height = 140;
-const float CBallPlayer2::m_radius = 70.0f;
-const float CBallPlayer2::m_speed = 5.0;
-const vivid::Vector2 CBallPlayer2::m_player2_marker_size = { 64.0f,40.0f };
+const int CBallPlayer1::m_width = 280;
+const int CBallPlayer1::m_height = 140;
+const float CBallPlayer1::m_radius = 70.0f;
+const float CBallPlayer1::m_speed = 5.0;
+const vivid::Vector2 CBallPlayer1::m_player1_marker_size = { 64.0f,40.0f };
 
 //デバック用
-std::string Player2ID[] = { "STAND","RUN" };
+std::string Player1ID[] = { "STAND","RUN" };
 
 //各アニメーションのフレーム数
-const int CBallPlayer2::m_anime_frame[] = { 4,6 };
+const int CBallPlayer1::m_anime_frame[] = { 4,6 };
 //各アニメーションの切り替え時間
-const int CBallPlayer2::m_anime_time[] = { 10,10 };
+const int CBallPlayer1::m_anime_time[] = { 10,10 };
 
-CBallPlayer2::CBallPlayer2(void)
-	:m_Pos(0.0f, 0.0f)
+CBallPlayer1::CBallPlayer1(void)
+	: m_Pos(0.0f, 0.0f)
 	, m_Velocity(0.0f, 0.0f)
 	, m_Direction(CHARACTER_DIR::LEFT)
 	, m_DirectionNext(CHARACTER_DIR::LEFT)
@@ -27,7 +27,7 @@ CBallPlayer2::CBallPlayer2(void)
 {
 }
 
-void CBallPlayer2::ChangeAnime(ANIME_ID next)
+void CBallPlayer1::ChangeAnime(ANIME_ID next)
 {
 	if (m_AnimeID == next)
 		return;
@@ -37,7 +37,7 @@ void CBallPlayer2::ChangeAnime(ANIME_ID next)
 	m_AnimeTimer = 0;
 }
 
-void CBallPlayer2::Initialize(void)
+void CBallPlayer1::Initialize(void)
 {
 	m_basket.Initialize();
 
@@ -45,11 +45,11 @@ void CBallPlayer2::Initialize(void)
 	vivid::LoadTexture("data\\character1.png");
 
 	// 初期位置
-	m_Pos.x = vivid::GetWindowWidth() / 2.0f;
+	m_Pos.x = vivid::GetWindowWidth() / 4.0f;
 	m_Pos.y = m_stageset.GroundLine() - m_height;
 	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
-	m_Player2MarkerPos.x = m_Pos.x + m_width / 2 - m_player2_marker_size.x / 2;
-	m_Player2MarkerPos.y = m_stageset.GroundLine();
+	m_Player1MarkerPos.x = m_Pos.x + m_width / 2 - m_player1_marker_size.x / 2;
+	m_Player1MarkerPos.y = m_stageset.GroundLine();
 
 	// 速さ
 	m_Velocity.x = 0.0f;
@@ -64,13 +64,13 @@ void CBallPlayer2::Initialize(void)
 	m_DirectionNext = CHARACTER_DIR::LEFT;
 }
 
-void CBallPlayer2::Update(void)
+void CBallPlayer1::Update(void)
 {
 	namespace controller = vivid::controller;
 	namespace keyboard = vivid::keyboard;
 
 	// 左スティック取得
-	vivid::Vector2 stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
+	vivid::Vector2 stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 
 	// デッドゾーン設定
 	const float DEAD_ZONE = 0.5f;
@@ -78,8 +78,8 @@ void CBallPlayer2::Update(void)
 	m_MoveInput = false;
 
 	// 移動方法
-	if (keyboard::Button(keyboard::KEY_ID::RIGHT) || stick.x > DEAD_ZONE ||
-		controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT))
+	if (keyboard::Button(keyboard::KEY_ID::D) || stick.x > DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
 	{
 		m_MoveInput = true;
 		if (stick.x > DEAD_ZONE)
@@ -92,8 +92,8 @@ void CBallPlayer2::Update(void)
 		}
 		m_DirectionNext = CHARACTER_DIR::RIGHT;
 	}
-	else if (keyboard::Button(keyboard::KEY_ID::LEFT) || stick.x < -DEAD_ZONE ||
-		controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT))
+	else if (keyboard::Button(keyboard::KEY_ID::A) || stick.x < -DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
 	{
 		m_MoveInput = true;
 		if (stick.x < -DEAD_ZONE)
@@ -121,28 +121,32 @@ void CBallPlayer2::Update(void)
 	m_Pos += m_Velocity;
 
 	//マーカーの位置
-	m_Player2MarkerPos.x = m_Pos.x + m_width / 2 - m_player2_marker_size.x / 2;
-	m_Player2MarkerPos.y = m_stageset.GroundLine();
+	m_Player1MarkerPos.x = m_Pos.x + m_width / 2 - m_player1_marker_size.x / 2;
+	m_Player1MarkerPos.y = m_stageset.GroundLine();
 
 	//カゴ
 	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
 
 	//壁判定 
-	if (m_Pos.x > vivid::WINDOW_WIDTH - (m_width / 2 + m_radius / 2))
+	float m_BasketLeft = m_basket.GetPosition().x;	//カゴの左端
+	float m_BasketRight = m_BasketLeft + m_basket.GetWidth();//カゴの右端
+
+	// 左壁
+	if (m_BasketLeft < 0.0f)
 	{
-		m_Pos.x = vivid::WINDOW_WIDTH - (m_width / 2 + m_radius / 2);
+		m_Pos.x -= m_BasketLeft;
 		m_Velocity.x = 0.0f;
 	}
-	if (m_Pos.x < 0.0f - (m_width / 2 - m_radius / 2))
+	// 右壁
+	if (m_BasketRight > vivid::WINDOW_WIDTH)
 	{
-		m_Pos.x = 0.0f - (m_width / 2 - m_radius / 2);
+		m_Pos.x -= m_BasketRight - vivid::WINDOW_WIDTH;
 		m_Velocity.x = 0.0f;
 	}
 	if (m_Pos.y + m_height > m_stageset.GroundLine())
 	{
 		m_Pos.y = m_stageset.GroundLine() - m_height;
 		m_Velocity.y = 0.0f;
-
 	}
 
 	// アニメーション
@@ -155,23 +159,20 @@ void CBallPlayer2::Update(void)
 		ChangeAnime(ANIME_ID::STAND);
 	}
 
-	//アニメーション更新
+	// アニメ－ションの更新
+	//タイマー－の更新
 	++m_AnimeTimer;
 
 	if (m_AnimeTimer > m_anime_time[(int)m_AnimeID])
 	{
+		//タイマーリセット
 		m_AnimeTimer = 0;
-
-		++m_AnimeFrame;
-
-		if (m_AnimeFrame >= m_anime_frame[(int)m_AnimeID])
-		{
-			m_AnimeFrame = 0;
-		}
+		//フレーム番号＊１フレームの幅(アニメーションフレーム×幅)
+		++m_AnimeFrame %= m_anime_frame[(int)m_AnimeID];
 	}
 }
 
-void CBallPlayer2::Draw(void)
+void CBallPlayer1::Draw(void)
 {
 	m_basket.Draw();
 
@@ -185,47 +186,46 @@ void CBallPlayer2::Draw(void)
 	rect.bottom = rect.top + m_height;
 
 	//マーク
-	switch (CBall::GetInstance().GetPlayer2Color())
+	switch (CBall::GetInstance().GetPlayer1Color())
 	{
-	case CBall::BALL_COLOR::CYAN:
-		vivid::DrawTexture("data\\logo\\small_blue_2p.png", m_Player2MarkerPos);
+	case CBall::BALL_COLOR::MAGENTA:
+		vivid::DrawTexture("data\\logo\\small_pink_1p.png", m_Player1MarkerPos);
 		break;
 
 	case CBall::BALL_COLOR::YELLOW:
-		vivid::DrawTexture("data\\logo\\small_yellow_2p.png", m_Player2MarkerPos);
+		vivid::DrawTexture("data\\logo\\small_yellow_1p.png", m_Player1MarkerPos);
 		break;
 	}
 
 	vivid::DrawTexture("data\\character1.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
 
 #ifdef _DEBUG/*デバックビルドのときのみ有効*/
-	vivid::DrawText(40, Player2ID[(int)m_AnimeID], vivid::Vector2(0.0f, 100.0f));//表示アニメーション
-
+	vivid::DrawText(40, Player1ID[(int)m_AnimeID], vivid::Vector2(0.0f, 100.0f));//表示アニメーション
 	vivid::DrawText(40, std::to_string(m_Velocity.x), { 0.0f, 50.0f });//速さ
 #endif
 }
 
-void CBallPlayer2::Finalize(void)
+void CBallPlayer1::Finalize(void)
 {
 }
 
-vivid::Vector2 CBallPlayer2::GetCenterPosition(void)
+vivid::Vector2 CBallPlayer1::GetCenterPosition(void)
 {
 	return m_Pos + vivid::Vector2(m_width / 2.0f, m_height / 2.0f);
 }
 
-float CBallPlayer2::GetRadius(void)
+float CBallPlayer1::GetRadius(void)
 {
 	return m_radius;
 }
 
-CBallPlayer2& CBallPlayer2::GetInstance()
-{
-	static CBallPlayer2 instanse;
-	return instanse;
-}
-
-CBasket& CBallPlayer2::GetBasket()
+CBasket& CBallPlayer1::GetBasket()
 {
 	return m_basket;
+}
+
+CBallPlayer1& CBallPlayer1::GetInstance()
+{
+	static CBallPlayer1 instanse;
+	return instanse;
 }

@@ -7,11 +7,11 @@ enum class STAGE_SELECT
 {
 	STAGE1,//止まるな危険
 	STAGE2,//玉入れ
-    //STAGE3,//レース
+    STAGE3,//レース
 	MAX,
 };
 
-class CGamemain :public IScene
+class CStage_Select :public IScene
 {
 public:
 
@@ -38,17 +38,17 @@ public:
 	STAGE_SELECT GetStageSelect();
 
 	//インスタンス呼び出す
-	static CGamemain& GetInstance();
+	static CStage_Select& GetInstance();
 
 
 private:
-	CGamemain(void);
+	CStage_Select(void);
 	//コピーコンストラクタ
-	CGamemain(const CGamemain& rhp) = delete;
+	CStage_Select(const CStage_Select& rhp) = delete;
 
-	CGamemain& operator=(const CGamemain& rhp) = delete;
+	CStage_Select& operator=(const CStage_Select& rhp) = delete;
 
-	~CGamemain(void) = default;
+	~CStage_Select(void) = default;
 #if 1
 	/* 選択ボタン系 */
 	//定数

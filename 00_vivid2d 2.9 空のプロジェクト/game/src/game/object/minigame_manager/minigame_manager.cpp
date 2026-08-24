@@ -9,8 +9,15 @@ void CMinigame_Manager::Initialize()
 {
 	switch (m_Game)
 	{
-	case MINIGAME_ID::FALL: CFall::GetInstance().Initialize(); break;
-	case MINIGAME_ID::BALL: CBallManager::GetInstance().Initialize(); break;
+	case MINIGAME_ID::FALL: 
+		CFall::GetInstance().Initialize(); 
+		break;
+	case MINIGAME_ID::BALL: 
+		CBallManager::GetInstance().Initialize(); 
+		break;
+	case MINIGAME_ID::RACE:
+		CRace_Manager::GetInstance().Initialize();
+		break;
 	}
 }
 
@@ -18,8 +25,15 @@ void CMinigame_Manager::Update()
 {
 	switch (m_Game)
 	{
-	case MINIGAME_ID::FALL: CFall::GetInstance().Update(); break;
-	case MINIGAME_ID::BALL: CBallManager::GetInstance().Update(); break;
+	case MINIGAME_ID::FALL: 
+		CFall::GetInstance().Update();
+		break;
+	case MINIGAME_ID::BALL: 
+		CBallManager::GetInstance().Update(); 
+		break;
+	case MINIGAME_ID::RACE:
+		CRace_Manager::GetInstance().Update();
+		break;
 	}
 }
 
@@ -27,8 +41,16 @@ void CMinigame_Manager::Draw()
 {
 	switch (m_Game)
 	{
-	case MINIGAME_ID::FALL: CFall::GetInstance().Draw(); break;
-	case MINIGAME_ID::BALL: CBallManager::GetInstance().Draw(); break;
+	case MINIGAME_ID::FALL: 
+		CFall::GetInstance().Draw(); 
+		break;
+	case MINIGAME_ID::BALL: 
+		CBallManager::GetInstance().Draw(); 
+		break;
+	case MINIGAME_ID::RACE:
+		CRace_Manager::GetInstance().Draw();
+		break;
+
 	}
 }
 
@@ -36,8 +58,16 @@ void CMinigame_Manager::Finalize()
 {
 	switch (m_Game)
 	{
-	case MINIGAME_ID::FALL: CFall::GetInstance().Finalize(); break;
-	case MINIGAME_ID::BALL: CBallManager::GetInstance().Finalize(); break;
+	case MINIGAME_ID::FALL: 
+		CFall::GetInstance().Finalize();
+		break;
+	case MINIGAME_ID::BALL: 
+		CBallManager::GetInstance().Finalize(); 
+		break;
+	case MINIGAME_ID::RACE:
+		CRace_Manager::GetInstance().Finalize();
+		break;
+
 	}
 }
 

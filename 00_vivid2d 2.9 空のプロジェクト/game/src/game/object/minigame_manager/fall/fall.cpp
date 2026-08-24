@@ -1,6 +1,6 @@
 #include "fall.h"
-#include"../../player_manager/player1/player1.h"
-#include"../../player_manager/player2/player2.h"
+#include"../../player_manager/fall_player_mana/fall_player1/fall_player1.h"
+#include"../../player_manager/fall_player_mana/fall_player2/fall_player2.h"
 #include"../../../scene_manager/scene/color_select/color_select.h"
 //定数
 const int CFall::m_map_chip_size = 64;//１マスの大きさ

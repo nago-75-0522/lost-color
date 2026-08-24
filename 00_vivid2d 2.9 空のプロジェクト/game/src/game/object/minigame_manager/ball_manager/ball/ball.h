@@ -104,8 +104,10 @@ private:
 	float m_BallCenterX;//ボールの中心座標x
 	float m_BallCenterY;//ボールの中心座標y
 	float m_OldBallCenterY;//前フレームの中心座標y
+
 	bool  m_Player1BasketCheck;//player1のかご判定
 	bool  m_Player2BasketCheck;//player2のかご判定
+
 	bool  m_Magenta;//マゼンタ生成判定
 	bool  m_Cyan;//シアン生成判定
 	bool  m_Yellow;//イエロー生成判定

@@ -1,5 +1,5 @@
-#include "player2.h"
-#include"../../minigame_manager/fall/fall.h"
+#include"fall_player2.h"
+#include"../../../minigame_manager/fall/fall.h"
 const int CPlayer2_Character::m_player2_chara_height = 48;
 const int CPlayer2_Character::m_player2_chara_width = 48;
 const int CPlayer2_Character::m_player2_chara_move_time = 12;

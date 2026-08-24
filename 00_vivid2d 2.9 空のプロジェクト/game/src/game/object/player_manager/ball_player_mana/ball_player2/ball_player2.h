@@ -1,17 +1,18 @@
 ﻿#pragma once
 #include "vivid.h"
-#include"../../ball_stageset/ball_stageset.h"
-#include"../../basket/basket.h"
+#include"../../../minigame_manager/ball_manager/ball_stageset/ball_stageset.h"
+#include"../../../minigame_manager/ball_manager/basket/basket.h"
 
-
-class CBallPlayer1
+class CBallPlayer2
 {
 public:
-	CBallPlayer1(void);
-	~CBallPlayer1(void) = default;
+	CBallPlayer2(void);
+	//コピーコンストラクタ
+	CBallPlayer2(const CBallPlayer2& rhp) = delete;
 
-	CBallPlayer1(const CBallPlayer1& rhp) = delete;
-	CBallPlayer1& operator=(const CBallPlayer1& rhp) = delete;
+	CBallPlayer2& operator=(const CBallPlayer2& rhp) = delete;
+
+	~CBallPlayer2(void) = default;
 
 	void Initialize(void);
 	void Update(void);
@@ -20,12 +21,12 @@ public:
 
 	// キャラクター中心位置
 	vivid::Vector2 GetCenterPosition(void);
+	// 半径取得
+	float GetRadius(void);
 
-	float GetRadius(void);	// 半径取得
+	static CBallPlayer2& GetInstance();
 
 	CBasket& GetBasket(); //カゴ
-
-	static CBallPlayer1& GetInstance();
 
 private:
 
@@ -44,7 +45,6 @@ private:
 	};
 
 	void ChangeAnime(ANIME_ID next);// アニメーションの切り替え
-
 	CBallStageSet	m_stageset;
 	CBasket		m_basket;
 
@@ -53,8 +53,7 @@ private:
 	static const int   m_height;	// 高さ(フレーム)
 	static const float m_radius;	// 半径(当たり判定用)
 	static const float m_speed;		// 移動速度
-	static const vivid::Vector2 m_player1_marker_size;
-
+	static const vivid::Vector2 m_player2_marker_size;
 
 	static const int   m_anime_frame[];
 	static const int   m_anime_time[];
@@ -68,5 +67,5 @@ private:
 	int            m_AnimeFrame;	//フレーム
 	int            m_AnimeTimer;	//タイマー
 	bool		   m_MoveInput;		//ボタン判定
-	vivid::Vector2 m_Player1MarkerPos;//1P表示
+	vivid::Vector2 m_Player2MarkerPos;//2P表示
 };

@@ -3,8 +3,8 @@
 #include"..\..\..\scene_manager.h"
 #include"../../../../object/minigame_manager/minigame_manager.h"
 #include"../../../../object/player_manager/player_manager.h"
-#include"../../../../object/player_manager/player1/player1.h"
-#include"../../../../object/player_manager/player2/player2.h"
+#include"../../../../object/player_manager/fall_player_mana/fall_player1/fall_player1.h"
+#include"../../../../object/player_manager/fall_player_mana/fall_player2/fall_player2.h"
 CStage1& CStage1::GetInstance()
 {
 	static CStage1 instance;

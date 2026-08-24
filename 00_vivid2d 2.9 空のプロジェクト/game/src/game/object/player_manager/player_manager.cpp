@@ -1,61 +1,78 @@
 #include "player_manager.h"
-#include"../../scene_manager/scene/stage/stage2/stage2.h"
 #include"../minigame_manager/minigame_manager.h"
+#include"fall_player_mana/fall_player_mana.h"
+#include"ball_player_mana/ball_player_mana.h"
+#include"race_player_mana/race_player_mana.h"
+
 CPlayer_Manager::CPlayer_Manager()
-	:m_Player1_Win(false)
-	,m_Draw(false)
 {
 }
+
 void CPlayer_Manager::Initialize()
 {
-	vivid::LoadSound("data\\sound\\fall.wav");
-	CPlayer1_Character::GetInstance().Initialize();
-	CPlayer2_Character::GetInstance().Initialize();
-	
-	m_Draw = false;
+	switch (CMinigame_Manager::GetInstance().GetGame())
+	{
+	case MINIGAME_ID::FALL:
+		CFall_Player_Manager::GetInstance().Initialize();
+		break;
+	case MINIGAME_ID::BALL:
+		CBall_Player_Manager::GetInstance().Initialize();
+		break;
+	case MINIGAME_ID::RACE:
+		CRace_Player_Manager::GetInstance().Initialize();
+		break;
+	}
 }
 
 void CPlayer_Manager::Update()
 {
-	if (CMinigame_Manager::GetInstance().GetGame() == MINIGAME_ID::FALL)
+	switch (CMinigame_Manager::GetInstance().GetGame())
 	{
-		CPlayer1_Character::GetInstance().Update();
-		CPlayer2_Character::GetInstance().Update();
+	case MINIGAME_ID::FALL:
+		CFall_Player_Manager::GetInstance().Update();
+		break;
+	case MINIGAME_ID::BALL:
+		CBall_Player_Manager::GetInstance().Update();
+		break;
+	case MINIGAME_ID::RACE:
+		CRace_Player_Manager::GetInstance().Update();
+		break;
 	}
-	if (CPlayer1_Character::GetInstance().GetScale().x <= 0 &&
-		CPlayer2_Character::GetInstance().GetScale().x <= 0 ||
-		CStage2::GetInstance().GetDraw()==true)
-	{
-		m_Draw = true;
-	}
-	else if (CPlayer2_Character::GetInstance().GetScale().x <= 0||
-		CStage2::GetInstance().GetWinner()==true)
-	{
-		m_Player1_Win = true;
-	}
-	else if (CPlayer1_Character::GetInstance().GetScale().x <= 0||
-		CStage2::GetInstance().GetWinner() == false)
-	{
-		m_Player1_Win = false;
-	}
+
 }
 
 void CPlayer_Manager::Draw()
 {
-	if (CMinigame_Manager::GetInstance().GetGame() == MINIGAME_ID::FALL)
+	switch (CMinigame_Manager::GetInstance().GetGame())
 	{
-		CPlayer1_Character::GetInstance().Draw();
-		CPlayer2_Character::GetInstance().Draw();
+	case MINIGAME_ID::FALL:
+		CFall_Player_Manager::GetInstance().Draw();
+		break;
+	case MINIGAME_ID::BALL:
+		CBall_Player_Manager::GetInstance().Draw();
+		break;
+	case MINIGAME_ID::RACE:
+		CRace_Player_Manager::GetInstance().Draw();
+		break;
 	}
+
 }
 
 void CPlayer_Manager::Finalize()
 {
-	if (CMinigame_Manager::GetInstance().GetGame() == MINIGAME_ID::FALL)
+	switch (CMinigame_Manager::GetInstance().GetGame())
 	{
-		CPlayer1_Character::GetInstance().Finalize();
-		CPlayer2_Character::GetInstance().Finalize();
+	case MINIGAME_ID::FALL:
+		CFall_Player_Manager::GetInstance().Finalize();
+		break;
+	case MINIGAME_ID::BALL:
+		CBall_Player_Manager::GetInstance().Finalize();
+		break;
+	case MINIGAME_ID::RACE:
+		CRace_Player_Manager::GetInstance().Finalize();
+		break;
 	}
+
 }
 
 CPlayer_Manager& CPlayer_Manager::GetInstance()

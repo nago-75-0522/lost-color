@@ -1,6 +1,4 @@
 #pragma once
-#include"player1/player1.h"
-#include"player2/player2.h"
 
 class CPlayer_Manager
 {
@@ -11,8 +9,6 @@ public:
 	void Finalize();
 	static CPlayer_Manager& GetInstance();
 
-	bool Player1_Win() { return m_Player1_Win; }
-	bool Draw_Battle() { return m_Draw; }
 private:
 	CPlayer_Manager(void);
 	//コピーコンストラクタ
@@ -22,7 +18,4 @@ private:
 
 	~CPlayer_Manager(void) = default;
 
-	//変数
-	bool m_Player1_Win;
-	bool m_Draw;
 };

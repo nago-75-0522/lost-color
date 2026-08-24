@@ -16,7 +16,6 @@ public:
 	//インスタンス呼び出す
 	static CSceneManager& GetInstance();
 
-
 	//初期化
 	void Initialize();
 
@@ -41,10 +40,7 @@ public:
 
 	void ResetStageCount();//タイトルに行ったらリセットをかける
 
-
 private:
-
-
 
 	//コンストラクタ
 	CSceneManager(); //なにもしない
@@ -56,7 +52,6 @@ private:
 	CSceneManager(const CSceneManager& rhs) = delete;//コピーの禁止
 	CSceneManager& operator =(const CSceneManager& rhs) = delete;//代入の禁止
 
-
 	/* シーン */
 	IScene* m_Scene;		//シーンの保存本体
 	SCENE_ID m_CurrentID;	//現在のシーンID
@@ -66,9 +61,6 @@ private:
 	static const float m_fade_speed;//フェード速度
 	FADE	m_FadeState;			//フェード状態
 	float	m_FadeAlpha;			//フェード透明度
-
-
-
 
 	int m_StageCount;//ステージ回数
 };

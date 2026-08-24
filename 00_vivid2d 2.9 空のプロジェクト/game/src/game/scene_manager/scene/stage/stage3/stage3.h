@@ -4,7 +4,6 @@
 class CStage3 :public IScene
 {
 public:
-
 	//初期化
 	void Initialize(void)override;//多重定義
 	//更新

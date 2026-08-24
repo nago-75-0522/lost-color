@@ -2,7 +2,7 @@
 #include"scene/title/title.h"
 #include"scene/option_character/option.h"
 #include"../scene_manager/scene/color_select/color_select.h"
-#include"scene/gamemain/gamemain.h"
+#include"scene/stage_select/stage_select.h"
 #include"scene/game_risult/game_risult.h"
 #include"scene/stage/stage1/stage1.h"
 #include"scene/stage/stage2/stage2.h"
@@ -25,7 +25,8 @@ CSceneManager& CSceneManager::GetInstance()
 
 //初期化
 void CSceneManager::Initialize()
-{//フェードインから開始
+{
+	//フェードインから開始
 	m_FadeState = FADE::FADE_IN;
 	m_FadeAlpha = 1.0f;
 
@@ -43,63 +44,58 @@ void CSceneManager::Initialize()
 }
 void CSceneManager::Update()
 {
-switch (m_FadeState)
-{
-case FADE::FADE_NOME:
-
-	if (!m_Scene)
-		return;
-	m_Scene->Update();
-
-
-	break;
-
-case FADE::FADE_IN:
-	//画面を明るくする
-	m_FadeAlpha -= m_fade_speed * vivid::GetDeltaTime();
-
-	if (m_FadeAlpha <= 0.0f)
+	switch (m_FadeState)
 	{
-		m_FadeAlpha = 0.0f;
+	case FADE::FADE_NOME:
 
-		//フェード完了　通常にする
-		m_FadeState = FADE::FADE_NOME;
+		if (!m_Scene)
+			return;
+		m_Scene->Update();
 
-	}
+		break;
 
-	break;
+	case FADE::FADE_IN:
+		//画面を明るくする
+		m_FadeAlpha -= m_fade_speed * vivid::GetDeltaTime();
 
-case FADE::FADE_OUT:
-	//画面を暗くする
-	m_FadeAlpha += m_fade_speed * vivid::GetDeltaTime();
-
-	if (m_FadeAlpha >= 1.0f)
-	{
-		m_FadeAlpha = 1.0f;
-
-
-		//シーン変更
-		_ChangeScene();
-
-		//明るくする
-		m_FadeState = FADE::FADE_IN;
-#if 0
-		if (m_CurrentID != m_NextID)
+		if (m_FadeAlpha <= 0.0f)
 		{
-			_ChangeScene();
-			if (m_Scene)
-				m_Scene->Initialize();
+			m_FadeAlpha = 0.0f;
+
+			//フェード完了　通常にする
+			m_FadeState = FADE::FADE_NOME;
 		}
+		break;
+
+	case FADE::FADE_OUT:
+		//画面を暗くする
+		m_FadeAlpha += m_fade_speed * vivid::GetDeltaTime();
+
+		if (m_FadeAlpha >= 1.0f)
+		{
+			m_FadeAlpha = 1.0f;
+
+			//シーン変更
+			_ChangeScene();
+
+			//明るくする
+			m_FadeState = FADE::FADE_IN;
+#if 0
+			if (m_CurrentID != m_NextID)
+			{
+				_ChangeScene();
+				if (m_Scene)
+					m_Scene->Initialize();
+			}
 
 #endif 0
+		}
+		break;
+
+	default:
+		break;
 	}
-	break;
 
-default:
-	break;
-
-
-}
 }
 
 void CSceneManager::Draw()
@@ -159,8 +155,8 @@ void CSceneManager::_ChangeScene()
 		m_Scene = &COption::GetInstance();
 		break;
 
-	case SCENE_ID::GAMEMAIN:
-		m_Scene = &CGamemain::GetInstance();
+	case SCENE_ID::STAGE_SELECT:
+		m_Scene = &CStage_Select::GetInstance();
 		break;
 
 	case SCENE_ID::GAMERISULT:

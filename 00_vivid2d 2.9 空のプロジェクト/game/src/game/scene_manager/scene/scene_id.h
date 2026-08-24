@@ -6,7 +6,7 @@ enum class SCENE_ID
 	TITLE,		//タイトル
 	OPTION,		//コントローラ接続 設定 キャラクター紹介
 	COLOR_SELECT,//消す色を選択
-	GAMEMAIN,	//ゲームメイン
+	STAGE_SELECT,//ステージ選択
 	GAMERISULT,//ゲームリザルト
 	RESULT,		//リザルト
 	STAGE1,		//止まるな危険

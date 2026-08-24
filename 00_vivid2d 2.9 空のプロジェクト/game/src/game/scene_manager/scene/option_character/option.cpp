@@ -26,14 +26,14 @@ void COption::Update(void)
 	{
 		vivid::PlaySound("data\\sound\\click.mp3", false);
 		vivid::StopSound("data\\sound\\title_bgm.mp3");
-		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+		CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 	}
 	//コントローラー用
 	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 	{
 		vivid::PlaySound("data\\sound\\click.mp3", false);
 		vivid::StopSound("data\\sound\\title_bgm.mp3");
-		CSceneManager::GetInstance().Change(SCENE_ID::GAMEMAIN);
+		CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 	}
 }
 
