@@ -1,7 +1,6 @@
 ﻿#pragma once
 #pragma once
 #include"ball/ball.h"
-
 class CBallManager
 {
 public:

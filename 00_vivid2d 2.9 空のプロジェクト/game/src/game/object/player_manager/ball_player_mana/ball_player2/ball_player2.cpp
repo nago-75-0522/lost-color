@@ -5,6 +5,7 @@ const int CBallPlayer2::m_width = 280;
 const int CBallPlayer2::m_height = 140;
 const float CBallPlayer2::m_radius = 70.0f;
 const float CBallPlayer2::m_speed = 5.0;
+const float CBallPlayer2::m_jump_power = -15.0f;
 const vivid::Vector2 CBallPlayer2::m_player2_marker_size = { 64.0f,40.0f };
 
 //デバック用
@@ -110,13 +111,22 @@ void CBallPlayer2::Update(void)
 	{
 		m_Velocity.x = 0.0f;
 	}
+	//ジャンプ
+	if (keyboard::Button(keyboard::KEY_ID::UP) || stick.x < -DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::A))
+	{
+		//地面にいる時のみ
+		if (m_Pos.y + m_height >= m_stageset.GroundLine())
+			m_Velocity.y = m_jump_power;
+	}
 
 	// 向き変更時(スピードを０に)
 	if (m_Direction != m_DirectionNext)
 	{
 		m_Direction = m_DirectionNext;
 	}
-
+	//重力
+	m_Velocity.y += m_stageset.Gravity();
 	// 位置更新
 	m_Pos += m_Velocity;
 
@@ -128,16 +138,22 @@ void CBallPlayer2::Update(void)
 	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
 
 	//壁判定 
-	if (m_Pos.x > vivid::WINDOW_WIDTH - (m_width / 2 + m_radius / 2))
+	float m_BasketLeft = m_basket.GetPosition().x;	//カゴの左端
+	float m_BasketRight = m_BasketLeft + m_basket.GetWidth();//カゴの右端
+
+	// 左壁
+	if (m_BasketLeft < 0.0f)
 	{
-		m_Pos.x = vivid::WINDOW_WIDTH - (m_width / 2 + m_radius / 2);
+		m_Pos.x -= m_BasketLeft;
 		m_Velocity.x = 0.0f;
 	}
-	if (m_Pos.x < 0.0f - (m_width / 2 - m_radius / 2))
+	// 右壁
+	if (m_BasketRight > vivid::WINDOW_WIDTH)
 	{
-		m_Pos.x = 0.0f - (m_width / 2 - m_radius / 2);
+		m_Pos.x -= m_BasketRight - vivid::WINDOW_WIDTH;
 		m_Velocity.x = 0.0f;
 	}
+	//地面
 	if (m_Pos.y + m_height > m_stageset.GroundLine())
 	{
 		m_Pos.y = m_stageset.GroundLine() - m_height;
@@ -200,7 +216,6 @@ void CBallPlayer2::Draw(void)
 
 #ifdef _DEBUG/*デバックビルドのときのみ有効*/
 	vivid::DrawText(40, Player2ID[(int)m_AnimeID], vivid::Vector2(0.0f, 100.0f));//表示アニメーション
-
 	vivid::DrawText(40, std::to_string(m_Velocity.x), { 0.0f, 50.0f });//速さ
 #endif
 }
@@ -209,20 +224,46 @@ void CBallPlayer2::Finalize(void)
 {
 }
 
+const vivid::Vector2& CBallPlayer2::GetPosition() const
+{
+	return m_Pos;
+}
+float CBallPlayer2::GetLeft() const
+{
+	return m_Pos.x + 90.0f;
+}
+float CBallPlayer2::GetRight() const
+{
+	return m_Pos.x + 190.0f;
+}
+float CBallPlayer2::GetTop() const
+{
+	return m_Pos.y;
+}
+float CBallPlayer2::GetBottom() const
+{
+	return m_Pos.y + m_height;
+}
+
+
 vivid::Vector2 CBallPlayer2::GetCenterPosition(void)
 {
 	return m_Pos + vivid::Vector2(m_width / 2.0f, m_height / 2.0f);
 }
 
+void CBallPlayer2::AddPos(const vivid::Vector2& move)
+{
+	m_Pos += move;
+}
+
+void CBallPlayer2::StopMove()
+{
+	m_Velocity.x = 0.0f;
+}
+
 float CBallPlayer2::GetRadius(void)
 {
 	return m_radius;
-}
-
-CBallPlayer2& CBallPlayer2::GetInstance()
-{
-	static CBallPlayer2 instanse;
-	return instanse;
 }
 
 CBasket& CBallPlayer2::GetBasket()
