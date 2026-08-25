@@ -2,6 +2,9 @@
 #include"../../player_manager/fall_player_mana/fall_player1/fall_player1.h"
 #include"../../player_manager/fall_player_mana/fall_player2/fall_player2.h"
 #include"../../../scene_manager/scene/color_select/color_select.h"
+
+
+
 //定数
 const int CFall::m_map_chip_size = 64;//１マスの大きさ
 const int CFall::m_map_chip_count_width = vivid::WINDOW_WIDTH / m_map_chip_size;//マス（横）の数
@@ -16,10 +19,10 @@ const int CFall::m_map_height = 12;//縦のマスの数
 //コンストラクタ
 CFall::CFall()
 	:m_Map(0)
-	,m_Now_Map(0)
-	,m_Old_Cyan(true)
-	,m_Old_Yellow(true)
-	,m_Old_Magenta(true)
+	, m_Now_Map(0)
+	, m_Old_Cyan(true)
+	, m_Old_Yellow(true)
+	, m_Old_Magenta(true)
 {
 }
 
@@ -96,6 +99,7 @@ void CFall::Initialize()
 			}
 		}
 	}
+	CItem_Manager::GetInstance().Initialize();
 }
 
 //更新
@@ -107,28 +111,28 @@ void CFall::Update()
 		m_Old_Yellow = CColor_Select::GetInstance().GetYellow();
 	if (m_Old_Magenta)
 		m_Old_Magenta = CColor_Select::GetInstance().GetMagenta();
-	
-	
+
 
 	//配列で1P,2Pの位置を記憶
 	int x[2] =
 	{
-		(int)(CPlayer1_Character::GetInstance().GetCharaPos().x + m_chara_center) / m_map_chip_size,
-		(int)(CPlayer2_Character::GetInstance().GetCharaPos().x + m_chara_center) / m_map_chip_size
+		(int)(CFall_Player1::GetInstance().GetCharaPos().x + m_chara_center) / m_map_chip_size,
+		(int)(CFall_Player2::GetInstance().GetCharaPos().x + m_chara_center) / m_map_chip_size
 	};
 
 	int y[2] =
 	{
-		(int)(CPlayer1_Character::GetInstance().GetCharaPos().y + m_chara_center) / m_map_chip_size,
-		(int)(CPlayer2_Character::GetInstance().GetCharaPos().y + m_chara_center) / m_map_chip_size
+		(int)(CFall_Player1::GetInstance().GetCharaPos().y + m_chara_center) / m_map_chip_size,
+		(int)(CFall_Player2::GetInstance().GetCharaPos().y + m_chara_center) / m_map_chip_size
 	};
 
-	
+	CItem_Manager::GetInstance().Update();
 
 	for (int i = 0; i < 2; i++)
 	{
 		if (x[i] != m_Old_X[i] || y[i] != m_Old_Y[i] || --m_Floor_Timer[i] < 0)
 		{
+
 
 			m_Floor_Timer[i] = m_floor_time;
 
@@ -191,7 +195,6 @@ void CFall::Update()
 			m_Old_Y[i] = y[i];
 		}
 	}
-
 }
 
 //描画
@@ -220,6 +223,9 @@ void CFall::Draw()
 			vivid::DrawTexture(m_fall_chip_path, pos, 0xffffffff, rect);
 		}
 	}
+
+	CItem_Manager::GetInstance().Draw();
+
 }
 
 //解放

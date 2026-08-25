@@ -2,6 +2,7 @@
 #include"vivid.h"
 #include"fall_chip.h"
 #include<vector>
+#include"../../item_manager/item_manager.h"
 class CFall
 {
 public:
@@ -60,5 +61,6 @@ private:
 	bool m_Old_Magenta;
 
 
+	
 
 };

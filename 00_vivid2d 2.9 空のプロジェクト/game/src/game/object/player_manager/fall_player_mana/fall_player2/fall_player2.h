@@ -1,6 +1,7 @@
 #pragma once
 #include"vivid.h"
-class CPlayer2_Character
+
+class CFall_Player2
 {
 public:
 	void Initialize();
@@ -9,18 +10,19 @@ public:
 	void Finalize();
 	void WaitCharacter();
 	void MoveCharacter();
+	bool Hit_Item_Box();
 	vivid::Vector2 GetScale();
-	static CPlayer2_Character& GetInstance();
+	static CFall_Player2& GetInstance();
 
 	vivid::Vector2 GetCharaPos() { return m_Player2_Chara_Pos; }
 private:
-	CPlayer2_Character(void);
+	CFall_Player2(void);
 	//コピーコンストラクタ
-	CPlayer2_Character(const CPlayer2_Character& rhp) = delete;
+	CFall_Player2(const CFall_Player2& rhp) = delete;
 
-	CPlayer2_Character& operator=(const CPlayer2_Character& rhp) = delete;
+	CFall_Player2& operator=(const CFall_Player2& rhp) = delete;
 
-	~CPlayer2_Character(void) = default;
+	~CFall_Player2(void) = default;
 	enum class CHARA_DIRECTION
 	{
 		DOWN,

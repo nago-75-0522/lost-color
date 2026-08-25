@@ -1,16 +1,17 @@
 #include"fall_player2.h"
-#include"../../../minigame_manager/fall/fall.h"
-const int CPlayer2_Character::m_player2_chara_height = 48;
-const int CPlayer2_Character::m_player2_chara_width = 48;
-const int CPlayer2_Character::m_player2_chara_move_time = 12;
-const std::string CPlayer2_Character::m_player2_boy_path = "data\\character.png";
-const vivid::Vector2 CPlayer2_Character::m_player2_tree_size = { 64.0f,128.0f };
-const float CPlayer2_Character::m_player2_chara_move_speed = (float)CFall::GetInstance().GetMapChipSize()/ (float)m_player2_chara_move_time;
-const int CPlayer2_Character::m_player2_chara_center = 24;
-const std::string CPlayer2_Character::m_player2_marker_path = "data/logo/small_blue_2p.png";
-const vivid::Vector2 CPlayer2_Character::m_player2_marker_size = { 64.0f,40.0f };
+#include"../../../minigame_manager/fall_manager/fall.h"
 
-CPlayer2_Character::CPlayer2_Character()
+const int CFall_Player2::m_player2_chara_height = 48;
+const int CFall_Player2::m_player2_chara_width = 48;
+const int CFall_Player2::m_player2_chara_move_time = 12;
+const std::string CFall_Player2::m_player2_boy_path = "data\\character.png";
+const vivid::Vector2 CFall_Player2::m_player2_tree_size = { 64.0f,128.0f };
+const float CFall_Player2::m_player2_chara_move_speed = (float)CFall::GetInstance().GetMapChipSize()/ (float)m_player2_chara_move_time;
+const int CFall_Player2::m_player2_chara_center = 24;
+const std::string CFall_Player2::m_player2_marker_path = "data/logo/small_blue_2p.png";
+const vivid::Vector2 CFall_Player2::m_player2_marker_size = { 64.0f,40.0f };
+
+CFall_Player2::CFall_Player2()
 	: m_Player2_Chara_Pos{ 0.0f,0.0f }
 	, m_Player2_Chara_Rect{ 0,0,m_player2_chara_width,m_player2_chara_height }
 	, m_Player2_Chara_Speed{ 0.0f,0.0f }
@@ -24,7 +25,7 @@ CPlayer2_Character::CPlayer2_Character()
 {
 }
 
-void CPlayer2_Character::Initialize()
+void CFall_Player2::Initialize()
 {
 	m_Player2_Chara_Pos = { 1159.0f,647.0f };
 	m_Player2_Chara_State = CHARA_STATE::WAIT;
@@ -41,7 +42,7 @@ void CPlayer2_Character::Initialize()
 	m_Player2_Fall_Sound = true;
 }
 
-void CPlayer2_Character::Update()
+void CFall_Player2::Update()
 {
 	switch (m_Player2_Chara_State)
 	{
@@ -72,9 +73,10 @@ void CPlayer2_Character::Update()
 		}
 		m_Player2_Chara_Scale.x = m_Player2_Chara_Scale.y = cos((++m_Player2_Chara_Angle %= 720) * 3.14f / 360.0f);
 	}
+	Hit_Item_Box();
 }
 
-void CPlayer2_Character::Draw()
+void CFall_Player2::Draw()
 {
 	m_Player2_Chara_Rect.left = m_Player2_Chara_Anime_Frame * m_player2_chara_width;
 	m_Player2_Chara_Rect.right = m_Player2_Chara_Rect.left + m_player2_chara_width;
@@ -85,11 +87,11 @@ void CPlayer2_Character::Draw()
 	vivid::DrawTexture(m_player2_boy_path, m_Player2_Chara_Pos, 0xffffffff, m_Player2_Chara_Rect, m_Player2_Chara_Anchor, m_Player2_Chara_Scale);
 }
 
-void CPlayer2_Character::Finalize()
+void CFall_Player2::Finalize()
 {
 }
 
-void CPlayer2_Character::WaitCharacter()
+void CFall_Player2::WaitCharacter()
 {
 	namespace keyboard = vivid::keyboard;
 	namespace controller = vivid::controller;
@@ -156,7 +158,7 @@ void CPlayer2_Character::WaitCharacter()
 	}
 }
 
-void CPlayer2_Character::MoveCharacter()
+void CFall_Player2::MoveCharacter()
 {//移動時間の計算
 	if (++m_Player2_Chara_Move_Timer >= m_player2_chara_move_time)
 	{
@@ -179,13 +181,41 @@ void CPlayer2_Character::MoveCharacter()
 	}
 }
 
-vivid::Vector2 CPlayer2_Character::GetScale()
+bool CFall_Player2::Hit_Item_Box()
+{
+	for (int i = 0; i < CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM().size(); i++)
+	{
+		//短形Aの情報
+		vivid::Vector2 posA = m_Player2_Chara_Pos;
+		int wA = m_player2_chara_width;
+		int hA = m_player2_chara_height;
+		//短形Bの情報
+		vivid::Vector2 posB = CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_Pos(i);
+		int wB = CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_Size();
+		int hB = CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_Size();
+
+		//短形同士の辺の比較
+		if (posA.x<posB.x + wB//Aの左辺とBの右辺
+			&& posA.x + wA>posB.x//Aの右辺とBの左辺
+			&& posA.y<posB.y + hB//Aの右辺とBの下辺
+			&& posA.y + hA>posB.y//Aの下辺とBの上辺
+			)
+		{
+			CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM()
+				.erase(CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM().begin() + i);
+			return true;
+		}
+	}
+	return false;
+}
+
+vivid::Vector2 CFall_Player2::GetScale()
 {
 	return m_Player2_Chara_Scale;
 }
 
-CPlayer2_Character& CPlayer2_Character::GetInstance()
+CFall_Player2& CFall_Player2::GetInstance()
 {
-	static CPlayer2_Character instance;
+	static CFall_Player2 instance;
 	return instance;
 }

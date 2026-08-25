@@ -165,15 +165,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\object\item_manager\item\item.cpp" />
+    <ClCompile Include="src\game\object\item_manager\item_box\item_box.cpp" />
+    <ClCompile Include="src\game\object\item_manager\item_manager.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball\ball.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball_manager.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\fall_manager\fall.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\fall_manager\fall_manager.cpp" />
     <ClCompile Include="src\game\object\player_manager\ball_player_mana\ball_player1\ball_player1.cpp" />
     <ClCompile Include="src\game\object\player_manager\ball_player_mana\ball_player2\ball_player2.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball_score\ball_score.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball_stageset\ball_stageset.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball_timer\ball_timer.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\basket\basket.cpp" />
-    <ClCompile Include="src\game\object\minigame_manager\fall\fall.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\minigame_manager.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\race\race_manager\camera\camera.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\race\race_manager\map\map.cpp" />
@@ -207,8 +211,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\object\item_manager\high_jump\high_jump.h" />
+    <ClInclude Include="src\game\object\item_manager\item\item.h" />
+    <ClInclude Include="src\game\object\item_manager\item_box\item_box.h" />
+    <ClInclude Include="src\game\object\item_manager\item_manager.h" />
+    <ClInclude Include="src\game\object\item_manager\item_id.h" />
+    <ClInclude Include="src\game\object\item_manager\knock_back\knock_back.h" />
+    <ClInclude Include="src\game\object\item_manager\pull\pull.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\ball\ball.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\ball_manager.h" />
+    <ClInclude Include="src\game\object\minigame_manager\fall_manager\fall.h" />
+    <ClInclude Include="src\game\object\minigame_manager\fall_manager\fall_manager.h" />
     <ClInclude Include="src\game\object\player_manager\ball_player_mana\ball_player1\ball_player1.h" />
     <ClInclude Include="src\game\object\player_manager\ball_player_mana\ball_player2\ball_player2.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\ball_score\ball_score.h" />
@@ -216,8 +229,7 @@
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\ball_timer\ball_timer.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\basket\basket.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\number_def.h" />
-    <ClInclude Include="src\game\object\minigame_manager\fall\fall.h" />
-    <ClInclude Include="src\game\object\minigame_manager\fall\fall_chip.h" />
+    <ClInclude Include="src\game\object\minigame_manager\fall_manager\fall_chip.h" />
     <ClInclude Include="src\game\object\minigame_manager\minigame_manager.h" />
     <ClInclude Include="src\game\object\minigame_manager\race\race_manager\camera\camera.h" />
     <ClInclude Include="src\game\object\minigame_manager\race\race_manager\map\map.h" />

@@ -7,6 +7,11 @@ class CBallPlayer2
 {
 public:
 	CBallPlayer2(void);
+	//コピーコンストラクタ
+	CBallPlayer2(const CBallPlayer2& rhp) = delete;
+
+	CBallPlayer2& operator=(const CBallPlayer2& rhp) = delete;
+
 	~CBallPlayer2(void) = default;
 
 	void Initialize(void);
@@ -14,20 +19,14 @@ public:
 	void Draw(void);
 	void Finalize(void);
 
-
-	//キャラクターの矩形情報
-	float GetLeft() const;
-	float GetRight() const;
-	float GetTop() const;
-	float GetBottom() const;
-	const vivid::Vector2& GetPosition() const;
-
 	// キャラクター中心位置
 	vivid::Vector2 GetCenterPosition(void);
-	float GetRadius(void);// 半径取得
+	// 半径取得
+	float GetRadius(void);
+
+	static CBallPlayer2& GetInstance();
+
 	CBasket& GetBasket(); //カゴ
-	void AddPos(const vivid::Vector2& move);
-	void StopMove();
 
 private:
 
@@ -54,7 +53,6 @@ private:
 	static const int   m_height;	// 高さ(フレーム)
 	static const float m_radius;	// 半径(当たり判定用)
 	static const float m_speed;		// 移動速度
-	static const float m_jump_power;//ジャンプ力
 	static const vivid::Vector2 m_player2_marker_size;
 
 	static const int   m_anime_frame[];

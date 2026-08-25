@@ -42,7 +42,7 @@ void CStage1::Update(void)
 #endif
 
 	//コントローラー用
-	if (CPlayer1_Character::GetInstance().GetScale().x <= 0||CPlayer2_Character::GetInstance().GetScale().x <= 0)
+	if (CFall_Player1::GetInstance().GetScale().x <= 0||CFall_Player2::GetInstance().GetScale().x <= 0)
 	{
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 		CSceneManager::GetInstance().AddStageCount();

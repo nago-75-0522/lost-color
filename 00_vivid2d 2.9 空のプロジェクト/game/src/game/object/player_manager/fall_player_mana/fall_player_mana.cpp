@@ -13,29 +13,29 @@ CFall_Player_Manager& CFall_Player_Manager::GetInstance(void)
 void CFall_Player_Manager::Initialize(void)
 {
 	vivid::LoadSound("data\\sound\\fall.wav");
-	CPlayer1_Character::GetInstance().Initialize();
-	CPlayer2_Character::GetInstance().Initialize();
+	CFall_Player1::GetInstance().Initialize();
+	CFall_Player2::GetInstance().Initialize();
 
 	m_Draw = false;
 }
 
 void CFall_Player_Manager::Update(void)
 {
-	CPlayer1_Character::GetInstance().Update();
-	CPlayer2_Character::GetInstance().Update();
+	CFall_Player1::GetInstance().Update();
+	CFall_Player2::GetInstance().Update();
 
-	if (CPlayer1_Character::GetInstance().GetScale().x <= 0 &&
-		CPlayer2_Character::GetInstance().GetScale().x <= 0 ||
+	if (CFall_Player1::GetInstance().GetScale().x <= 0 &&
+		CFall_Player2::GetInstance().GetScale().x <= 0 ||
 		CStage2::GetInstance().GetDraw() == true)
 	{
 		m_Draw = true;
 	}
-	else if (CPlayer2_Character::GetInstance().GetScale().x <= 0 ||
+	else if (CFall_Player2::GetInstance().GetScale().x <= 0 ||
 		CStage2::GetInstance().GetWinner() == true)
 	{
 		m_Player1_Win = true;
 	}
-	else if (CPlayer1_Character::GetInstance().GetScale().x <= 0 ||
+	else if (CFall_Player1::GetInstance().GetScale().x <= 0 ||
 		CStage2::GetInstance().GetWinner() == false)
 	{
 		m_Player1_Win = false;
@@ -44,14 +44,14 @@ void CFall_Player_Manager::Update(void)
 
 void CFall_Player_Manager::Draw(void)
 {
-	CPlayer1_Character::GetInstance().Draw();
-	CPlayer2_Character::GetInstance().Draw();
+	CFall_Player1::GetInstance().Draw();
+	CFall_Player2::GetInstance().Draw();
 }
 
 void CFall_Player_Manager::Finalize(void)
 {
-	CPlayer1_Character::GetInstance().Finalize();
-	CPlayer2_Character::GetInstance().Finalize();
+	CFall_Player1::GetInstance().Finalize();
+	CFall_Player2::GetInstance().Finalize();
 }
 
 CFall_Player_Manager::CFall_Player_Manager(void)

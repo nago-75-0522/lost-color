@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include"fall/fall.h"
+#include"../../object/minigame_manager/fall_manager/fall.h"
 #include"ball_manager/ball_manager.h"
 #include"race/race_manager/race_manager.h"
 
