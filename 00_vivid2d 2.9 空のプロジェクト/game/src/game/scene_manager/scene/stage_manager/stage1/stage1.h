@@ -1,6 +1,6 @@
 #pragma once
 #include"..\..\..\scene\scene.h"
-
+#include"../phase/phase.h"
 
 
 class CStage1 :public IScene
@@ -27,4 +27,6 @@ private:
 
 	~CStage1(void) = default;
 
+	CPhase m_Phase;
+	bool m_Added;
 };

@@ -7,7 +7,7 @@ class Iitem
 {
 public:
 	Iitem();
-	~Iitem();
+	~Iitem()=default;
 
 	virtual void Initialize();
 	virtual void Update();

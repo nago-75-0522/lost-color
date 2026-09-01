@@ -9,7 +9,7 @@ const float CFall_Player1::m_player1_chara_move_speed = (float)CFall::GetInstanc
 const int CFall_Player1::m_player1_chara_center = 24;
 const std::string CFall_Player1::m_player1_marker_path = "data/logo/small_pink_1p.png";
 const vivid::Vector2 CFall_Player1::m_player1_marker_size = { 64.0f,40.0f };
-const int m_item_box_size=50;
+const int CFall_Player1::m_item_box_size = 50;
 
 CFall_Player1::CFall_Player1()
 	: m_Player1_Chara_Pos{ 0.0f,0.0f }
@@ -21,7 +21,9 @@ CFall_Player1::CFall_Player1()
 	, m_Player1_Chara_Anchor(m_player1_chara_center, m_player1_chara_center)
 	, m_Player1_Chara_Scale(1.0, 1.0)
 	, m_Player1_Chara_Angle(0)
-	,m_Player1_Marker_Pos{0.0f,0.0f}
+	, m_Player1_Marker_Pos{ 0.0f,0.0f }
+	, m_Player1_Get_Item(false)
+	, m_Item_ID(ITEM_ID::UNKNOW)
 {
 }
 
@@ -30,16 +32,19 @@ void CFall_Player1::Initialize()
 	m_Player1_Chara_Pos = { 72.0f,69.0f };
 	m_Player1_Chara_State = CHARA_STATE::WAIT;
 	m_Player1_Chara_Dir = CHARA_DIRECTION::DOWN;
-	m_Player1_Chara_Rect={ 0,0,m_player1_chara_width,m_player1_chara_height };
-	m_Player1_Chara_Speed={ 0.0f,0.0f };
-	m_Player1_Chara_Anime_Frame= 0;
-	m_Player1_Chara_Anime_Timer= 0;
-	m_Player1_Chara_Move_Timer= 0;
+	m_Player1_Chara_Rect = { 0,0,m_player1_chara_width,m_player1_chara_height };
+	m_Player1_Chara_Speed = { 0.0f,0.0f };
+	m_Player1_Chara_Anime_Frame = 0;
+	m_Player1_Chara_Anime_Timer = 0;
+	m_Player1_Chara_Move_Timer = 0;
 	m_Player1_Chara_Anchor = { m_player1_chara_center, m_player1_chara_center };
 	m_Player1_Chara_Scale = { 1.0, 1.0 };
-	m_Player1_Chara_Angle= 0;
-	m_Player1_Marker_Pos = {m_Player1_Chara_Pos.x,m_Player1_Chara_Pos.y-m_player1_marker_size.y};
+	m_Player1_Chara_Angle = 0;
+	m_Player1_Marker_Pos = { m_Player1_Chara_Pos.x,m_Player1_Chara_Pos.y - m_player1_marker_size.y };
 	m_Player1_Fall_Sound = true;
+	m_Player1_Get_Item = false;
+	m_Item_ID = ITEM_ID::UNKNOW;
+
 }
 
 void CFall_Player1::Update()
@@ -58,21 +63,22 @@ void CFall_Player1::Update()
 	m_Player1_Chara_Pos.x += m_Player1_Chara_Speed.x;
 	m_Player1_Chara_Pos.y += m_Player1_Chara_Speed.y;
 	m_Player1_Marker_Pos.x = m_Player1_Chara_Pos.x;
-	m_Player1_Marker_Pos.y = m_Player1_Chara_Pos.y-m_player1_marker_size.y;
+	m_Player1_Marker_Pos.y = m_Player1_Chara_Pos.y - m_player1_marker_size.y;
 
 	int x = (int)((m_Player1_Chara_Pos.x + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 	int y = (int)((m_Player1_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 
-	if (CFall::GetInstance().CheckEmpty(x,y) && m_Player1_Chara_Scale.x >= 0)
+	if (CFall::GetInstance().CheckEmpty(x, y) && m_Player1_Chara_Scale.x >= 0)
 	{
 		if (m_Player1_Fall_Sound)
 		{
 			m_Player1_Fall_Sound = false;
 			vivid::PlaySound("data\\sound\\fall.wav", false);
 		}
-		m_Player1_Chara_Scale.x=m_Player1_Chara_Scale.y= cos((++m_Player1_Chara_Angle %= 720) * 3.14f / 360.0f);
+		m_Player1_Chara_Scale.x = m_Player1_Chara_Scale.y = cos((++m_Player1_Chara_Angle %= 720) * 3.14f / 360.0f);
 	}
 	Hit_Item_Box();
+	Item_Lottery();
 }
 
 void CFall_Player1::Draw()
@@ -82,7 +88,21 @@ void CFall_Player1::Draw()
 	m_Player1_Chara_Rect.top = (int)m_Player1_Chara_Dir * m_player1_chara_height;
 	m_Player1_Chara_Rect.bottom = m_Player1_Chara_Rect.top + m_player1_chara_height;
 	vivid::DrawTexture(m_player1_marker_path, m_Player1_Marker_Pos);
-	vivid::DrawTexture(m_player1_boy_path, m_Player1_Chara_Pos,0xffffffff,m_Player1_Chara_Rect, m_Player1_Chara_Anchor, m_Player1_Chara_Scale);
+	vivid::DrawTexture(m_player1_boy_path, m_Player1_Chara_Pos, 0xffffffff, m_Player1_Chara_Rect, m_Player1_Chara_Anchor, m_Player1_Chara_Scale);
+	switch (m_Item_ID)
+	{
+	case ITEM_ID::HIGH_JUMP:
+		CItem_Manager::GetInstance().m_High_Jump_P1.Draw(vivid::Vector2(0.0f, 0.0f));
+		break;
+	case ITEM_ID::KNOCK_BACK:
+		break;
+	case ITEM_ID::PULL:
+		break;
+	case ITEM_ID::UNKNOW:
+		break;
+	default:
+		break;
+	}
 }
 
 void CFall_Player1::Finalize()
@@ -102,7 +122,7 @@ void CFall_Player1::Wait_Character()
 	int y = (int)((m_Player1_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 
 
-	if (!CFall::GetInstance().CheckEmpty(x,y))
+	if (!CFall::GetInstance().CheckEmpty(x, y))
 	{
 		if (keyboard::Button(keyboard::KEY_ID::W) || stick.y < -DEAD_ZONE ||
 			controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::UP))
@@ -201,10 +221,40 @@ bool CFall_Player1::Hit_Item_Box()
 		{
 			CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM()
 				.erase(CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM().begin() + i);
+			m_Player1_Get_Item = true;
 			return true;
 		}
 	}
 	return false;
+}
+
+bool CFall_Player1::Get_Item()
+{
+	return m_Player1_Get_Item;
+}
+
+void CFall_Player1::Item_Lottery()
+{
+
+	if (m_Player1_Get_Item)
+	{
+		m_Player1_Get_Item = false;
+		m_Item_ID = (ITEM_ID)(rand() % (int)ITEM_ID::UNKNOW);
+	}
+	switch (m_Item_ID)
+	{
+	case ITEM_ID::HIGH_JUMP:
+		CItem_Manager::GetInstance().m_High_Jump_P1.Use(*this);
+		break;
+	case ITEM_ID::KNOCK_BACK:
+		break;
+	case ITEM_ID::PULL:
+		break;
+	case ITEM_ID::UNKNOW:
+		break;
+	default:
+		break;
+	}
 }
 
 vivid::Vector2 CFall_Player1::GetScale()

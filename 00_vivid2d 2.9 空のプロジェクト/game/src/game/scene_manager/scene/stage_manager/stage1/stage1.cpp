@@ -3,8 +3,8 @@
 #include"..\..\..\scene_manager.h"
 #include"../../../../object/minigame_manager/minigame_manager.h"
 #include"../../../../object/player_manager/player_manager.h"
-#include"../../../../object/player_manager/fall_player_mana/fall_player1/fall_player1.h"
-#include"../../../../object/player_manager/fall_player_mana/fall_player2/fall_player2.h"
+#include"../../../../object/player_manager/fall_player_mana/fall_player_mana.h"
+
 CStage1& CStage1::GetInstance()
 {
 	static CStage1 instance;
@@ -13,6 +13,7 @@ CStage1& CStage1::GetInstance()
 }
 
 CStage1::CStage1()
+	:m_Added(false)
 {
 
 }
@@ -24,12 +25,18 @@ void CStage1::Initialize(void)
 	CPlayer_Manager::GetInstance().Initialize();
 	vivid::LoadSound("data\\sound\\FALL_BGM.wav");
 	vivid::PlaySound("data\\sound\\FALL_BGM.wav", true);
+	m_Phase.Initialize();
+	m_Added = false;
 }
 
 void CStage1::Update(void)
 {
-	CMinigame_Manager::GetInstance().Update();
-	CPlayer_Manager::GetInstance().Update();
+	m_Phase.Update();
+	if (m_Phase.Get_Game_State() == CPhase::GAME_STATE::MAIN)
+	{
+		CMinigame_Manager::GetInstance().Update();
+		CPlayer_Manager::GetInstance().Update();
+	}
 
 #if 0
 	// デバッグ用：Dキーでクリア回数を+1
@@ -42,12 +49,16 @@ void CStage1::Update(void)
 #endif
 
 	//コントローラー用
-	if (CFall_Player1::GetInstance().GetScale().x <= 0||CFall_Player2::GetInstance().GetScale().x <= 0)
+	if (CFall_Player1::GetInstance().GetScale().x <= 0 || CFall_Player2::GetInstance().GetScale().x <= 0)
 	{
-		vivid::DrawText(100, "ClearCount +1", { 0,50 });
-		CSceneManager::GetInstance().AddStageCount();
+		if (!m_Added)
+		{
+			vivid::DrawText(100, "ClearCount +1", { 0,50 });
+			CSceneManager::GetInstance().AddStageCount();
+			m_Added = true;
+		}
 		vivid::StopSound("data\\sound\\FALL_BGM.wav");
-		CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
+		m_Phase.Get_Game_State() = CPhase::GAME_STATE::FINISH;
 	}
 }
 
@@ -57,7 +68,8 @@ void CStage1::Draw(void)
 	CMinigame_Manager::GetInstance().Draw();
 	CPlayer_Manager::GetInstance().Draw();
 	vivid::DrawText(48, "stage1", { 0.0f,0.0f });
-	
+	m_Phase.Draw();
+
 }
 
 void CStage1::Finalize(void)

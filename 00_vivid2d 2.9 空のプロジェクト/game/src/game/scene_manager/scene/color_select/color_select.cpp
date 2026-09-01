@@ -271,7 +271,9 @@ void CColor_Select::ColorSel(void)
 		}
 	}
 
-		
+	// 現在の値を保存
+	player1_prev_stick_x = m_Player1_Stick.x;
+	player2_prev_stick_x = m_Player2_Stick.x;
 
 	
 }
