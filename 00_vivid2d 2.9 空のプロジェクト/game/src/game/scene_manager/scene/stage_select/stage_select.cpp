@@ -2,14 +2,16 @@
 #include"stage_select.h"
 #include"..\..\scene_manager.h"
 #include"../../../object/player_manager/fall_player_mana/fall_player_mana.h"
+#include"stage_id.h"
 
 //定数
-const vivid::Vector2 CStage_Select::m_bg_pos(0.0f, 0.0f);			//
+const vivid::Vector2 CStage_Select::m_bg_pos(0.0f, 0.0f);			//背景
 const int CStage_Select::m_button_x[] = { 100, 490 ,880 };			//ステージの配置位置***
 const int CStage_Select::m_button_y(100);							//ステージの配置高さ
 const int CStage_Select::m_finger_width(100);						//選択やじるし
 const std::string CStage_Select::m_button_file[] =
-{ "data\\stage1.png","data\\stage2.png" ,"data\\stage3.png" };//ステージ画像***
+{ "data\\stage1.png","data\\stage2.png" ,"data\\stage3.png" };		//ステージ画像***
+STAGE_ID CStage_Select::stage_id = STAGE_ID::MAX;					//stage_id
 
 const unsigned int CStage_Select::m_select_button_color(0xff0000cd);
 
@@ -21,7 +23,7 @@ CStage_Select& CStage_Select::GetInstance()
 }
 
 CStage_Select::CStage_Select()
-	: m_Now_Select(STAGE_SELECT::MAX)
+	: m_Now_Select(STAGE_ID::MAX)
 {
 }
 
@@ -30,7 +32,7 @@ void CStage_Select::Initialize(void)
 {
 	namespace controller = vivid::controller;
 
-	m_Now_Select = STAGE_SELECT::STAGE1;//stage1選択スタート
+	m_Now_Select = STAGE_ID::STAGE1;//stage1選択スタート
 
 	m_Button_Pos = vivid::Vector2::ZERO;//位置
 
@@ -75,7 +77,7 @@ void CStage_Select::Draw(void)
 
 
 
-	for (int i = 0; i < (int)STAGE_SELECT::MAX; i++)
+	for (int i = 0; i < (int)STAGE_ID::MAX; i++)
 	{
 		//ボタン座標を入れる
 		m_Button_Pos = vivid::Vector2(m_button_x[i], m_button_y);
@@ -119,7 +121,7 @@ void CStage_Select::StageSelect(void)
 		if (player1_prev_stick_x <= DEAD_ZONE && m_Player1_Stick.x > DEAD_ZONE)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
-			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+			m_Now_Select = (STAGE_ID)(((int)m_Now_Select + 1) % (int)STAGE_ID::MAX);
 
 		}
 
@@ -127,7 +129,7 @@ void CStage_Select::StageSelect(void)
 		else if (player1_prev_stick_x >= -DEAD_ZONE && m_Player1_Stick.x < -DEAD_ZONE)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
-			m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
+			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
 			
 		}
 
@@ -137,7 +139,7 @@ void CStage_Select::StageSelect(void)
 		{
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
-			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+			m_Now_Select = (STAGE_ID)(((int)m_Now_Select + 1) % (int)STAGE_ID::MAX);
 		}
 
 		else if (controller::Trigger(controller::DEVICE_ID::PLAYER1,controller::BUTTON_ID::LEFT)||
@@ -145,7 +147,7 @@ void CStage_Select::StageSelect(void)
 		{
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
-			m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
+			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
 		}
 	}
 
@@ -156,14 +158,14 @@ void CStage_Select::StageSelect(void)
 		if (player2_prev_stick_x <= DEAD_ZONE && m_Player2_Stick.x > DEAD_ZONE)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
-			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+			m_Now_Select = (STAGE_ID)(((int)m_Now_Select + 1) % (int)STAGE_ID::MAX);
 		}
 
 		// 左に倒した瞬間
 		else if (player2_prev_stick_x >= -DEAD_ZONE && m_Player2_Stick.x < -DEAD_ZONE)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
-			m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
+			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
 		}
 
 		/* 十字キー実装 */
@@ -172,7 +174,7 @@ void CStage_Select::StageSelect(void)
 		{
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
-			m_Now_Select = (STAGE_SELECT)(((int)m_Now_Select + 1) % (int)STAGE_SELECT::MAX);
+			m_Now_Select = (STAGE_ID)(((int)m_Now_Select + 1) % (int)STAGE_ID::MAX);
 		}
 
 		else if (controller::Trigger(controller::DEVICE_ID::PLAYER2,controller::BUTTON_ID::LEFT)||
@@ -180,7 +182,7 @@ void CStage_Select::StageSelect(void)
 		{
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
-			m_Now_Select = (STAGE_SELECT)((((int)m_Now_Select - 1) + (int)STAGE_SELECT::MAX) % (int)STAGE_SELECT::MAX);
+			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
 		}
 	}
 	// 現在の値を保存
@@ -194,67 +196,74 @@ void CStage_Select::StagePic(void)
 	namespace controller = vivid::controller;
 	namespace keyboard = vivid::keyboard;
 
-	//コントローラー用
+	//pレイヤー1
 	if (CFall_Player_Manager::GetInstance().Player1_Win() == false)
 		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||
 			keyboard::Trigger(keyboard::KEY_ID::S))
 	{
 		switch (m_Now_Select)
 		{
-		case STAGE_SELECT::STAGE1:
+		case STAGE_ID::STAGE1:
 
+			CStage_Select::SetSelectStage(STAGE_ID::STAGE1);
 			vivid::StopSound("data\\sound\\title_bgm.mp3");
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			break;
 
-		case STAGE_SELECT::STAGE2:
-
+		case STAGE_ID::STAGE2:
+			CStage_Select::SetSelectStage(STAGE_ID::STAGE2);
 			vivid::PlaySound("data\\sound\\click.mp3", false);
 			vivid::StopSound("data\\sound\\title_bgm.mp3");
 
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			break;
 
 			
-		case STAGE_SELECT::STAGE3:
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+		case STAGE_ID::STAGE3:
+			CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			break;
 		
 
-		case STAGE_SELECT::MAX:
+		case STAGE_ID::MAX:
 			break;
 		default:
 			break;
 		}
 	}
 
-	//コントローラー用
+	//プレイヤー2
 	if (CFall_Player_Manager::GetInstance().Player1_Win() == true)
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B)||
 			keyboard::Trigger(keyboard::KEY_ID::DOWN))
 		{
 			switch (m_Now_Select)
 			{
-			case STAGE_SELECT::STAGE1:
+			case STAGE_ID::STAGE1:
+				CStage_Select::SetSelectStage(STAGE_ID::STAGE1);
+
 				vivid::PlaySound("data\\sound\\click.mp3", false);
 				vivid::StopSound("data\\sound\\title_bgm.mp3");
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 				break;
 
-			case STAGE_SELECT::STAGE2:
+			case STAGE_ID::STAGE2:
+				CStage_Select::SetSelectStage(STAGE_ID::STAGE2);
+
 				vivid::PlaySound("data\\sound\\click.mp3", false);
 				vivid::StopSound("data\\sound\\title_bgm.mp3");
 
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 				break;
 
 		
-			case STAGE_SELECT::STAGE3:
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+			case STAGE_ID::STAGE3:
+				CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 				break;
 			
 
-			case STAGE_SELECT::MAX:
+			case STAGE_ID::MAX:
 				break;
 			default:
 				break;
@@ -265,8 +274,15 @@ void CStage_Select::StagePic(void)
 
 }
 
-STAGE_SELECT CStage_Select::GetStageSelect()
+//決定したステージID保存
+void CStage_Select::SetSelectStage(STAGE_ID id)
 {
-	return m_Now_Select;
+	stage_id = id;
 }
 
+
+//決定したステージIDを取得
+STAGE_ID CStage_Select::GetStageID(void)
+{
+	return stage_id;
+}

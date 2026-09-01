@@ -3,6 +3,7 @@
 #include"../../scene_manager.h"
 #include"../../../object/minigame_manager/minigame_manager.h"
 #include"../../../object/player_manager/fall_player_mana/fall_player_mana.h"
+#include"..\stage_select\stage_id.h"
 //定数
 const vivid::Vector2 CColor_Select::m_panel_pos(0.0f, 0.0f);			//
 const int CColor_Select::m_button_x[] = { 100,490,880 };			//ステージの配置位置
@@ -56,19 +57,19 @@ void CColor_Select::Initialize()
 	m_Player1_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER2);
 
-	if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1 &&m_Stage1_Chosen)
+	if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1&& m_Stage1_Chosen)
 	{
 		m_Cyan = CFall::GetInstance().GetOldCyan();
 		m_Yellow = CFall::GetInstance().GetOldYellow();
 		m_Magenta = CFall::GetInstance().GetOldMagenta();
 	}
-	else if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2 && m_Stage2_Chosen)
+	else if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2 && m_Stage2_Chosen)
 	{
 		m_Cyan = CBall::GetInstance().GetOldCyan();
 		m_Yellow = CBall::GetInstance().GetOldYellow();
 		m_Magenta = CBall::GetInstance().GetOldMagenta();
 	}
-	else if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE3 && m_Stage3_Chosen)
+	else if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE3 && m_Stage3_Chosen)
 	{
 		m_Cyan = CBall::GetInstance().GetOldCyan();
 		m_Yellow = CBall::GetInstance().GetOldYellow();
@@ -94,41 +95,41 @@ void CColor_Select::Update()
 
 	if (!m_Cyan && !m_Yellow && !m_Magenta)
 	{
-		if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+		if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1)
 		{
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
 				&& CFall_Player_Manager::GetInstance().Player1_Win())
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
 				&& CFall_Player_Manager::GetInstance().Player1_Win())
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 		}
-		else if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+		else if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 		{
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
 				&& CFall_Player_Manager::GetInstance().Player1_Win())
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
 				&& CFall_Player_Manager::GetInstance().Player1_Win())
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 		}
-		else if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE3)
+		else if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE3)
 		{
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
 				&& CFall_Player_Manager::GetInstance().Player1_Win())
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE3);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
 				&& CFall_Player_Manager::GetInstance().Player1_Win())
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE3);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 		}
 	}
 }
@@ -292,19 +293,19 @@ void CColor_Select::ColorPic(void)
 			case COLOR::CYAN:
 				if (!m_Cyan)return;
 				m_Cyan = false;
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1)
 				{
 					m_Stage1_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 					vivid::StopSound("data\\sound\\title_bgm.mp3");
 
 				}
 
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 				{
 					m_Stage2_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 					vivid::StopSound("data\\sound\\title_bgm.mp3");
 
@@ -315,22 +316,22 @@ void CColor_Select::ColorPic(void)
 			case COLOR::YELLOW:
 				if (!m_Yellow)return;
 				m_Yellow = false;
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1)
 				{
 					m_Stage1_Chosen = true;
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 					vivid::StopSound("data\\sound\\title_bgm.mp3");
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 
 				}
 
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 				{
 					m_Stage2_Chosen = true;
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 					vivid::StopSound("data\\sound\\title_bgm.mp3");
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 
 				}
@@ -339,22 +340,21 @@ void CColor_Select::ColorPic(void)
 			case COLOR::MAGENTA:
 				if (!m_Magenta)return;
 				m_Magenta = false;
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1)
 				{
 					m_Stage1_Chosen = true;
 					vivid::StopSound("data\\sound\\title_bgm.mp3");
 					vivid::PlaySound("data\\sound\\click.mp3", false);
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
-
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 				}
 
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 				{
 					m_Stage2_Chosen = true;
 					vivid::StopSound("data\\sound\\title_bgm.mp3");
 					vivid::PlaySound("data\\sound\\click.mp3", false);
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 
 				}
@@ -386,17 +386,17 @@ void CColor_Select::ColorPic(void)
 
 				m_Cyan = false;
 
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1)
 				{
 					m_Stage1_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 				{
 					m_Stage2_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 				break;
@@ -404,17 +404,17 @@ void CColor_Select::ColorPic(void)
 			case COLOR::YELLOW:
 				if (!m_Yellow)return;
 				m_Yellow = false;
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1)
 				{
 					m_Stage1_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 				{
 					m_Stage2_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 				break;
@@ -422,17 +422,17 @@ void CColor_Select::ColorPic(void)
 			case COLOR::MAGENTA:
 				if (!m_Magenta)return;
 				m_Magenta = false;
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE1)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1)
 				{
 					m_Stage1_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE1);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 
-				if (CStage_Select::GetInstance().GetStageSelect() == STAGE_SELECT::STAGE2)
+				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 				{
 					m_Stage2_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE2);
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
 				break;

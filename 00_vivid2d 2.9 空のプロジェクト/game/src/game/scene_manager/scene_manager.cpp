@@ -1,13 +1,12 @@
-#include "scene_manager.h"
+﻿#include "scene_manager.h"
 #include"scene/title/title.h"
 #include"scene/option_character/option.h"
 #include"../scene_manager/scene/color_select/color_select.h"
 #include"scene/stage_select/stage_select.h"
 #include"scene/game_risult/game_risult.h"
-#include"scene/stage/stage1/stage1.h"
-#include"scene/stage/stage2/stage2.h"
-#include"scene/stage/stage3/stage3.h"
+#include"scene/stege_explanation/stage_explanation.h"
 #include"scene/result/result.h"
+#include"scene/stage_manager/stage_manager.h"
 
 const float CSceneManager::m_fade_speed = 1.0f;
 
@@ -47,7 +46,7 @@ void CSceneManager::Update()
 	switch (m_FadeState)
 	{
 	case FADE::FADE_NOME:
-
+		
 		if (!m_Scene)
 			return;
 		m_Scene->Update();
@@ -113,6 +112,7 @@ void CSceneManager::Draw()
 		unsigned int color = (alpha << 24);
 
 		vivid::DrawTexture("data\\fade.png", vivid::Vector2::ZERO, color);
+		
 	}
 }
 
@@ -159,24 +159,20 @@ void CSceneManager::_ChangeScene()
 		m_Scene = &CStage_Select::GetInstance();
 		break;
 
+	case SCENE_ID::STAGE_EXPLANATION:
+		m_Scene = &CStage_Explanation::GetInstance();
+		break;
+
+	case SCENE_ID::STAGE_MANAGER:
+		m_Scene = &CStageManager::GetInstance();
+		break;
+
 	case SCENE_ID::GAMERISULT:
 		m_Scene = &CGame_Result::GetInstance();
 		break;
 
 	case SCENE_ID::COLOR_SELECT:
 		m_Scene = &CColor_Select::GetInstance();
-		break;
-
-	case SCENE_ID::STAGE1:
-		m_Scene = &CStage1::GetInstance();
-		break;
-
-	case SCENE_ID::STAGE2:
-		m_Scene = &CStage2::GetInstance();
-		break;
-
-	case SCENE_ID::STAGE3:
-		m_Scene = &CStage3::GetInstance();
 		break;
 
 	case SCENE_ID::RESULT:

@@ -2,14 +2,15 @@
 
 enum class SCENE_ID
 {
-	DUMMY,		//ダミー
-	TITLE,		//タイトル
-	OPTION,		//コントローラ接続 設定 キャラクター紹介
-	COLOR_SELECT,//消す色を選択
-	STAGE_SELECT,//ステージ選択
-	GAMERISULT,//ゲームリザルト
-	RESULT,		//リザルト
-	STAGE1,		//止まるな危険
-	STAGE2,		//玉入れ
-	STAGE3,		//レース
+	DUMMY,				//ダミー
+	TITLE,				//タイトル
+	OPTION,				//コントローラ接続 設定 キャラクター紹介
+
+	STAGE_SELECT,		//ステージ選択
+	STAGE_EXPLANATION,	//ステージ説明
+	COLOR_SELECT,		//消す色を選択
+
+	STAGE_MANAGER,		//実際にプレイするステージ
+	GAMERISULT,			//ゲームリザルト
+	RESULT,				//リザルト
 };

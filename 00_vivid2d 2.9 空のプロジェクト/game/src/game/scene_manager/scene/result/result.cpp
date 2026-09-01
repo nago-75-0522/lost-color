@@ -4,7 +4,7 @@
 #include"../color_select/color_select.h"
 #include"../../../object/minigame_manager/minigame_manager.h"
 #include"../game_risult/game_risult.h"
-#include"../stage/stage2/stage2.h"
+#include"..\stage_manager\stage2\stage2.h"
 
 const vivid::Vector2 CResult::m_ScorePos = {420,300};
 
