@@ -1,21 +1,14 @@
 #pragma once
 #include"..\..\scene\scene.h"
 #include"vivid.h"
-
-//選択できるステージ
-enum class STAGE_SELECT
-{
-	STAGE1,//止まるな危険
-	STAGE2,//玉入れ
-    STAGE3,//レース
-	MAX,
-};
+#include"stage_id.h"
 
 class CStage_Select :public IScene
 {
 public:
 
-
+	//インスタンス呼び出す
+	static CStage_Select& GetInstance();
 
 	//初期化
 	void Initialize(void)override;//多重定義
@@ -35,10 +28,12 @@ public:
 	//決定処理
 	void StagePic(void);
 
-	STAGE_SELECT GetStageSelect();
+	//IDの保存処理
+	static void SetSelectStage(STAGE_ID id);
 
-	//インスタンス呼び出す
-	static CStage_Select& GetInstance();
+	//IDの取得処理
+	static STAGE_ID GetStageID(void);
+
 
 
 private:
@@ -55,23 +50,24 @@ private:
 	static const int m_finger_width;								//選択印(指)の幅
 	static const unsigned int m_select_button_color;				//選択中用の色
 	static const vivid::Vector2 m_bg_pos;						//タイトル画面の画像位置
-	static const std::string m_button_file[(int)STAGE_SELECT::MAX];//ボタン画像名
+	static const std::string m_button_file[(int)STAGE_ID::MAX];//ボタン画像名
+	static STAGE_ID  stage_id;//ステージ保存用id
 
 
 	//変数
 	vivid::Vector2 m_Button_Pos;	//選択中のボタンの座標
 	vivid::Vector2 m_Finger_Pos;	//選択印(指)の座標
-	//STAGE_SELECT m_Now_Select = STAGE_SELECT::MAX;	//選択中のボタン
+	//STAGE_ID m_Now_Select = STAGE_ID::MAX;	//選択中のボタン
 
 
 	/*	キーボード */
-	static const int m_button_x[(int)STAGE_SELECT::MAX];			//ボタンのx座標
+	static const int m_button_x[(int)STAGE_ID::MAX];			//ボタンのx座標
 	static const int m_button_y;									//ボタンのy座標
 
 	/* コントローラー */
 	vivid::Vector2 m_Player1_Stick;//スティックx左右 y上下
 	vivid::Vector2 m_Player2_Stick;//スティックx左右 y上下
-	STAGE_SELECT m_Now_Select;//選択中のボタン
+	STAGE_ID m_Now_Select;//選択中のボタン
 
 
 #endif

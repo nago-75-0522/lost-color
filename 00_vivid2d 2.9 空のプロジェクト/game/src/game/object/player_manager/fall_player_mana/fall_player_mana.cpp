@@ -1,5 +1,5 @@
 #include "fall_player_mana.h"
-#include"../../../scene_manager/scene/stage/stage2/stage2.h"
+#include"..\..\..\scene_manager\scene\stage_manager\stage2\stage2.h"
 #include"fall_player1/fall_player1.h"
 #include"fall_player2/fall_player2.h"
 
