@@ -11,12 +11,15 @@ public:
 	void Update(void);
 
 	void Draw(void);
-	
+
 	void Finalize(void);
 
 	int isUpNum(void); //どっちが加速レーンなのか確かめる
 
 	void SetNum(int num, PLAYER_CATEGORY category); //仮
+
+	//あたりかはずれのレーンの色を表すための数を入れるための関数
+	void SetColorRectNum(int win, int lose);
 
 	static CMap& GetInstance();
 private:
@@ -25,7 +28,7 @@ private:
 	CMap(const CMap& rhs);
 	CMap& operator =(const CMap& rhs);
 
-	void isCharaNumNow(vivid::Vector2& pos,float x,float y,float camera_posX); //該当する升目の値を返すために計算する関数
+	void isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_posX); //該当する升目の値を返すために計算する関数
 
 	static const int m_map_width;
 	static const int m_map_height;
@@ -39,4 +42,6 @@ private:
 	int m_Player1_Num; //仮 判定するときに使うやつ1p用
 	int m_Player2_Num; //仮 判定するときに使うやつ2p用
 
+	int m_Color_Win_Num; //当たりレーンの色の数 1or2or3（C,Y,M）
+	int m_Color_Lose_Num; //外れレーンの色の数 1or2or3（C,Y,M）
 };

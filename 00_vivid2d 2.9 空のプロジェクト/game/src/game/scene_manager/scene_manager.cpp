@@ -49,6 +49,7 @@ void CSceneManager::Update()
 		
 		if (!m_Scene)
 			return;
+
 		m_Scene->Update();
 
 		break;
@@ -99,7 +100,9 @@ void CSceneManager::Update()
 
 void CSceneManager::Draw()
 {
-	if (m_Scene)
+	if (!m_Scene)
+		return;
+
 		m_Scene->Draw();
 
 	// フェード中なら黒画像を重ねる

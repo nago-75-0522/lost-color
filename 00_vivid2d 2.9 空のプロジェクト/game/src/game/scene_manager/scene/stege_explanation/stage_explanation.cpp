@@ -45,12 +45,9 @@ void CStage_Explanation::Draw(void)
 		vivid::DrawText(48, "説明2", { 0.0f,0.0f });
 		break;
 
-
 	case STAGE_ID::STAGE3:
 		vivid::DrawText(48, "説明3", { 0.0f,0.0f });
 		break;
-
-	
 
 	default:
 		break;

@@ -3,7 +3,8 @@
 #include"..\..\..\scene_manager.h"
 #include"../../../../object/minigame_manager/minigame_manager.h"
 #include"../../../../object/player_manager/player_manager.h"
-#include"../../../../object/player_manager/fall_player_mana/fall_player_mana.h"
+#include"../../../../object/player_manager/fall_player_mana/fall_player1/fall_player1.h"
+#include"../../../../object/player_manager/fall_player_mana/fall_player2/fall_player2.h"
 
 CStage1& CStage1::GetInstance()
 {
@@ -15,7 +16,6 @@ CStage1& CStage1::GetInstance()
 CStage1::CStage1()
 	:m_Added(false)
 {
-
 }
 
 void CStage1::Initialize(void)

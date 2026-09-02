@@ -2,7 +2,6 @@
 #include"../../scene_manager.h"
 #include"../../../object/player_manager/player_manager.h"
 #include"../color_select/color_select.h"
-#include"../../../object/player_manager/fall_player_mana/fall_player_mana.h"
 
 const int CGame_Result::m_max_score = 999999999;//最大スコア
 const int CGame_Result::m_max_score_digiit = 9;//表示桁数
@@ -48,32 +47,35 @@ void CGame_Result::Update()
 		CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 	}
 	
-	if (CFall_Player_Manager::GetInstance().Player1_Win() == true&&!CFall_Player_Manager::GetInstance().Draw_Battle())
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true && !CPlayer_Manager::GetInstance().Draw_Battle())
 	{
 		if (!CColor_Select::GetInstance().GetCyan() &&
 			!CColor_Select::GetInstance().GetYellow() &&
 			!CColor_Select::GetInstance().GetMagenta())
 		{
 			if (m_ScoreAdded)return;
+
 			m_Player1_Score += 30;
 			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetYellow())
 		{
 			if (m_ScoreAdded)return;
+
 			m_Player1_Score += 20;
 			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetMagenta())
 		{
 			if (m_ScoreAdded)return;
+
 			m_Player1_Score += 20;
 			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetYellow() && !CColor_Select::GetInstance().GetMagenta())
 		{
-			if (m_ScoreAdded)
-				return;
+			if (m_ScoreAdded)return;
+
 			m_Player1_Score += 20;
 			m_ScoreAdded = true;
 		}
@@ -82,36 +84,40 @@ void CGame_Result::Update()
 			|| !CColor_Select::GetInstance().GetMagenta())
 		{
 			if (m_ScoreAdded)return;
+
 			m_Player1_Score += 10;
 			m_ScoreAdded = true;
-
 		}
 	}
-	if (CFall_Player_Manager::GetInstance().Player1_Win() == false&&!CFall_Player_Manager::GetInstance().Draw_Battle())
+	if (CPlayer_Manager::GetInstance().Player1_Win() == false && !CPlayer_Manager::GetInstance().Draw_Battle())
 	{
 		if (!CColor_Select::GetInstance().GetCyan() &&
 			!CColor_Select::GetInstance().GetYellow() &&
 			!CColor_Select::GetInstance().GetMagenta())
 		{
 			if (m_ScoreAdded)return;
+			
 			m_Player2_Score += 30;
 			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetYellow())
 		{
 			if (m_ScoreAdded)return;
+
 			m_Player2_Score += 20;
 			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetCyan() && !CColor_Select::GetInstance().GetMagenta())
 		{
 			if (m_ScoreAdded)return;
+
 			m_Player2_Score += 20;
 			m_ScoreAdded = true;
 		}
 		else if (!CColor_Select::GetInstance().GetYellow() && !CColor_Select::GetInstance().GetMagenta())
 		{
 			if (m_ScoreAdded)return;
+
 			m_Player2_Score += 20;
 			m_ScoreAdded = true;
 		}
@@ -120,9 +126,9 @@ void CGame_Result::Update()
 			|| !CColor_Select::GetInstance().GetMagenta())
 		{
 			if (m_ScoreAdded)return;
+
 			m_Player2_Score += 10;
 			m_ScoreAdded = true;
-
 		}
 	}
 	
@@ -133,11 +139,11 @@ void CGame_Result::Draw()
 	vivid::DrawText(40, "1P", vivid::Vector2{ 300,250 });
 	vivid::DrawText(40, "2P", vivid::Vector2{ 780,250 });
 
-	if (CFall_Player_Manager::GetInstance().Draw_Battle())
+	if (CPlayer_Manager::GetInstance().Draw_Battle())
 		vivid::DrawText(40, "DRAW", vivid::Vector2{ vivid::WINDOW_WIDTH * 0.5,vivid::WINDOW_HEIGHT * 0.5 });
-	 else if (CFall_Player_Manager::GetInstance().Player1_Win())
+	 else if (CPlayer_Manager::GetInstance().Player1_Win())
 		vivid::DrawText(40,"WIN", vivid::Vector2{ 350,250 });
-	 else if(!CFall_Player_Manager::GetInstance().Player1_Win())
+	 else if(!CPlayer_Manager::GetInstance().Player1_Win())
 		vivid::DrawText(40,"WIN", vivid::Vector2{830,250 });
 
 	if (m_Player1_Ready)
@@ -145,7 +151,6 @@ void CGame_Result::Draw()
 	if (m_Player2_Ready)
 		vivid::DrawText(40, "2POK", vivid::Vector2{ 830,350 });
 	
-
 	// 1P
 	{
 		m_Player1_Copy_Score = m_Player1_Score;
@@ -200,9 +205,7 @@ void CGame_Result::Draw()
 			++digit_count;
 
 		} while (m_Player2_Copy_Score > 0 && digit_count <= m_max_score_digiit);
-	}
-	
-	
+	}	
 }
 
 void CGame_Result::Finalize()

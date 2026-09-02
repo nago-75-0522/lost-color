@@ -44,6 +44,10 @@ public:
 
 	void SetBackCount(int num);
 
+	bool GetIsGoal(void) { return m_isGoal; } //ゴールしたかどうかを返す関数
+
+	bool isOffscreen(void); //画面外に出たかどうかを返す関数
+
 	PLAYER_CATEGORY GetPlayerCategory(void) { return m_Category; } //自分が1pか2pか返す関数
 
 protected:
@@ -68,14 +72,16 @@ protected:
 
 	float m_Move_Timer; //上と下に下がっている時間
 	int m_Back_Timer; //後ろに下がっている時間
-	
+
 	int m_Now_Num_Map; //今自分が何番のマップにいるか
 	int m_Keep_Num; //保存用変数
-	
+
 	int m_Back_Count; //何回後ろに下がったか
 	bool m_isBack_Category; //そもそも下がる対象者かどうか
 	bool m_isBack; //後ろに下がったかどうか
 	bool m_isBack_Cnt_Pull; //後ろに下がった回数を減らしたかどうか
+
+	bool m_isGoal; //ゴールしたかどうか
 
 	PLAYER_CATEGORY m_Category; //1Pか2Pか
 };

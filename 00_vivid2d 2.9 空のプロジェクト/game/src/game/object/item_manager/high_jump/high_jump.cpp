@@ -1,6 +1,8 @@
 #include "high_jump.h"
-#include"../../player_manager/fall_player_mana/fall_player_mana.h"
+#include"../../player_manager/fall_player_mana/fall_player1/fall_player1.h"
+#include"../../player_manager/fall_player_mana/fall_player2/fall_player2.h"
 #include"../../minigame_manager/fall_manager/fall.h"
+
 const int CHigh_Jump::m_max_high_jump_charge = 60 * 1;
 const int CHigh_Jump::m_half_high_jump_charge = 60 * 0.5;
 const vivid::Vector2 CHigh_Jump::m_half_change_num = { 192.0f,192.0f };

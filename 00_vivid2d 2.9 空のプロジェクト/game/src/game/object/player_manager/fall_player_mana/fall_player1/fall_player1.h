@@ -71,7 +71,4 @@ private:
 	bool m_Player1_Fall_Sound;
 	bool m_Player1_Get_Item;
 	ITEM_ID m_Item_ID;
-
-
-
 };

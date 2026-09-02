@@ -16,10 +16,11 @@ CStage2& CStage2::GetInstance()
 CStage2::CStage2()
 	: m_State(STAGE2_STATE::MAIN)
 	, m_ResultTimer(0)
-	,m_Winner(false)
-	,m_Draw(false)
+	, m_Winner(false)
+	, m_Draw(false)
 {
 }
+
 void CStage2::Initialize(void)
 {
 	m_State = STAGE2_STATE::MAIN;
@@ -72,6 +73,7 @@ void CStage2::Update(void)
 		}
 		break;
 	}
+
 #if 0
 	// デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
@@ -79,7 +81,6 @@ void CStage2::Update(void)
 		CSceneManager::GetInstance().AddStageCount();
 	}
 #endif
-
 	
 }
 
