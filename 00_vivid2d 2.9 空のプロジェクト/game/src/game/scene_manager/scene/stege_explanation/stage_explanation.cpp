@@ -100,7 +100,7 @@ void CStage_Explanation::BackChengeScene(void)
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::W) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::UP))
 	{
 		//カラーセレクトに行く
-		CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+		CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 	}
 
 

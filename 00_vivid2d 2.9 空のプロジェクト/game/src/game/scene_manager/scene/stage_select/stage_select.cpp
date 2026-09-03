@@ -11,7 +11,7 @@ const int CStage_Select::m_button_y(100);							//ステージの配置高さ
 const int CStage_Select::m_finger_width(100);						//選択やじるし
 const std::string CStage_Select::m_button_file[] =
 { "data\\stage1.png","data\\stage2.png" ,"data\\stage3.png" };		//ステージ画像***
-STAGE_ID CStage_Select::stage_id = STAGE_ID::MAX;					//stage_id
+STAGE_ID CStage_Select::stage_id = STAGE_ID::MAX;					//stage_id 200000000000000
 
 const unsigned int CStage_Select::m_select_button_color(0xff0000cd);
 

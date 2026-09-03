@@ -49,7 +49,7 @@ private:
 	//定数
 	static const int m_finger_width;								//選択印(指)の幅
 	static const unsigned int m_select_button_color;				//選択中用の色
-	static const vivid::Vector2 m_bg_pos;						//タイトル画面の画像位置
+	static const vivid::Vector2 m_bg_pos;						//背景
 	static const std::string m_button_file[(int)STAGE_ID::MAX];//ボタン画像名
 	static STAGE_ID  stage_id;//ステージ保存用id
 
