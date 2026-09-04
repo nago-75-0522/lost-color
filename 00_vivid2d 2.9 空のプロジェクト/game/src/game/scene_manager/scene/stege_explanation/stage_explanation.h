@@ -26,6 +26,7 @@ public:
 	//戻る処理
 	void BackChengeScene(void);
 
+
 	
 private:
 	//コンストラクタ
@@ -39,5 +40,8 @@ private:
 
 	//代入演算子
 	CStage_Explanation& operator=(const CStage_Explanation& rhp) = delete;
+
+	int m_StageCount;//何回終わったかの判定
+	
 
 };
