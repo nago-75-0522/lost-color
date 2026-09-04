@@ -5,7 +5,7 @@ const float CBallStageSet::m_gravity = 0.5f;
 
 void CBallStageSet::Draw(void)
 {
-	vivid::DrawTexture("data\\ball_goundline.png", { 0.0f,650.0f });
+	vivid::DrawTexture("data\\ball\\ball_goundline.png", { 0.0f,650.0f });
 }
 
 //地面の高さの取得

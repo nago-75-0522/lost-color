@@ -4,11 +4,9 @@
 const int CBallPlayer1::m_width = 280;
 const int CBallPlayer1::m_height = 140;
 const float CBallPlayer1::m_radius = 70.0f;
-const float CBallPlayer1::m_speed = 5.0;
+const float CBallPlayer1::m_speed = 5.0f;
+const float CBallPlayer1::m_jump_power = -15.0f;
 const vivid::Vector2 CBallPlayer1::m_player1_marker_size = { 64.0f,40.0f };
-
-//デバック用
-std::string Player1ID[] = { "STAND","RUN" };
 
 //各アニメーションのフレーム数
 const int CBallPlayer1::m_anime_frame[] = { 4,6 };
@@ -42,7 +40,7 @@ void CBallPlayer1::Initialize(void)
 	m_basket.Initialize();
 
 	// 画像の読み込み
-	vivid::LoadTexture("data\\character1.png");
+	vivid::LoadTexture("data\\ball\\character1.png");
 
 	// 初期位置
 	m_Pos.x = vivid::GetWindowWidth() / 4.0f;
@@ -78,6 +76,7 @@ void CBallPlayer1::Update(void)
 	m_MoveInput = false;
 
 	// 移動方法
+	//右
 	if (keyboard::Button(keyboard::KEY_ID::D) || stick.x > DEAD_ZONE ||
 		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT))
 	{
@@ -92,6 +91,7 @@ void CBallPlayer1::Update(void)
 		}
 		m_DirectionNext = CHARACTER_DIR::RIGHT;
 	}
+	//左
 	else if (keyboard::Button(keyboard::KEY_ID::A) || stick.x < -DEAD_ZONE ||
 		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT))
 	{
@@ -106,16 +106,30 @@ void CBallPlayer1::Update(void)
 		}
 		m_DirectionNext = CHARACTER_DIR::LEFT;
 	}
+	//静止
 	else
 	{
 		m_Velocity.x = 0.0f;
 	}
+
+	//ジャンプ
+	if (keyboard::Button(keyboard::KEY_ID::W) || stick.x < -DEAD_ZONE ||
+		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::A))
+	{
+		//地面にいる時のみ
+		if (m_Pos.y + m_height >= m_stageset.GroundLine())
+			m_Velocity.y = m_jump_power;
+	}
+
 
 	// 向き変更時(スピードを０に)
 	if (m_Direction != m_DirectionNext)
 	{
 		m_Direction = m_DirectionNext;
 	}
+
+	//重力処理
+	m_Velocity.y += m_stageset.Gravity();
 
 	// 位置更新
 	m_Pos += m_Velocity;
@@ -143,6 +157,7 @@ void CBallPlayer1::Update(void)
 		m_Pos.x -= m_BasketRight - vivid::WINDOW_WIDTH;
 		m_Velocity.x = 0.0f;
 	}
+	//地面
 	if (m_Pos.y + m_height > m_stageset.GroundLine())
 	{
 		m_Pos.y = m_stageset.GroundLine() - m_height;
@@ -159,7 +174,7 @@ void CBallPlayer1::Update(void)
 		ChangeAnime(ANIME_ID::STAND);
 	}
 
-	// アニメ－ションの更新
+	//アニメーション更新
 	//タイマー－の更新
 	++m_AnimeTimer;
 
@@ -167,8 +182,13 @@ void CBallPlayer1::Update(void)
 	{
 		//タイマーリセット
 		m_AnimeTimer = 0;
+		++m_AnimeFrame;
+
 		//フレーム番号＊１フレームの幅(アニメーションフレーム×幅)
-		++m_AnimeFrame %= m_anime_frame[(int)m_AnimeID];
+		if (m_AnimeFrame >= m_anime_frame[(int)m_AnimeID])
+		{
+			m_AnimeFrame = 0;
+		}
 	}
 }
 
@@ -197,16 +217,39 @@ void CBallPlayer1::Draw(void)
 		break;
 	}
 
-	vivid::DrawTexture("data\\character1.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
-
-#ifdef _DEBUG/*デバックビルドのときのみ有効*/
-	vivid::DrawText(40, Player1ID[(int)m_AnimeID], vivid::Vector2(0.0f, 100.0f));//表示アニメーション
-	vivid::DrawText(40, std::to_string(m_Velocity.x), { 0.0f, 50.0f });//速さ
-#endif
+	vivid::DrawTexture("data\\ball\\character1.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
 }
 
 void CBallPlayer1::Finalize(void)
 {
+}
+
+//キャラクター情報
+const vivid::Vector2& CBallPlayer1::GetPosition() const
+{
+	return m_Pos;
+}
+float CBallPlayer1::GetLeft() const
+{
+	return m_Pos.x + 90.0f;
+}
+float CBallPlayer1::GetRight() const
+{
+	return m_Pos.x + 190.0f;
+}
+float CBallPlayer1::GetTop() const
+{
+	return m_Pos.y;
+}
+float CBallPlayer1::GetBottom() const
+{
+	return m_Pos.y + m_height;
+}
+
+
+void CBallPlayer1::AddPos(const vivid::Vector2& move)
+{
+	m_Pos += move;
 }
 
 vivid::Vector2 CBallPlayer1::GetCenterPosition(void)
@@ -222,10 +265,4 @@ float CBallPlayer1::GetRadius(void)
 CBasket& CBallPlayer1::GetBasket()
 {
 	return m_basket;
-}
-
-CBallPlayer1& CBallPlayer1::GetInstance()
-{
-	static CBallPlayer1 instanse;
-	return instanse;
 }

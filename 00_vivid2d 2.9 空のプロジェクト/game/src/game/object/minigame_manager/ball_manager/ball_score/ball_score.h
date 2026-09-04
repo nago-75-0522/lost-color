@@ -45,8 +45,9 @@ private:
 	CBallScore& operator = (const CBallScore&) = delete;//代入演算子禁止
 
 	//定数
-	static const int m_max_score;		//最大スコア
-	static const int m_max_score_digit;	//表示桁数
+	static const int   m_max_score;			//最大スコア
+	static const int   m_max_score_digit;	//表示桁数
+	static const float m_scale;			    //拡大率
 
 	//変数
 	int m_Player1Score;//プレイヤー１総スコア

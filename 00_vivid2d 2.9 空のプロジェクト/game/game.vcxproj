@@ -171,6 +171,11 @@
     <ClCompile Include="src\game\object\item_manager\item_manager.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball\ball.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball_manager.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\catch_effect\catch_effect.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\drop_effect\drop_effect.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\effect.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\hit_effect\hit_effect.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect_manager.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\fall_manager\fall.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\fall_manager\fall_manager.cpp" />
     <ClCompile Include="src\game\object\player_manager\ball_player_mana\ball_player1\ball_player1.cpp" />
@@ -224,6 +229,12 @@
     <ClInclude Include="src\game\object\item_manager\pull\pull.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\ball\ball.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\ball_manager.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\catch_effect\catch_effect.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\drop_effect\drop_effect.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\effect.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\effect_id.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\hit_effect\hit_effect.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect_manager.h" />
     <ClInclude Include="src\game\object\minigame_manager\fall_manager\fall.h" />
     <ClInclude Include="src\game\object\minigame_manager\fall_manager\fall_manager.h" />
     <ClInclude Include="src\game\object\player_manager\ball_player_mana\ball_player1\ball_player1.h" />
