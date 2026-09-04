@@ -28,8 +28,7 @@ void CStage3::Update(void)
 	CMinigame_Manager::GetInstance().Update();
 	CPlayer_Manager::GetInstance().Update();
 
-	//CSceneManager::GetInstance().AddStageCount();//加算
-
+#if 0
 	//デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
 	{
@@ -37,35 +36,13 @@ void CStage3::Update(void)
 
 		vivid::DrawText(100, "ClearCount +1", { 0,50 });
 	}
+#endif
 
-	//キーボード用
-	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
+	if (CPlayer_Manager::GetInstance().GameFinish())
 	{
-		//4回目からリザルト
-		if (CSceneManager::GetInstance().FinishStage() >= 3)
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
-		}
-		else//達成してなければステージ選択
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
-		}
+		CSceneManager::GetInstance().AddStageCount();
+		CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
 	}
-
-	//コントローラー用
-	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
-	{
-		//4回目からリザルト
-		if (CSceneManager::GetInstance().FinishStage() >= 3)
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
-		}
-		else//達成してなければステージ選択
-		{
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
-		}
-	}
-
 }
 
 void CStage3::Draw(void)

@@ -165,11 +165,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\object\item_manager\high_jump\high_jump.cpp" />
     <ClCompile Include="src\game\object\item_manager\item\item.cpp" />
     <ClCompile Include="src\game\object\item_manager\item_box\item_box.cpp" />
     <ClCompile Include="src\game\object\item_manager\item_manager.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball\ball.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball_manager.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\catch_effect\catch_effect.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\drop_effect\drop_effect.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\effect.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\hit_effect\hit_effect.cpp" />
+    <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect_manager.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\fall_manager\fall.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\fall_manager\fall_manager.cpp" />
     <ClCompile Include="src\game\object\player_manager\ball_player_mana\ball_player1\ball_player1.cpp" />
@@ -192,6 +198,7 @@
     <ClCompile Include="src\game\object\player_manager\race_player_mana\race_player\race_player2\race_player2.cpp" />
     <ClCompile Include="src\game\object\player_manager\race_player_mana\race_player_mana.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\color_select\color_select.cpp" />
+    <ClCompile Include="src\game\scene_manager\scene\stage_manager\phase\phase.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\stage_manager\stage_manager.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\stage_select\stage_select.cpp" />
     <ClCompile Include="src\game\scene_manager\scene\game_risult\game_risult.cpp" />
@@ -222,6 +229,12 @@
     <ClInclude Include="src\game\object\item_manager\pull\pull.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\ball\ball.h" />
     <ClInclude Include="src\game\object\minigame_manager\ball_manager\ball_manager.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\catch_effect\catch_effect.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\drop_effect\drop_effect.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\effect.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\effect_id.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\hit_effect\hit_effect.h" />
+    <ClInclude Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect_manager.h" />
     <ClInclude Include="src\game\object\minigame_manager\fall_manager\fall.h" />
     <ClInclude Include="src\game\object\minigame_manager\fall_manager\fall_manager.h" />
     <ClInclude Include="src\game\object\player_manager\ball_player_mana\ball_player1\ball_player1.h" />
@@ -247,6 +260,7 @@
     <ClInclude Include="src\game\object\player_manager\race_player_mana\race_player\race_player_id.h" />
     <ClInclude Include="src\game\object\player_manager\race_player_mana\race_player_mana.h" />
     <ClInclude Include="src\game\scene_manager\scene\color_select\color_select.h" />
+    <ClInclude Include="src\game\scene_manager\scene\stage_manager\phase\phase.h" />
     <ClInclude Include="src\game\scene_manager\scene\stage_manager\stage_manager.h" />
     <ClInclude Include="src\game\scene_manager\scene\stage_select\stage_id.h" />
     <ClInclude Include="src\game\scene_manager\scene\stage_select\stage_select.h" />

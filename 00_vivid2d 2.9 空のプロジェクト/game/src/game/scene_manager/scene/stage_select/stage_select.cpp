@@ -1,7 +1,7 @@
 //ステージ選択
 #include"stage_select.h"
 #include"..\..\scene_manager.h"
-#include"../../../object/player_manager/fall_player_mana/fall_player_mana.h"
+#include"../../../object/player_manager/player_manager.h"
 #include"stage_id.h"
 
 //定数
@@ -61,8 +61,7 @@ void CStage_Select::Update(void)
 	 m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
 	/* ステージカウントが1～3の時 */
 	//ステージ選択中処理
-	StageSelect();
-	
+	StageSelect();	
 }
 
 //描画
@@ -74,8 +73,6 @@ void CStage_Select::Draw(void)
 	vivid::DrawTexture("data\\select_bg.png", { 0.0f,0.0f });
 
 	//vivid::DrawTexture("data\\arrow.png", m_Finger_Pos); 指
-
-
 
 	for (int i = 0; i < (int)STAGE_ID::MAX; i++)
 	{
@@ -114,7 +111,7 @@ void CStage_Select::StageSelect(void)
 	static float player1_prev_stick_x = 0.0f;
 	static float player2_prev_stick_x = 0.0f;
 
-	if (CFall_Player_Manager::GetInstance().Player1_Win() == false)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -150,8 +147,7 @@ void CStage_Select::StageSelect(void)
 			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
 		}
 	}
-
-	else if (CFall_Player_Manager::GetInstance().Player1_Win() == true)
+	else if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 	{
 		StagePic();
 		//右に倒した瞬間（前フレームはデッドゾーン内、現在のフレームは超えた）
@@ -197,7 +193,7 @@ void CStage_Select::StagePic(void)
 	namespace keyboard = vivid::keyboard;
 
 	//pレイヤー1
-	if (CFall_Player_Manager::GetInstance().Player1_Win() == false)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
 		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||
 			keyboard::Trigger(keyboard::KEY_ID::S))
 	{
@@ -217,14 +213,12 @@ void CStage_Select::StagePic(void)
 
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			break;
-
 			
 		case STAGE_ID::STAGE3:
 			CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			break;
 		
-
 		case STAGE_ID::MAX:
 			break;
 		default:
@@ -233,7 +227,7 @@ void CStage_Select::StagePic(void)
 	}
 
 	//プレイヤー2
-	if (CFall_Player_Manager::GetInstance().Player1_Win() == true)
+	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B)||
 			keyboard::Trigger(keyboard::KEY_ID::DOWN))
 		{
@@ -255,23 +249,18 @@ void CStage_Select::StagePic(void)
 
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 				break;
-
-		
+	
 			case STAGE_ID::STAGE3:
 				CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 				break;
 			
-
 			case STAGE_ID::MAX:
 				break;
 			default:
 				break;
 			}
 		}
-	
-
-
 }
 
 //決定したステージID保存

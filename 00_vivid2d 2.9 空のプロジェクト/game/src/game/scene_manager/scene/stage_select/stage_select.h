@@ -34,8 +34,6 @@ public:
 	//IDの取得処理
 	static STAGE_ID GetStageID(void);
 
-
-
 private:
 	CStage_Select(void);
 	//コピーコンストラクタ
@@ -68,8 +66,6 @@ private:
 	vivid::Vector2 m_Player1_Stick;//スティックx左右 y上下
 	vivid::Vector2 m_Player2_Stick;//スティックx左右 y上下
 	STAGE_ID m_Now_Select;//選択中のボタン
-
-
 #endif
 
 };

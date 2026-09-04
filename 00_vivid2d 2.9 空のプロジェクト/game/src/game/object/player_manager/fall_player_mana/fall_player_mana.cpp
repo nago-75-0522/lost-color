@@ -1,5 +1,5 @@
 #include "fall_player_mana.h"
-#include"..\..\..\scene_manager\scene\stage_manager\stage2\stage2.h"
+#include"../../../scene_manager/scene/stage_manager/stage2/stage2.h"
 #include"fall_player1/fall_player1.h"
 #include"fall_player2/fall_player2.h"
 
@@ -25,18 +25,15 @@ void CFall_Player_Manager::Update(void)
 	CFall_Player2::GetInstance().Update();
 
 	if (CFall_Player1::GetInstance().GetScale().x <= 0 &&
-		CFall_Player2::GetInstance().GetScale().x <= 0 ||
-		CStage2::GetInstance().GetDraw() == true)
+		CFall_Player2::GetInstance().GetScale().x <= 0)
 	{
 		m_Draw = true;
 	}
-	else if (CFall_Player2::GetInstance().GetScale().x <= 0 ||
-		CStage2::GetInstance().GetWinner() == true)
+	else if (CFall_Player2::GetInstance().GetScale().x <= 0)
 	{
 		m_Player1_Win = true;
 	}
-	else if (CFall_Player1::GetInstance().GetScale().x <= 0 ||
-		CStage2::GetInstance().GetWinner() == false)
+	else if (CFall_Player1::GetInstance().GetScale().x <= 0)
 	{
 		m_Player1_Win = false;
 	}

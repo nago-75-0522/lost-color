@@ -2,8 +2,6 @@
 #include"..\..\..\scene\scene.h"
 #include"../../../../object/minigame_manager/ball_manager/ball_timer/ball_timer.h"
 
-
-
 class CStage2 :public IScene
 {
 public:

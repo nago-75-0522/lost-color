@@ -1,5 +1,5 @@
 #include "item_box.h"
-const int CItem_Box::m_random_time = 60*5;
+const int CItem_Box::m_random_time = 60 * 5;
 const int CItem_Box::m_floor_size = 64;
 const int CItem_Box::m_item_box_size = 50;
 CItem_Box::CItem_Box()
@@ -41,6 +41,9 @@ void CItem_Box::Draw()
 	{
 		vivid::DrawTexture("data/item_box5.png", v[i]);
 	}
+	vivid::DrawTexture("data\\frame.png", vivid::Vector2(0.0f, 0.0f));
+	vivid::DrawTexture("data\\frame.png", vivid::Vector2(1216.0f, 0.0f));
+
 }
 
 void CItem_Box::Finalize()
@@ -72,11 +75,11 @@ void CItem_Box::Lottery()
 
 vivid::Vector2 CItem_Box::Get_Item_Box_Pos(int i)
 {
-	
-		return v[i];
+
+	return v[i];
 }
 
-std::vector<vivid::Vector2> &CItem_Box::Get_Item_Box_NUM()
+std::vector<vivid::Vector2>& CItem_Box::Get_Item_Box_NUM()
 {
 	return v;
 }

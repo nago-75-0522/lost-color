@@ -10,7 +10,7 @@ CBasket::CBasket(void)
 
 void CBasket::Initialize()
 {
-	vivid::LoadTexture("data\\basket.png");
+	vivid::LoadTexture("data\\ball\\basket.png");
 }
 
 void CBasket::Update(const vivid::Vector2& playerPos)
@@ -22,7 +22,7 @@ void CBasket::Update(const vivid::Vector2& playerPos)
 
 void CBasket::Draw()
 {
-	vivid::DrawTexture("data\\basket.png", m_Pos);
+	vivid::DrawTexture("data\\ball\\basket.png", m_Pos);
 }
 
 vivid::Vector2 CBasket::GetPosition() const

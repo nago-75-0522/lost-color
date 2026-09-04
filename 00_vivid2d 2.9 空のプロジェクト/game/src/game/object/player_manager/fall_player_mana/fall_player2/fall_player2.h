@@ -1,5 +1,6 @@
 #pragma once
 #include"vivid.h"
+#include "../../../item_manager/item_id.h"
 
 class CFall_Player2
 {
@@ -11,10 +12,21 @@ public:
 	void WaitCharacter();
 	void MoveCharacter();
 	bool Hit_Item_Box();
+	bool Get_Item();
+	void Item_Lottery();
 	vivid::Vector2 GetScale();
 	static CFall_Player2& GetInstance();
+	ITEM_ID& GetItemID() { return m_Item_ID; }
+	vivid::Vector2& GetCharaPos() { return m_Player2_Chara_Pos; }
+	enum class CHARA_DIRECTION
+	{
+		DOWN,
+		LEFT,
+		RIGHT,
+		UP,
+	};//キャラの向き
+	CHARA_DIRECTION GetCharaDirection() { return m_Player2_Chara_Dir; }
 
-	vivid::Vector2 GetCharaPos() { return m_Player2_Chara_Pos; }
 private:
 	CFall_Player2(void);
 	//コピーコンストラクタ
@@ -23,13 +35,7 @@ private:
 	CFall_Player2& operator=(const CFall_Player2& rhp) = delete;
 
 	~CFall_Player2(void) = default;
-	enum class CHARA_DIRECTION
-	{
-		DOWN,
-		LEFT,
-		RIGHT,
-		UP,
-	};//キャラの向き
+
 	enum class CHARA_STATE
 	{
 		WAIT,
@@ -46,6 +52,7 @@ private:
 	static const int m_player2_chara_center;
 	static const std::string m_player2_marker_path;
 	static const vivid::Vector2 m_player2_marker_size;
+	static const int m_item_box_size;
 
 	//変数
 	CHARA_DIRECTION m_Player2_Chara_Dir;
@@ -61,6 +68,8 @@ private:
 	vivid::Rect m_Player2_Chara_Rect;
 	vivid::Vector2 m_Player2_Marker_Pos;
 	bool m_Player2_Fall_Sound;
+	bool m_Player2_Get_Item;
+	ITEM_ID m_Item_ID;
 
 
 };

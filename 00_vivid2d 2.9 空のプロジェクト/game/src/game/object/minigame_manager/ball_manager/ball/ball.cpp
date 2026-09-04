@@ -2,8 +2,9 @@
 #include"ball.h"
 #include"../ball_score/ball_score.h"
 #include"../../../../scene_manager/scene/color_select/color_select.h"
+#include"../.../../effect_manager/effect_manager.h"
 
-const int			CBall::m_ball_radius = 16.0f;
+const int			CBall::m_ball_radius = 16;
 const int			CBall::m_ball_width = 32;
 const int			CBall::m_ball_height = 32;
 const int			CBall::m_ball_spawn_interval = 1 * 30;
@@ -11,19 +12,28 @@ const float			CBall::m_ball_scale_speed = 1.0f / 15.0f;
 
 //コンストラクタ
 CBall::CBall(void)
-	:m_BallSpawn(0)
+	: m_BallSpawn(0)
 	, m_ColorCount(0)
 	, m_BallCenterX(0)
 	, m_BallCenterY(0)
 	, m_Old_Magenta(true)
 	, m_Old_Cyan(true)
 	, m_Old_Yellow(true)
+#ifdef _DEBUG
+	, m_BombCount1(0)
+	, m_BombCount2(0)
+#endif
 {
 }
 
 //初期化
 void CBall::Initialize(void)
 {
+#ifdef _DEBUG
+	m_BombCount1 = 0;
+	m_BombCount2 = 0;
+#endif
+
 	//全ボールの初期化
 	for (int i = 0; i < m_max_ball; i++)
 	{
@@ -38,12 +48,12 @@ void CBall::Initialize(void)
 		ball.m_anchor = vivid::Vector2(m_ball_width / 2, m_ball_height / 2);
 		ball.m_scale = vivid::Vector2(0.0f, 0.0f);//開始サイズ
 		ball.m_state = BALL_STATE::SPAWN;//生成
-		ball.m_reboundFlag = false;
 	}
 	m_BallSpawn = m_ball_spawn_interval;//生成タイマー初期化
 
 	//SEの読み込み
 	vivid::LoadSound("data\\sound\\ball.wav");//ballキャッチ時
+	CEffectManager::GetInstance().Initialize();//エフェクト読み込み
 
 	m_Cyan = CColor_Select::GetInstance().GetCyan();
 	m_Yellow = CColor_Select::GetInstance().GetYellow();
@@ -68,6 +78,7 @@ void CBall::Update(void)
 		m_Old_Magenta = CColor_Select::GetInstance().GetMagenta();
 
 	SpawnBall();
+	CEffectManager::GetInstance().Update();//エフェクトの更新
 
 	//各更新(有効なもののみ)
 	for (int i = 0; i < m_max_ball; ++i)
@@ -84,8 +95,8 @@ void CBall::Update(void)
 //描画
 void CBall::Draw(void)
 {
-	vivid::DrawTexture("data\\ball_bg.png", { 0.0f,0.0f });
-	m_ball_stageset.Draw();
+	vivid::DrawTexture("data\\ball\\ball_bg.png", { 0.0f,0.0f });//背景
+	m_ball_stageset.Draw();//地面
 	vivid::Rect rect = { 0,0,m_ball_width,m_ball_height };
 
 	for (int i = 0; i < m_max_ball; ++i)
@@ -102,11 +113,11 @@ void CBall::Draw(void)
 
 			if (!m_Magenta)
 			{
-				vivid::DrawTexture("data\\ball.png", ball.m_pos, 0xFF808080);
+				vivid::DrawTexture("data\\ball\\ball.png", ball.m_pos, 0xFF808080, rect, ball.m_anchor, ball.m_scale);
 			}
 			else
 			{
-				vivid::DrawTexture("data\\ball.png", ball.m_pos, 0xFFFF00FF);
+				vivid::DrawTexture("data\\ball\\ball.png", ball.m_pos, 0xFFFF00FF, rect, ball.m_anchor, ball.m_scale);
 			}
 			break;
 
@@ -114,11 +125,11 @@ void CBall::Draw(void)
 
 			if (!m_Cyan)
 			{
-				vivid::DrawTexture("data\\ball.png", ball.m_pos, 0xFF808080);
+				vivid::DrawTexture("data\\ball\\ball.png", ball.m_pos, 0xFF808080, rect, ball.m_anchor, ball.m_scale);
 			}
 			else
 			{
-				vivid::DrawTexture("data\\ball.png", ball.m_pos, 0xFF00FFFF);
+				vivid::DrawTexture("data\\ball\\ball.png", ball.m_pos, 0xFF00FFFF, rect, ball.m_anchor, ball.m_scale);
 			}
 			break;
 
@@ -126,26 +137,36 @@ void CBall::Draw(void)
 
 			if (!m_Yellow)
 			{
-				vivid::DrawTexture("data\\ball.png", ball.m_pos, 0xFF808080);
+				vivid::DrawTexture("data\\ball\\ball.png", ball.m_pos, 0xFF808080, rect, ball.m_anchor, ball.m_scale);
 			}
 			else
 			{
-				vivid::DrawTexture("data\\ball.png", ball.m_pos, 0xFFFFFF00);
+				vivid::DrawTexture("data\\ball\\ball.png", ball.m_pos, 0xFFFFFF00, rect, ball.m_anchor, ball.m_scale);
 			}
+			break;
+
+		case BALL_COLOR::BOMB:
+			vivid::DrawTexture("data\\ball\\bomb.png", ball.m_pos, 0xffffffff, rect, ball.m_anchor, ball.m_scale);
 			break;
 		}
 	}
+
+	CEffectManager::GetInstance().Draw();//エフェクトの描画
+
 #ifdef _DEBUG/*デバックビルドのときのみ有効*/
-	vivid::DrawText(30, ("Save C=" + std::to_string(m_Old_Cyan)
-		+ " Y=" + std::to_string(m_Old_Yellow) + " M=" + std::to_string(m_Old_Magenta)).c_str(), { 100,100 });
-	vivid::DrawText(30, ("Now C=" + std::to_string(m_Cyan)
-		+ " Y=" + std::to_string(m_Yellow) + " M=" + std::to_string(m_Magenta)).c_str(), { 100, 150 });
+	//vivid::DrawText(30, ("Save C=" + std::to_string(m_Old_Cyan)+ " Y=" + std::to_string(m_Old_Yellow) 
+		//+ " M=" + std::to_string(m_Old_Magenta)).c_str(), {100,100});
+	//vivid::DrawText(30, ("Now C=" + std::to_string(m_Cyan)
+		//+ " Y=" + std::to_string(m_Yellow) + " M=" + std::to_string(m_Magenta)).c_str(), { 100, 150 });
+
 	vivid::DrawText(30, ("m =" + std::to_string(CBallScore::GetInstance().GetPlayer1Magenta())
 		+ "c=" + std::to_string(CBallScore::GetInstance().GetPlayer1Cyan())
-		+ "y=" + std::to_string(CBallScore::GetInstance().GetPlayer1Yellow())).c_str(), { 100, 200 });
+		+ "y=" + std::to_string(CBallScore::GetInstance().GetPlayer1Yellow())
+		+ "b=" + std::to_string(m_BombCount1)).c_str(), { 50, 200 });
 	vivid::DrawText(30, ("m =" + std::to_string(CBallScore::GetInstance().GetPlayer2Magenta())
 		+ "c=" + std::to_string(CBallScore::GetInstance().GetPlayer2Cyan())
-		+ "y=" + std::to_string(CBallScore::GetInstance().GetPlayer2Yellow())).c_str(), { 100, 250 });
+		+ "y=" + std::to_string(CBallScore::GetInstance().GetPlayer2Yellow())
+		+ "b=" + std::to_string(m_BombCount2)).c_str(), { 50, 250 });
 
 #endif
 }
@@ -163,8 +184,8 @@ void CBall::IniOld()
 
 
 //当たり判定
-//内容は(矩形)と(矩形)の判定
-bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
+//内容は(円)と(矩形)の判定
+void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 {
 	for (int i = 0; i < m_max_ball; i++)
 	{
@@ -194,82 +215,74 @@ bool CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 			m_OldBallCenterY < basket2.GetPosition().y &&
 			m_BallCenterY >= basket2.GetPosition().y;
 
-		if (ball.m_color == BALL_COLOR::MAGENTA)
+		if (m_Player1BasketCheck)
 		{
-			// 両方の籠に入った場合はPlayer1優先
-			if (m_Player1BasketCheck && m_Player2BasketCheck)
+			//爆弾が入った時のみ
+			if (ball.m_color == BALL_COLOR::BOMB)
 			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
-				AddScore(ball, 1);//得点
-				ball.m_activeFlag = false;//消滅
-			}
-			// Player1のみ
-			else if (m_Player1BasketCheck)
-			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
-				AddScore(ball, 1);//得点
-				ball.m_activeFlag = false;//消滅
-			}
-			// Player2のみ
-			else if (m_Player2BasketCheck)
-			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
-				AddScore(ball, 2);
-				ball.m_activeFlag = false;
-			}
-		}
-		else if (ball.m_color == BALL_COLOR::CYAN)
-		{
+				unsigned int color;
+				if (GetPlayer1Color() == BALL_COLOR::MAGENTA)
+					color = 0xffff00ff;//マゼンタ
+				else
+					color = 0xffffff00;//イエロー
 
-			// 両方の籠に入った場合はPlayer2優先
-			if (m_Player1BasketCheck && m_Player2BasketCheck)
-			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
-				AddScore(ball, 2);
-				ball.m_activeFlag = false;
+				vivid::Vector2 effectPos;
+				//位置
+				effectPos.x = basket1.GetPosition().x;
+				effectPos.y = basket1.GetPosition().y;
+				//エフェクト生成
+				CEffectManager::GetInstance().Create(EFFECT_ID::HIT, effectPos, 0xffffffff, 0.0f);
+				CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
 			}
-			// Player1のみ
-			else if (m_Player1BasketCheck)
+			else
 			{
+				//ボールの時
+				vivid::Vector2 effectPos;
+				//位置
+				effectPos.x = basket1.GetPosition().x + basket1.GetWidth() * 0.5f;
+				effectPos.y = basket1.GetPosition().y + basket1.GetHeight() * 0.5f;
+				//エフェクト生成
+				CEffectManager::GetInstance().Create(EFFECT_ID::CATCH, effectPos, 0xffffffff, 0.0f);
 				vivid::PlaySound("data\\sound\\ball.wav", false);
-				AddScore(ball, 1);
-				ball.m_activeFlag = false;
 			}
-			// Player2のみ
-			else if (m_Player2BasketCheck)
-			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
-				AddScore(ball, 2);
-				ball.m_activeFlag = false;
-			}
+			AddScore(ball, 1);
+			ball.m_activeFlag = false;
 		}
-		else if (ball.m_color == BALL_COLOR::YELLOW)
+		else if (m_Player2BasketCheck)
 		{
-			//両方の籠に入った
-			if (m_Player1BasketCheck && m_Player2BasketCheck)
+			//爆弾が入った時のみ
+			if (ball.m_color == BALL_COLOR::BOMB)
 			{
-				if (ball.m_velocity.y > 0.0f)
-				{
-					ball.m_velocity.y = -8.0f; //上へ跳ねる
-				}
+				unsigned int color;
+				if (GetPlayer2Color() == BALL_COLOR::CYAN)
+					color = 0xff00ffff;//シアン
+				else
+					color = 0xffffff00;//イエロー
+
+				vivid::Vector2 effectPos;
+				//位置
+				effectPos.x = basket2.GetPosition().x;
+				effectPos.y = basket2.GetPosition().y;
+				//エフェクト生成
+				CEffectManager::GetInstance().Create(EFFECT_ID::HIT, effectPos, 0xffffffff, 0.0f);
+				CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
 			}
-			//Player1のみ
-			else if (m_Player1BasketCheck)
+			else
 			{
+				//ボールの時
+				vivid::Vector2 effectPos;
+				//位置
+				effectPos.x = basket2.GetPosition().x + basket2.GetWidth() * 0.5f;
+				effectPos.y = basket2.GetPosition().y + basket2.GetHeight() * 0.5f;
+				//エフェクト生成
+				CEffectManager::GetInstance().Create(EFFECT_ID::CATCH, effectPos, 0xffffffff, 0.0f);
+
 				vivid::PlaySound("data\\sound\\ball.wav", false);
-				AddScore(ball, 1);
-				ball.m_activeFlag = false;
 			}
-			// Player2のみ
-			else if (m_Player2BasketCheck)
-			{
-				vivid::PlaySound("data\\sound\\ball.wav", false);
-				AddScore(ball, 2);
-				ball.m_activeFlag = false;
-			}
+			AddScore(ball, 2);
+			ball.m_activeFlag = false;
 		}
 	}
-	return false;
 }
 
 CBall& CBall::GetInstance()
@@ -280,6 +293,27 @@ CBall& CBall::GetInstance()
 
 void CBall::AddScore(BALL& ball, int playerNo)
 {
+	//爆弾
+	if (ball.m_color == BALL_COLOR::BOMB)
+	{
+#ifdef _DEBUG
+		if (playerNo == 1)
+			++m_BombCount1;
+		else
+			++m_BombCount2;
+#endif
+
+		if (playerNo == 1)
+		{
+			CBallScore::GetInstance().AddPlayer1Score(-10);
+		}
+		else
+		{
+			CBallScore::GetInstance().AddPlayer2Score(-10);
+		}
+		return;
+	}
+
 	//個数
 	if (playerNo == 1)
 	{
@@ -318,7 +352,7 @@ void CBall::AddScore(BALL& ball, int playerNo)
 
 	//共通色のみ20点
 	int score = 10;
-	if(role == COLOR_ROLE::COMMON)
+	if (role == COLOR_ROLE::COMMON)
 		score = 20;
 
 	switch (role)
@@ -363,7 +397,7 @@ CBall::COLOR_ROLE CBall::GetColorRole(BALL_COLOR color)
 		return COLOR_ROLE::COMMON;//残り(イエロー)は共通
 	}
 
-	int disableCount = (!m_Magenta ? 1 : 0) + 
+	int disableCount = (!m_Magenta ? 1 : 0) +
 		(!m_Cyan ? 1 : 0) + (!m_Yellow ? 1 : 0);
 
 	//全色有効
@@ -373,7 +407,7 @@ CBall::COLOR_ROLE CBall::GetColorRole(BALL_COLOR color)
 			return COLOR_ROLE::PLAYER1;
 		if (color == BALL_COLOR::CYAN)
 			return COLOR_ROLE::PLAYER2;
-		
+
 		return COLOR_ROLE::COMMON;
 	}
 
@@ -446,7 +480,7 @@ CBall::COLOR_ROLE CBall::GetColorRole(BALL_COLOR color)
 //1pの画像色
 CBall::BALL_COLOR CBall::GetPlayer1Color()
 {
-	if(GetColorRole(BALL_COLOR::MAGENTA)==COLOR_ROLE::PLAYER1)
+	if (GetColorRole(BALL_COLOR::MAGENTA) == COLOR_ROLE::PLAYER1)
 		return BALL_COLOR::MAGENTA;
 
 	return BALL_COLOR::YELLOW;
@@ -484,21 +518,30 @@ void CBall::SpawnBall(void)
 			ball.m_anchor = vivid::Vector2(m_ball_width / 2, m_ball_height / 2);
 			ball.m_scale = vivid::Vector2(0.0f, 0.0f);
 			ball.m_state = BALL_STATE::SPAWN;
-			ball.m_reboundFlag = false;
 
 			//ランダムに色決定
-			int type = rand() % 10;
-			if (type < 4)
+			int type = rand() % 100;
+			if (type < 45)
 			{
-				ball.m_color = BALL_COLOR::MAGENTA;
+				ball.m_color = GetPlayer1Color();
 			}
-			else if (type < 8)
+			else if (type < 90)
 			{
-				ball.m_color = BALL_COLOR::CYAN;
+				ball.m_color = GetPlayer2Color();
+			}
+			else if (type < 98)
+			{
+				//共通色
+				if (GetColorRole(BALL_COLOR::MAGENTA) == COLOR_ROLE::COMMON)
+					ball.m_color = BALL_COLOR::MAGENTA;
+				else if (GetColorRole(BALL_COLOR::CYAN) == COLOR_ROLE::COMMON)
+					ball.m_color = BALL_COLOR::CYAN;
+				else
+					ball.m_color = BALL_COLOR::YELLOW;
 			}
 			else
 			{
-				ball.m_color = BALL_COLOR::YELLOW;
+				ball.m_color = BALL_COLOR::BOMB;
 			}
 
 			// 1個生成したら終了
@@ -543,7 +586,6 @@ void CBall::UpdateBall(BALL& ball)
 		{
 			ball.m_pos.y = m_ball_stageset.GroundLine() - m_ball_height;
 			ball.m_velocity.y = 0.0f;
-			ball.m_reboundFlag = false;
 			ball.m_activeFlag = false;//地面に着いたら消滅
 		}
 		break;

@@ -1,6 +1,6 @@
 ﻿#include"ball_timer.h"
 
-const int CBallTimer::play_time = 30;
+const int CBallTimer::play_time = 30;//プレイ時間
 
 CBallTimer::CBallTimer(void)
 	: m_TimerPos(vivid::Vector2(0.0f, 0.0f))
@@ -11,7 +11,7 @@ CBallTimer::CBallTimer(void)
 
 void CBallTimer::Initialize(void)
 {
-	vivid::LoadTexture("data\\number.png");//読み込み
+	vivid::LoadTexture("data\\logo\\number(白).png");//読み込み
 
 	m_TimerPos = { 560.0f,50.0f };
 	m_PlayTime = play_time;
@@ -38,7 +38,7 @@ void CBallTimer::Draw(void)
 	DrawNumber(minute % 10, 1);//分(1の位）
 
 	// コロン
-	vivid::DrawText(40, ":", { m_TimerPos.x + 72.0f, m_TimerPos.y });
+	vivid::DrawText(45, ":", { m_TimerPos.x + 72.0f, m_TimerPos.y });
 
 	DrawNumber(second / 10, 3);//秒(10の位）
 	DrawNumber(second % 10, 4);//秒(1の位）
@@ -63,5 +63,5 @@ void CBallTimer::DrawNumber(int number, int offset)
 	m_pos.x = m_TimerPos.x + offset * NumberImage::WIDTH;
 	m_pos.y = m_TimerPos.y;
 
-	vivid::DrawTexture("data\\number.png", m_pos, 0xffffffff, rect);
+	vivid::DrawTexture("data\\logo\\number(白).png", m_pos, 0xffffffff, rect);
 }

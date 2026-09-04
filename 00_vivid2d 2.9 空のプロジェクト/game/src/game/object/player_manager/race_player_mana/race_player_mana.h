@@ -19,10 +19,13 @@ public:
 
 	vivid::Vector2 GetDrawPosition(PLAYER_CATEGORY category); //プレイヤーがいる場所を返す関数
 
-	void SetNowNumMap(PLAYER_CATEGORY category,int num); //1p、2pそれぞれ今何マス目にいるかセットする関数
+	void SetNowNumMap(PLAYER_CATEGORY category, int num); //1p、2pそれぞれ今何マス目にいるかセットする関数
 
 	void SetSpeed(float speed);
 
+	int isRaceWinner(void); //誰が勝ったのか、もしくは引分けだったのかを返す関数
+
+	bool isFinish(void) { return m_isFinish; } //どちらかがゴールしたか返す
 
 private:
 
@@ -36,4 +39,6 @@ private:
 	int m_Distance_Num; //プレイヤーとマップの位置を判定するときの、差を埋めるための変数
 	bool m_isAdd_Num; //m_Distance_Numを足したかどうか
 
+	int m_isWinnerNum; //誰が勝ったかを記録する変数（1or2or3）（3は引分け)
+	bool m_isFinish;
 };

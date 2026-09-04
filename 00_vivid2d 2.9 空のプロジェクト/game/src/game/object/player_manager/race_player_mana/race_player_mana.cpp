@@ -9,6 +9,9 @@ void CRace_Player_Manager::Initialize(void)
 
 	m_Distance_Num = 0;
 	m_isAdd_Num = false;
+
+	m_isWinnerNum = 0;
+	m_isFinish = false;
 }
 
 void CRace_Player_Manager::Update(void)
@@ -35,10 +38,31 @@ void CRace_Player_Manager::Finalize()
 	CPlayer2::GetInstance().Finalize();
 }
 
+//誰が勝ったか返す関数（1or2or3）
+int CRace_Player_Manager::isRaceWinner(void)
+{
+	if (CPlayer1::GetInstance().GetIsGoal() && CPlayer2::GetInstance().GetIsGoal())
+	{
+		m_isWinnerNum = 3; //引分け
+		m_isFinish = true;
+	}
+	else if (CPlayer1::GetInstance().GetIsGoal() || CPlayer2::GetInstance().isOffscreen())
+	{
+		m_isWinnerNum = 1; //1p勝利
+		m_isFinish = true;
+	}
+	else if (CPlayer2::GetInstance().GetIsGoal() || CPlayer1::GetInstance().isOffscreen())
+	{
+		m_isWinnerNum = 2; //2p勝利
+		m_isFinish = true;
+	}
+
+	return m_isWinnerNum;
+}
+
 vivid::Vector2 CRace_Player_Manager::GetPosition()
 {
 	return CPlayer1::GetInstance().GetPosition();
-	//CPlayer2::GetInstance().GetPosition();
 }
 
 //プレイヤーがいる場所を返す関数
@@ -56,7 +80,7 @@ vivid::Vector2 CRace_Player_Manager::GetDrawPosition(PLAYER_CATEGORY category)
 }
 
 //今プレイヤーが何番目のマスにいるかをセットする用の関数
-void CRace_Player_Manager::SetNowNumMap(PLAYER_CATEGORY category,int num)
+void CRace_Player_Manager::SetNowNumMap(PLAYER_CATEGORY category, int num)
 {
 	switch (category)
 	{
@@ -100,9 +124,9 @@ void CRace_Player_Manager::isWhichAccele(void)
 	if (is_player1_accele && is_player2_accele)
 	{
 		//加速フラグをfalseにする（リセット)
-		p1.SetIsAccele(false); 
-		p2.SetIsAccele(false); 
-		return;		
+		p1.SetIsAccele(false);
+		p2.SetIsAccele(false);
+		return;
 	}
 
 	//** 両方加速していなかったら関数を抜ける **//
@@ -110,11 +134,11 @@ void CRace_Player_Manager::isWhichAccele(void)
 		return;
 
 	//** 1pと2pが同じレーンにいた場合、関数を抜ける **//
-	if(is_player1_up == is_player2_up || is_player1_down == is_player2_down)
+	if (is_player1_up == is_player2_up || is_player1_down == is_player2_down)
 	{
 		//加速フラグをfalseにする（リセット)
-		p1.SetIsAccele(false); 
-		p2.SetIsAccele(false); 
+		p1.SetIsAccele(false);
+		p2.SetIsAccele(false);
 		return;
 	}
 
@@ -127,7 +151,7 @@ void CRace_Player_Manager::isWhichAccele(void)
 		if (p1.GetBackCount() >= 1)
 		{
 			//** 該当プレイヤーは1p **//
-			
+
 			//前に進むようにする
 			back_pos *= -1; //プラス→マイナス
 			judge_category = p1.GetPlayerCategory(); //1p
@@ -138,7 +162,7 @@ void CRace_Player_Manager::isWhichAccele(void)
 			if (p1.GetBackTimer() < 0)
 			{
 				p1.SetBackCount(1);	//回数を1回減らす
-					
+
 				m_isAdd_Num = false;
 
 				p1.SetIsAccele(false); //1pの加速フラグをfalseにする（リセット）
@@ -146,13 +170,13 @@ void CRace_Player_Manager::isWhichAccele(void)
 
 			//お互いに下がる対象じゃないことをセットする
 			p1.SetBackOK(false);
-			p2.SetBackOK(false);			
+			p2.SetBackOK(false);
 		}
 		//1pが一回も下がっていなかったら
 		else if (p1.GetBackCount() == 0)
 		{
 			//** 該当プレイヤーは2p **//
-			
+
 			p2.SetBackOK(true); //該当のものを下がらせる対象に
 			judge_category = p2.GetPlayerCategory(); //2p
 
@@ -175,7 +199,7 @@ void CRace_Player_Manager::isWhichAccele(void)
 		if (p2.GetBackCount() >= 1)
 		{
 			//** 該当プレイヤーは2p **//
-			
+
 			//前に進むようにする
 			back_pos *= -1; //プラス→マイナス
 			judge_category = p2.GetPlayerCategory(); //2p
@@ -186,14 +210,14 @@ void CRace_Player_Manager::isWhichAccele(void)
 			if (p2.GetBackTimer() < 0)
 			{
 				p2.SetBackCount(1);	//回数を1回減らす
-	
+
 				m_isAdd_Num = false;
 				p2.SetIsAccele(false); //2pの加速フラグをfalseにする（リセット）
 			}
 
 			//お互いに下がる対象じゃないことをセットする
 			p1.SetBackOK(false);
-			p2.SetBackOK(false);	
+			p2.SetBackOK(false);
 		}
 		//2pが一回も下がっていなかったら
 		else if (p2.GetBackCount() == 0)
@@ -239,7 +263,9 @@ CRace_Player_Manager& CRace_Player_Manager::GetInstance()
 
 CRace_Player_Manager::CRace_Player_Manager()
 	:m_Distance_Num(0)
-	,m_isAdd_Num(false)
+	, m_isAdd_Num(false)
+	, m_isWinnerNum(0)
+	, m_isFinish(false)
 {
 }
 

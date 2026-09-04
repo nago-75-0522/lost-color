@@ -13,7 +13,7 @@ public:
 
 	//決定処理
 	void ColorPic(void);
-	void IniChosen();
+	void IniChosen();//選ばれた色を初期化する関数
 	void IniColor();
 	bool GetCyan() { return m_Cyan; }
 	bool GetMagenta() { return m_Magenta; }
@@ -28,11 +28,9 @@ public:
 		MAX,
 	};
 
-	bool IsEnableColor(COLOR color);
+	bool IsEnableColor(COLOR color); //前回までに選ばれている色を返す関数
 
 private:
-
-	
 
 	CColor_Select(void);
 	//コピーコンストラクタ

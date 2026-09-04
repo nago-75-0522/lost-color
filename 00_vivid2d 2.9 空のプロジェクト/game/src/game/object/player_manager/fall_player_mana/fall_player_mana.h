@@ -13,9 +13,8 @@ public:
 
 	void Finalize(void);
 
-	bool Player1_Win() { return m_Player1_Win; }
-	bool Draw_Battle() { return m_Draw; }
-
+	bool isFallPlayer1Win(void) { return m_Player1_Win; }
+	bool isFallDraw(void) { return m_Draw; }
 private:
 	CFall_Player_Manager(void);
 	~CFall_Player_Manager(void) = default;
@@ -23,6 +22,6 @@ private:
 	CFall_Player_Manager& operator =(const CFall_Player_Manager& rhs);
 
 	//変数
-	bool m_Player1_Win;
-	bool m_Draw;
+	bool m_Player1_Win; //1pが勝ったかどうか
+	bool m_Draw; //引分けかどうか
 };

@@ -4,7 +4,6 @@
 #include"../../../../object/minigame_manager/minigame_manager.h"
 #include"../../../../object/minigame_manager/ball_manager/ball_score/ball_score.h"
 #include"../../../../object/player_manager/player_manager.h"
-#include"../../../../object/player_manager/player_manager.h"
 
 CStage2& CStage2::GetInstance()
 {
@@ -16,17 +15,19 @@ CStage2& CStage2::GetInstance()
 CStage2::CStage2()
 	: m_State(STAGE2_STATE::MAIN)
 	, m_ResultTimer(0)
-	,m_Winner(false)
-	,m_Draw(false)
+	, m_Winner(false)
+	, m_Draw(false)
 {
 }
+
 void CStage2::Initialize(void)
 {
+	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::BALL);
 	m_State = STAGE2_STATE::MAIN;
 	m_ResultTimer = 0;
-
+	m_Winner = false;
+	m_Draw = false;
 	m_ball_timer.Initialize();
-	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::BALL);
 	CMinigame_Manager::GetInstance().Initialize();
 	CPlayer_Manager::GetInstance().Initialize();
 
@@ -44,7 +45,6 @@ void CStage2::Update(void)
 		CMinigame_Manager::GetInstance().Update();
 		CPlayer_Manager::GetInstance().Update();
 
-		//コントローラー用
 		if (m_ball_timer.IsTimeUp())
 		{
 			if (CBallScore::GetInstance().GetPlayer1Score() == CBallScore::GetInstance().GetPlayer2Score())
@@ -68,10 +68,12 @@ void CStage2::Update(void)
 		{
 			vivid::DrawText(100, "ClearCount +1", { 0,50 });
 			CSceneManager::GetInstance().AddStageCount();
+			CPlayer_Manager::GetInstance().Update();
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
 		}
 		break;
 	}
+
 #if 0
 	// デバッグ用：Dキーでクリア回数を+1
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::D))
@@ -79,7 +81,6 @@ void CStage2::Update(void)
 		CSceneManager::GetInstance().AddStageCount();
 	}
 #endif
-
 	
 }
 
@@ -93,30 +94,43 @@ void CStage2::Draw(void)
 	}
 	else
 	{
-		vivid::DrawText(60, "Player1", { 300.0f,50.0f });
-		vivid::DrawText(60, "Player2", { 900.0f,50.0f });
+		//1p
+		CBall::BALL_COLOR color1 = CBall::GetInstance().GetPlayer1Color();
+		if (color1 == CBall::BALL_COLOR::MAGENTA) {
+			vivid::DrawTexture("data\\logo\\pink1(大).png", { 320.0f, 20.0f });
+		}
+		else {
+			vivid::DrawTexture("data\\logo\\yellow1(大).png", { 320.0f, 20.0f });
+		}
+		//p2
+		CBall::BALL_COLOR color2 = CBall::GetInstance().GetPlayer2Color();
+		if (color2 == CBall::BALL_COLOR::CYAN) {
+			vivid::DrawTexture("data\\logo\\blue2(大).png", { 900.0f, 20.0f });
+		}
+		else {
+			vivid::DrawTexture("data\\logo\\yellow2(大).png", { 900.0f, 20.0f });
+		}
 
 		// 総得点
-		vivid::DrawText(50, "総得点", { 50.0f,200.0f });
-		CBallScore::GetInstance().Draw({ 200.0f,200.0f },CBallScore::GetInstance().GetPlayer1Score());
-		CBallScore::GetInstance().Draw({ 800.0f, 200.0f },CBallScore::GetInstance().GetPlayer2Score());
+		vivid::DrawText(50, "総得点", { 50.0f,170.0f });
+		CBallScore::GetInstance().Draw({ 320.0f,100.0f }, CBallScore::GetInstance().GetPlayer1Score());
+		CBallScore::GetInstance().Draw({ 900.0f,100.0f }, CBallScore::GetInstance().GetPlayer2Score());
 
 		// マゼンタ
-		vivid::DrawText(50, "magenta", { 50.0f, 350.0f });
-		CBallScore::GetInstance().Draw({ 250.0f,350.0f },CBallScore::GetInstance().GetPlayer1Magenta());
-		CBallScore::GetInstance().Draw({ 850.0f,350.0f },CBallScore::GetInstance().GetPlayer2Magenta());
+		vivid::DrawTexture("data\\ball\\ball.png", { 50.0f, 320.0f }, 0xFFFF00FF);
+		CBallScore::GetInstance().Draw({ 360.0f,250.0f }, CBallScore::GetInstance().GetPlayer1Magenta());
+		CBallScore::GetInstance().Draw({ 930.0f,250.0f }, CBallScore::GetInstance().GetPlayer2Magenta());
 
 		// シアン
-		vivid::DrawText(50, "cyan", { 50.0f, 500.0f });
-		CBallScore::GetInstance().Draw({ 250.0f,500.0f },CBallScore::GetInstance().GetPlayer1Cyan());
-		CBallScore::GetInstance().Draw({ 850.0f,500.0f },CBallScore::GetInstance().GetPlayer2Cyan());
+		vivid::DrawTexture("data\\ball\\ball.png", { 50.0f, 470.0f }, 0xFF00FFFF);
+		CBallScore::GetInstance().Draw({ 360.0f,400.0f }, CBallScore::GetInstance().GetPlayer1Cyan());
+		CBallScore::GetInstance().Draw({ 930.0f,400.0f }, CBallScore::GetInstance().GetPlayer2Cyan());
 
 		// イエロー
-		vivid::DrawText(50, "yellow", { 50.0f, 650.0f });
-		CBallScore::GetInstance().Draw({ 250.0f,650.0f },CBallScore::GetInstance().GetPlayer1Yellow());
-		CBallScore::GetInstance().Draw({ 850.0f,650.0f },CBallScore::GetInstance().GetPlayer2Yellow());
+		vivid::DrawTexture("data\\ball\\ball.png", { 50.0f, 620.0f }, 0xFFFFFF00);
+		CBallScore::GetInstance().Draw({ 360.0f,550.0f }, CBallScore::GetInstance().GetPlayer1Yellow());
+		CBallScore::GetInstance().Draw({ 930.0f,550.0f }, CBallScore::GetInstance().GetPlayer2Yellow());
 	}
-	vivid::DrawText(48, "stage2", { 0.0f,0.0f });
 }
 
 void CStage2::Finalize(void)

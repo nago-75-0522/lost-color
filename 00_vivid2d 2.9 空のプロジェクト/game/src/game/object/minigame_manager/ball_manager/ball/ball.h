@@ -16,7 +16,7 @@ public:
 	void IniOld();
 
 	//当たり判定	
-	bool CheckHit(const CBasket& basket1, const CBasket& basket2);
+	void CheckHit(const CBasket& basket1, const CBasket& basket2);
 	static CBall& GetInstance();
 
 	bool GetOldMagenta() { return m_Old_Magenta; }
@@ -29,6 +29,7 @@ public:
 		MAGENTA,
 		CYAN,
 		YELLOW,
+		BOMB,
 		MAX,
 	};
 
@@ -73,7 +74,6 @@ private:
 		vivid::Vector2 m_scale;		  //拡大率
 		BALL_COLOR	   m_color;		  //色
 		BALL_STATE     m_state;		  //状態
-		bool		   m_reboundFlag; //跳ね返りフラグ
 	};
 
 	CBallStageSet m_ball_stageset;
@@ -86,7 +86,7 @@ private:
 	void UpdateBall(BALL& ball);
 
 	//定数
-	static const int	m_max_ball = 50;		//最大数
+	static const int	m_max_ball = 50;		//最大表示数
 	static const int    m_color_ratio = 10;
 	static const int	m_ball_radius;			//半径
 	static const int	m_ball_width;			//幅
@@ -114,4 +114,9 @@ private:
 	bool  m_Old_Magenta;//
 	bool  m_Old_Cyan;//
 	bool  m_Old_Yellow;//
+
+#ifdef _DEBUG
+	int m_BombCount1;
+	int m_BombCount2;
+#endif
 };
