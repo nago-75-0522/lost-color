@@ -31,6 +31,8 @@ void CStage2::Initialize(void)
 	CMinigame_Manager::GetInstance().Initialize();
 	CPlayer_Manager::GetInstance().Initialize();
 
+	m_Phase.Initialize();
+
 	vivid::LoadSound("data\\sound\\BALL_BGM.wav");
 	vivid::PlaySound("data\\sound\\BALL_BGM.wav", true);
 }
@@ -40,12 +42,18 @@ void CStage2::Update(void)
 	switch (m_State)
 	{
 	case STAGE2_STATE::MAIN:
-		m_ResultTimer = 0;
-		m_ball_timer.Update();
-		CMinigame_Manager::GetInstance().Update();
-		CPlayer_Manager::GetInstance().Update();
+		m_Phase.Update();
 
-		if (m_ball_timer.IsTimeUp())
+		if (m_Phase.Get_Game_State() == CPhase::GAME_STATE::MAIN)
+		{
+			m_ResultTimer = 0;
+			m_ball_timer.Update();
+			CMinigame_Manager::GetInstance().Update();
+			CPlayer_Manager::GetInstance().Update();
+		}
+
+
+		if (m_ball_timer.IsTimeUp() && m_Phase.Get_Game_State() != CPhase::GAME_STATE::FINISH_FIN)
 		{
 			if (CBallScore::GetInstance().GetPlayer1Score() == CBallScore::GetInstance().GetPlayer2Score())
 				m_Draw = true;
@@ -54,9 +62,13 @@ void CStage2::Update(void)
 			else if (CBallScore::GetInstance().GetPlayer1Score() < CBallScore::GetInstance().GetPlayer2Score())
 				m_Winner = false;
 			vivid::StopSound("data\\sound\\BALL_BGM.wav");
-			m_State = STAGE2_STATE::RESULT;
-			
+
+			m_Phase.Get_Game_State() = CPhase::GAME_STATE::FINISH;
 		}
+
+		if (m_Phase.Get_Game_State() == CPhase::GAME_STATE::FINISH_FIN)
+			m_State = STAGE2_STATE::RESULT;
+
 		break;
 
 	case STAGE2_STATE::RESULT:
@@ -91,6 +103,7 @@ void CStage2::Draw(void)
 		CMinigame_Manager::GetInstance().Draw();
 		CPlayer_Manager::GetInstance().Draw();
 		m_ball_timer.Draw();
+		m_Phase.Draw();
 	}
 	else
 	{

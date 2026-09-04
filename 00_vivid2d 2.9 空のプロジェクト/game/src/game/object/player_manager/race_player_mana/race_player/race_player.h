@@ -3,11 +3,11 @@
 #include"race_player_id.h"
 #include"../../../minigame_manager/race/race_manager/map/map.h"
 
-class IPlayer
+class IRace_Player
 {
 public:
-	IPlayer(PLAYER_CATEGORY categoty);
-	virtual ~IPlayer(void) = default;
+	IRace_Player(PLAYER_CATEGORY categoty);
+	virtual ~IRace_Player(void) = default;
 
 	void Initialize(void);
 

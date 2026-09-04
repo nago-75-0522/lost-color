@@ -21,9 +21,6 @@ public:
 	//解放
 	void Finalize()override;
 
-	
-
-
 private:
 
 	//コンストラクタ

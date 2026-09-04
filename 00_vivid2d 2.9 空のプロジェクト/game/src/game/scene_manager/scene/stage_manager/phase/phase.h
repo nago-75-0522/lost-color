@@ -10,13 +10,15 @@ public:
 	void Update();
 	void Draw();
 	void Finalize();
+
 	enum class GAME_STATE
 	{
 		START,
 		MAIN,
 		FINISH,
+		FINISH_FIN,
 	};
-	GAME_STATE m_Game_State;
+
 	GAME_STATE& Get_Game_State() { return m_Game_State; }
 private:
 	static const int m_start_time;
@@ -28,5 +30,5 @@ private:
 	static const int m_max_digit;
 	int m_Start_Timer;
 
-
+	GAME_STATE m_Game_State;
 };

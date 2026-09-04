@@ -52,8 +52,6 @@ void CFall::Initialize()
 
 	fopen_s(&fp, m_map_path, "r");
 
-
-
 	//サイズを調べる
 	fseek(fp, 0, SEEK_END);
 	int size = ftell(fp);

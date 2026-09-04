@@ -3,12 +3,12 @@
 #include"../../../minigame_manager/race/race_manager/map/map.h"
 #include"../../../minigame_manager/race/race_manager/race_manager.h"
 
-const vivid::Vector2 IPlayer::m_speed = { 8.0f,8.0f };
-const int IPlayer::m_size = 64;
-const float IPlayer::m_move_time = 120.f / m_speed.y;
-const int IPlayer::m_back_time = 1 * 60; //1秒
+const vivid::Vector2 IRace_Player::m_speed = { 8.0f,8.0f };
+const int IRace_Player::m_size = 64;
+const float IRace_Player::m_move_time = 120.f / m_speed.y;
+const int IRace_Player::m_back_time = 1 * 60; //1秒
 
-IPlayer::IPlayer(PLAYER_CATEGORY category)
+IRace_Player::IRace_Player(PLAYER_CATEGORY category)
 	: m_Player_Pos(0.0f, 0.0f)
 	, m_Draw_Pos(0.0f, 0.0f)
 	, m_Move_Pos(0.0f, 0.0f)
@@ -34,7 +34,7 @@ IPlayer::IPlayer(PLAYER_CATEGORY category)
 {
 }
 
-void IPlayer::Initialize()
+void IRace_Player::Initialize()
 {
 	m_Player_Pos = { 0.0f,0.0f };
 	m_Draw_Pos = { 0.0f,0.0f };
@@ -63,15 +63,22 @@ void IPlayer::Initialize()
 	m_isGoal = false;
 }
 
-void IPlayer::Update(void)
+void IRace_Player::Update(void)
 {
 	CMap& map = CMap::GetInstance();
-	//左へ行く
-	if (CRace_Manager::GetInstance().GetRaceState() == RACE_STATE::MAIN)
-		m_Player_Pos.x -= m_Velocity.x;
 
-	if (m_Now_Num_Map == 3)
+	m_Player_Pos.x -= m_Velocity.x;
+#if 1
+	switch (m_Now_Num_Map)
 	{
+	case 0:
+		if (!m_isPush)
+		{
+			m_isUp_Move = false;
+			m_isDown_Move = false;
+		}
+		break;
+	case 3:
 		//3番のところまで上も下も押されなかった時の処理
 		if (!m_isUp_Move && !m_isDown_Move)
 		{
@@ -89,44 +96,34 @@ void IPlayer::Update(void)
 			m_isDown_Move = true;
 
 		m_Back_Timer = m_back_time;
-	}
-	else if (m_Now_Num_Map == 4)
-	{
-		m_Keep_Num = 4; //保存
-	}
-	else if (m_Now_Num_Map == 5)
-	{
-		m_Keep_Num = 5; //保存
-	}
-	else if (m_Now_Num_Map == 8) //加速レーン
-	{
-		m_isAccele = true;
-	}
-	else if (m_Now_Num_Map == 9)
-	{
-		m_isGoal = true; //ゴールした
-	}
 
-	//** 真ん中に戻り始める場所 **//
-	if (m_Now_Num_Map == 6)
-	{
+		break;
+	case 4:
+		m_Keep_Num = 4; //保存
+		break;
+	case 5:
+		m_Keep_Num = 5; //保存
+		break;
+	case 6:
+		//** 真ん中に戻り始める場所 **//
 		m_isDown_Move = true;
 		m_isPush = false;
-	}
-	else if (m_Now_Num_Map == 7)
-	{
+		break;
+	case 7:
 		m_isUp_Move = true;
 		m_isPush = false;
-	}
-	else if (m_Now_Num_Map == 0)
-	{
-		if (!m_isPush)
-		{
-			m_isUp_Move = false;
-			m_isDown_Move = false;
-		}
+		break;
+	case 8:
+		m_isAccele = true;
+		break;
+	case 9:
+		m_isGoal = true; //ゴールした
+		break;
 
+	default:
+		break;
 	}
+#endif
 
 	//** 上や下に移動する処理 **//
 	if (m_Now_Num_Map == 3 || m_Now_Num_Map == 6 || m_Now_Num_Map == 7)
@@ -169,11 +166,11 @@ void IPlayer::Update(void)
 	}
 }
 
-void IPlayer::Finalize()
+void IRace_Player::Finalize()
 {
 }
 
-bool IPlayer::isOffscreen(void)
+bool IRace_Player::isOffscreen(void)
 {
 	//画面外に出た
 	if (m_Draw_Pos.x >= vivid::WINDOW_WIDTH)
@@ -184,7 +181,7 @@ bool IPlayer::isOffscreen(void)
 
 
 //後ろに下がるときに入れる用、もしくは元の場所に戻す用
-void IPlayer::SetMovePosX(float x)
+void IRace_Player::SetMovePosX(float x)
 {
 	if (--m_Back_Timer > 0)
 	{
@@ -205,17 +202,17 @@ void IPlayer::SetMovePosX(float x)
 	}
 }
 
-void IPlayer::SetIsAccele(bool flg)
+void IRace_Player::SetIsAccele(bool flg)
 {
 	m_isAccele = flg; //セット
 }
 
-void IPlayer::SetBackOK(bool flg)
+void IRace_Player::SetBackOK(bool flg)
 {
 	m_isBack_Category = flg; //セット
 }
 
-void IPlayer::SetBackCount(int num)
+void IRace_Player::SetBackCount(int num)
 {
 	//１回だけ引く
 	if (!m_isBack_Cnt_Pull)
@@ -227,12 +224,12 @@ void IPlayer::SetBackCount(int num)
 
 
 //今自分が何升目にいるか入れる関数
-void IPlayer::SetNowNumMap(int num)
+void IRace_Player::SetNowNumMap(int num)
 {
 	m_Now_Num_Map = num; //瞬間的なマップ情報
 }
 
-void IPlayer::SetSpeed(float speed)
+void IRace_Player::SetSpeed(float speed)
 {
 	m_Velocity.x = speed;
 }

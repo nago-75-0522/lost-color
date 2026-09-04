@@ -1,6 +1,7 @@
 #pragma once
 #include"..\..\..\scene\scene.h"
 #include"../../../../object/minigame_manager/ball_manager/ball_timer/ball_timer.h"
+#include"../phase/phase.h"
 
 class CStage2 :public IScene
 {
@@ -40,4 +41,6 @@ private:
 	int m_ResultTimer;//画面切り替え時間
 	bool m_Winner;
 	bool m_Draw;
+
+	CPhase m_Phase;
 };

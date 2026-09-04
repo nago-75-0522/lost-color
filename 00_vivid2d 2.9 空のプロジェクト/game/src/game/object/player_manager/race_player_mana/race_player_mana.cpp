@@ -4,8 +4,8 @@
 
 void CRace_Player_Manager::Initialize(void)
 {
-	CPlayer1::GetInstance().Initialize();
-	CPlayer2::GetInstance().Initialize();
+	CRace_Player1::GetInstance().Initialize();
+	CRace_Player2::GetInstance().Initialize();
 
 	m_Distance_Num = 0;
 	m_isAdd_Num = false;
@@ -16,16 +16,16 @@ void CRace_Player_Manager::Initialize(void)
 
 void CRace_Player_Manager::Update(void)
 {
-	CPlayer1::GetInstance().Update();
-	CPlayer2::GetInstance().Update();
+	CRace_Player1::GetInstance().Update();
+	CRace_Player2::GetInstance().Update();
 
 	isWhichAccele(); //どっちが加速したか判定し、該当プレイヤーを動かす
 }
 
 void CRace_Player_Manager::Draw()
 {
-	CPlayer1::GetInstance().Draw();
-	CPlayer2::GetInstance().Draw();
+	CRace_Player1::GetInstance().Draw();
+	CRace_Player2::GetInstance().Draw();
 
 #if 0
 	vivid::DrawText(40, "DistanceNum:" + std::to_string(m_Distance_Num), { 0.0f,120.f }, 0xff000000);
@@ -34,24 +34,24 @@ void CRace_Player_Manager::Draw()
 
 void CRace_Player_Manager::Finalize()
 {
-	CPlayer1::GetInstance().Finalize();
-	CPlayer2::GetInstance().Finalize();
+	CRace_Player1::GetInstance().Finalize();
+	CRace_Player2::GetInstance().Finalize();
 }
 
 //誰が勝ったか返す関数（1or2or3）
 int CRace_Player_Manager::isRaceWinner(void)
 {
-	if (CPlayer1::GetInstance().GetIsGoal() && CPlayer2::GetInstance().GetIsGoal())
+	if (CRace_Player1::GetInstance().GetIsGoal() && CRace_Player2::GetInstance().GetIsGoal())
 	{
 		m_isWinnerNum = 3; //引分け
 		m_isFinish = true;
 	}
-	else if (CPlayer1::GetInstance().GetIsGoal() || CPlayer2::GetInstance().isOffscreen())
+	else if (CRace_Player1::GetInstance().GetIsGoal() || CRace_Player2::GetInstance().isOffscreen())
 	{
 		m_isWinnerNum = 1; //1p勝利
 		m_isFinish = true;
 	}
-	else if (CPlayer2::GetInstance().GetIsGoal() || CPlayer1::GetInstance().isOffscreen())
+	else if (CRace_Player2::GetInstance().GetIsGoal() || CRace_Player1::GetInstance().isOffscreen())
 	{
 		m_isWinnerNum = 2; //2p勝利
 		m_isFinish = true;
@@ -62,7 +62,7 @@ int CRace_Player_Manager::isRaceWinner(void)
 
 vivid::Vector2 CRace_Player_Manager::GetPosition()
 {
-	return CPlayer1::GetInstance().GetPosition();
+	return CRace_Player1::GetInstance().GetPosition();
 }
 
 //プレイヤーがいる場所を返す関数
@@ -71,10 +71,10 @@ vivid::Vector2 CRace_Player_Manager::GetDrawPosition(PLAYER_CATEGORY category)
 	switch (category)
 	{
 	case PLAYER_CATEGORY::PLAYER1:
-		return CPlayer1::GetInstance().GetDrawPosition();
+		return CRace_Player1::GetInstance().GetDrawPosition();
 		break;
 	case PLAYER_CATEGORY::PLAYER2:
-		return CPlayer2::GetInstance().GetDrawPosition();
+		return CRace_Player2::GetInstance().GetDrawPosition();
 		break;
 	}
 }
@@ -85,10 +85,10 @@ void CRace_Player_Manager::SetNowNumMap(PLAYER_CATEGORY category, int num)
 	switch (category)
 	{
 	case PLAYER_CATEGORY::PLAYER1:
-		CPlayer1::GetInstance().SetNowNumMap(num);
+		CRace_Player1::GetInstance().SetNowNumMap(num);
 		break;
 	case PLAYER_CATEGORY::PLAYER2:
-		CPlayer2::GetInstance().SetNowNumMap(num);
+		CRace_Player2::GetInstance().SetNowNumMap(num);
 		break;
 	}
 }
@@ -96,8 +96,8 @@ void CRace_Player_Manager::SetNowNumMap(PLAYER_CATEGORY category, int num)
 //外部から受け取った速さをセット（上下に動くときだけかな）
 void CRace_Player_Manager::SetSpeed(float speed)
 {
-	CPlayer1::GetInstance().SetSpeed(speed);
-	CPlayer2::GetInstance().SetSpeed(speed);
+	CRace_Player1::GetInstance().SetSpeed(speed);
+	CRace_Player2::GetInstance().SetSpeed(speed);
 }
 
 //*************************************
@@ -105,8 +105,8 @@ void CRace_Player_Manager::SetSpeed(float speed)
 //*************************************
 void CRace_Player_Manager::isWhichAccele(void)
 {
-	CPlayer1& p1 = CPlayer1::GetInstance();
-	CPlayer2& p2 = CPlayer2::GetInstance();
+	CRace_Player1& p1 = CRace_Player1::GetInstance();
+	CRace_Player2& p2 = CRace_Player2::GetInstance();
 
 	//** 変数代入 **//
 	// 1p

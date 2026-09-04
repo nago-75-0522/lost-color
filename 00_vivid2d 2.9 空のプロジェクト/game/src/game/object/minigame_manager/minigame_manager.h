@@ -22,6 +22,7 @@ public:
 	MINIGAME_ID GetGame();
 	static CMinigame_Manager& GetInstance();
 
+	int GetRaceWinColor(void);
 private:
 	CMinigame_Manager(void);
 	//コピーコンストラクタ

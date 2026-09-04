@@ -1,20 +1,20 @@
 ﻿#include "race_player2.h"
 #include"../race_player_id.h"
 
-CPlayer2& CPlayer2::GetInstance(void)
+CRace_Player2& CRace_Player2::GetInstance(void)
 {
-	static CPlayer2 instance;
+	static CRace_Player2 instance;
 
 	return instance;
 }
 
-CPlayer2::CPlayer2(void)
-	: IPlayer(PLAYER_CATEGORY::PLAYER2)
+CRace_Player2::CRace_Player2(void)
+	: IRace_Player(PLAYER_CATEGORY::PLAYER2)
 {
 }
 
 
-void CPlayer2::Update(void)
+void CRace_Player2::Update(void)
 {
 	namespace keyboard = vivid::keyboard;
 	namespace controller = vivid::controller;
@@ -30,10 +30,12 @@ void CPlayer2::Update(void)
 			controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::UP))
 		{
 			//キーが押されてなかったら押した判定にする
+				//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
+			{
 				m_isPush = true;
-
-			m_isUp_Move = true;
+				m_isUp_Move = true;
+			}
 		}
 
 		if (keyboard::Button(keyboard::KEY_ID::DOWN) || stick.y > DEAD_ZONE ||
@@ -41,23 +43,24 @@ void CPlayer2::Update(void)
 		{
 			//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
+			{
 				m_isPush = true;
-
-			m_isDown_Move = true;
+				m_isDown_Move = true;
+			}
 		}
 	}
 
-	IPlayer::Update();
+	IRace_Player::Update();
 
 }
 
-void CPlayer2::Draw()
+void CRace_Player2::Draw()
 {
 	m_Draw_Pos.x = m_Camera_Copy_Pos.x + vivid::WINDOW_WIDTH / 2 - m_size / 2 + m_Move_Pos.x;
 	m_Draw_Pos.y = m_Camera_Copy_Pos.y + vivid::WINDOW_HEIGHT / 2 + m_Move_Pos.y;
 
 	vivid::DrawTexture("data\\logo\\small_blue_2p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
-	vivid::DrawTexture("data\\abe.png", m_Draw_Pos, 0xff00ffff);
+	vivid::DrawTexture("data\\cyan_car.png", m_Draw_Pos, 0xffffffff);
 
 	//vivid::DrawText(40, "Up:" + std::to_string(m_isUp_Move) + "Down:" + std::to_string(m_isDown_Move), { 0.0f,0.0f }, 0xff0000ff);
 	//vivid::DrawText(40, "UpLane:" + std::to_string(m_isUp_Lane) + "DownLane:" + std::to_string(m_isDown_Lane), { 0.0f,40.0f }, 0xff0000ff);

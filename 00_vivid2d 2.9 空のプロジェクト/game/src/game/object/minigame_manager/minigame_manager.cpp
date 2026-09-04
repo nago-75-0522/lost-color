@@ -86,3 +86,9 @@ CMinigame_Manager& CMinigame_Manager::GetInstance()
 	static CMinigame_Manager instance;
 	return instance;
 }
+
+int CMinigame_Manager::GetRaceWinColor(void)
+{
+	if (m_Game == MINIGAME_ID::RACE)
+		return CRace_Manager::GetInstance().GetWinColor();
+}

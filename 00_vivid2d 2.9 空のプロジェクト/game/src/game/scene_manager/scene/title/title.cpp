@@ -2,6 +2,7 @@
 #include"..\..\scene_manager.h"
 #include"vivid.h"
 #include"../color_select/color_select.h"
+#include"../game_risult/game_risult.h"
 
 CTitle::CTitle()
 	:m_Logo_Time(0)
@@ -43,6 +44,7 @@ void CTitle::Update(void)
 	{
 		vivid::PlaySound("data\\sound\\click.mp3", false);
 		vivid::StopSound("data\\sound\\title_bgm.mp3");
+		CGame_Result::GetInstance().IniScore();
 		CColor_Select::GetInstance().IniColor();
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
 
@@ -53,6 +55,7 @@ void CTitle::Update(void)
 	{
 		vivid::PlaySound("data\\sound\\click.mp3", false);
 		vivid::StopSound("data\\sound\\title_bgm.mp3");
+		CGame_Result::GetInstance().IniScore();
 		CColor_Select::GetInstance().IniColor();
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
 

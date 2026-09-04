@@ -261,6 +261,7 @@
     <ClInclude Include="src\game\object\player_manager\race_player_mana\race_player_mana.h" />
     <ClInclude Include="src\game\scene_manager\scene\color_select\color_select.h" />
     <ClInclude Include="src\game\scene_manager\scene\stage_manager\phase\phase.h" />
+    <ClInclude Include="src\game\scene_manager\scene\stage_manager\stage3\stage3_id.h" />
     <ClInclude Include="src\game\scene_manager\scene\stage_manager\stage_manager.h" />
     <ClInclude Include="src\game\scene_manager\scene\stage_select\stage_id.h" />
     <ClInclude Include="src\game\scene_manager\scene\stage_select\stage_select.h" />

@@ -2,10 +2,10 @@
 #include"vivid.h"
 #include"../race_player.h"
 
-class CPlayer1 : public IPlayer
+class CRace_Player1 : public IRace_Player
 {
 public:
-	
+
 	void Update(void) override;
 
 	void Draw(void) override;
@@ -14,11 +14,10 @@ public:
 
 	vivid::Vector2 GetDrawPosition() override { return m_Draw_Pos; };
 
-	static CPlayer1& GetInstance(void);
+	static CRace_Player1& GetInstance(void);
 private:
-	CPlayer1(void);
-	~CPlayer1(void) = default;
-	CPlayer1(const CPlayer1& rhs) = delete;
-	CPlayer1& operator =(const CPlayer1 rhs) = delete;
-
+	CRace_Player1(void);
+	~CRace_Player1(void) = default;
+	CRace_Player1(const CRace_Player1& rhs) = delete;
+	CRace_Player1& operator =(const CRace_Player1 rhs) = delete;
 };

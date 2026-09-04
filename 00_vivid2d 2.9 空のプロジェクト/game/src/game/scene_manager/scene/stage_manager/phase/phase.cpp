@@ -1,5 +1,7 @@
 #include "phase.h"
 #include"../../../scene_manager.h"
+#include"../../../../object/minigame_manager/minigame_manager.h"
+
 const int CPhase::m_start_time = 60 * 3;
 const vivid::Vector2 CPhase::m_logo_pos = { 300.0f,400.0f };
 const vivid::Vector2 CPhase::m_number_pos = { 300.0f,400.0f };
@@ -25,8 +27,12 @@ void CPhase::Update()
 	if (m_Game_State == GAME_STATE::FINISH)
 	{
 		++m_Start_Timer;
-		if (m_Start_Timer >= 0)
+		CMinigame_Manager& miniM = CMinigame_Manager::GetInstance();
+
+		if (m_Start_Timer >= 0 && miniM.GetGame() != MINIGAME_ID::BALL)
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);
+		else if (m_Start_Timer >= 0 && miniM.GetGame() == MINIGAME_ID::BALL)
+			m_Game_State = GAME_STATE::FINISH_FIN;
 	}
 	else if (m_Start_Timer >= -60)
 		--m_Start_Timer;
@@ -34,7 +40,6 @@ void CPhase::Update()
 	{
 		m_Game_State = GAME_STATE::MAIN;
 	}
-
 }
 
 void CPhase::Draw()
