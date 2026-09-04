@@ -16,25 +16,19 @@ void CBallManager::Initialize(void)
 {
 	CBallScore::GetInstance().Initialize();
 	CBall::GetInstance().Initialize();
-	CBall_Player_Manager::GetInstance().Initialize();
 }
 
 void CBallManager::Update(void)
 {
 	CBall::GetInstance().Update();
-	CBall_Player_Manager::GetInstance().Update();
-
 }
 
 void CBallManager::Draw(void)
 {
 	CBall::GetInstance().Draw();
-	CBall_Player_Manager::GetInstance().Draw();
-
 }
 
 void CBallManager::Finalize(void)
 {
-	CBall_Player_Manager::GetInstance().Finalize();
 }
 
