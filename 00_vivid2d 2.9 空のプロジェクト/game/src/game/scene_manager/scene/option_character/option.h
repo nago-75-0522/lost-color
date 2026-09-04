@@ -47,6 +47,8 @@ public:
 
 	void SetCharacter(void);//二人ともが準備完了したら
 
+	void SelectCharacter(void);//選択中
+
 
 private:
 	//コンストラクタ・デストラクタ
@@ -71,7 +73,8 @@ private:
 	bool m_player1_ok;
 	bool m_player2_ok;
 
-
+	CHARACTER_ID m_Player1_Select;
+	CHARACTER_ID m_Player2_Select;
 
 
 	/*	キーボード */
@@ -82,4 +85,6 @@ private:
 	vivid::Vector2 m_Player1_Stick;//スティックx左右 y上下
 	vivid::Vector2 m_Player2_Stick;//スティックx左右 y上下
 	CHARACTER_ID m_Now_Select;//選択中のボタン
+
+
 };
