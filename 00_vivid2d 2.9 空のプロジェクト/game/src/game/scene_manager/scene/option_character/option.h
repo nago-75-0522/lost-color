@@ -45,9 +45,15 @@ public:
 	//インスタンス呼び出す
 	static COption& GetInstance();
 
+	/* 選択・決定 */
+	void CharacterPic(void);//決定処理
+	void SelectCharacter(void);//選択中
 	void SetCharacter(void);//二人ともが準備完了したら
 
-	void SelectCharacter(void);//選択中
+	/* 描画関係 */
+	void DrawPlayer1(void);//プレイヤー1描画処理
+	void DrawPlayer2(void);//プレイヤー2描画処理
+
 
 
 private:
@@ -61,6 +67,8 @@ private:
 	COption& operator=(const COption& rhp) = delete;
 
 	
+	const unsigned int m_select_button_color;//灰色
+
 	//文字関連
 	static int m_select_width;//選んでねの画像幅
 	static int m_select_height;//選んでねの画像高さ
