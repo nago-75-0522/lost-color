@@ -5,6 +5,7 @@
 #include"..\..\..\object\player_manager\player_manager.h"
 #include"..\color_select\color_select.h"
 #include"..\..\scene_manager.h"
+#include"..\item_explanation\item_explanation.h"
 
 
 //インスタンスの取得
@@ -33,6 +34,7 @@ void CStage_Explanation::Update(void)
 	//呼び出し
 	BackChengeScene();
 	NextChangeScene();
+
 }
 
 //描画
@@ -45,6 +47,7 @@ void CStage_Explanation::Draw(void)
 	{
 	case STAGE_ID::STAGE1:
 		vivid::DrawText(48, "説明1", { 0.0f,0.0f });
+		
 		break;
 
 	case STAGE_ID::STAGE2:
@@ -54,6 +57,7 @@ void CStage_Explanation::Draw(void)
 	case STAGE_ID::STAGE3:
 		vivid::DrawText(48, "説明3", { 0.0f,0.0f });
 		break;
+		
 
 	default:
 		break;
@@ -70,24 +74,77 @@ void CStage_Explanation::Finalize(void)
 
 //進む処理
 void CStage_Explanation::NextChangeScene(void)
-{
+{	
+	//保存したIDの取得
+	STAGE_ID stageid = CStage_Select::GetInstance().GetStageID();
+
 	//ステージ回数によって処理を変える
 	if (m_StageCount == 0)//一回目
 	{
-		/* キーボード用 */
-		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
-		{
-			//カラーセレクトに行く
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
-		}
 
-		/* コントローラー用 */
-		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
-			vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+		switch (stageid)
 		{
-			//カラーセレクトに行く
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+		case STAGE_ID::STAGE1:
+
+			/* キーボード用 */
+			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+			{
+				//カラーセレクトに行く
+				CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+			}
+
+			/* コントローラー用 */
+			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+				vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+			{
+				//カラーセレクトに行く
+				CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+			}
+			break;
+
+
+		case STAGE_ID::STAGE2:
+
+			/* キーボード用 */
+			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+			{
+				//カラーセレクトに行く
+				CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+			}
+
+			/* コントローラー用 */
+			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+				vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+			{
+				//カラーセレクトに行く
+				CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+			}
+			break;
+
+
+		case STAGE_ID::STAGE3:
+
+			/* キーボード用 */
+			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+			{
+				//カラーセレクトに行く
+				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+			}
+
+			/* コントローラー用 */
+			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+				vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+			{
+				//カラーセレクトに行く
+				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+			}
+			break;
+
+
+		default:
+			break;
 		}
+		
 	}
 
 	//二回以上の時
@@ -97,35 +154,126 @@ void CStage_Explanation::NextChangeScene(void)
 		//プレイヤー1が勝ったのでプレイヤー2が操作
 		if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 		{
-			/* キーボード用 */
-			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
-			{
-				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
-			}
 
-			/* コントローラー用 */
-			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+			switch (stageid)
 			{
-				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
-			}
+			case STAGE_ID::STAGE1:
 
+				/* キーボード用 */
+				if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+				}
+
+				/* コントローラー用 */
+				if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+					vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+				}
+				break;
+
+
+			case STAGE_ID::STAGE2:
+
+				/* キーボード用 */
+				if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+				}
+
+				/* コントローラー用 */
+				if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+					vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+				}
+				break;
+
+
+			case STAGE_ID::STAGE3:
+
+				/* キーボード用 */
+				if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				}
+
+				/* コントローラー用 */
+				if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+					vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				}
+				break;
+			}
 		}
 		else//プレイヤー1が捜査
 		{
-			/* キーボード用 */
-			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S))
-			{
-				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
-			}
 
-			/* コントローラー用 */
-			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
+			switch (stageid)
 			{
-				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+			case STAGE_ID::STAGE1:
+
+				/* キーボード用 */
+				if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+				}
+
+				/* コントローラー用 */
+				if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+					vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+				}
+				break;
+
+
+			case STAGE_ID::STAGE2:
+
+				/* キーボード用 */
+				if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+				}
+
+				/* コントローラー用 */
+				if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+					vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
+				}
+				break;
+
+
+			case STAGE_ID::STAGE3:
+
+				/* キーボード用 */
+				if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				}
+
+				/* コントローラー用 */
+				if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
+					vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+				{
+					//カラーセレクトに行く
+					CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				}
+				break;
 			}
 		}
 	}
@@ -142,8 +290,8 @@ void CStage_Explanation::BackChengeScene(void)
 		/* キーボード用 */
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::W) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::UP))
 		{
-			//カラーセレクトに行く
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+			//ステージ選択
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 		}
 
 		/* コントローラー用 */
@@ -151,7 +299,7 @@ void CStage_Explanation::BackChengeScene(void)
 			vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::A))
 		{
 			//カラーセレクトに行く
-			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 		}
 	}
 

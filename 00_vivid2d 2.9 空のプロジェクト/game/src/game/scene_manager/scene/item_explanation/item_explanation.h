@@ -1,11 +1,12 @@
 #pragma once
+
 #include"..\scene.h"
 
-class CStage_Explanation :public IScene
+class CItem_Explanation :public IScene
 {
 public:
 	//インスタンスの取得
-	static CStage_Explanation& GetInstance();
+	static CItem_Explanation& GetInstance();
 
 	//初期化
 	void Initialize(void)override;//多重定義
@@ -26,21 +27,21 @@ public:
 	void BackChengeScene(void);
 
 
-	
+
 private:
 	//コンストラクタ
-	CStage_Explanation(void);
+	CItem_Explanation(void);
 
 	//デストラクタ
-	~CStage_Explanation(void) = default;
+	~CItem_Explanation(void) = default;
 
 	//コピーコンストラクタ
-	CStage_Explanation(const CStage_Explanation& rhp) = delete;
+	CItem_Explanation(const CItem_Explanation& rhp) = delete;
 
 	//代入演算子
-	CStage_Explanation& operator=(const CStage_Explanation& rhp) = delete;
+	CItem_Explanation& operator=(const CItem_Explanation& rhp) = delete;
 
 	int m_StageCount;//何回終わったかの判定
-	
+
 
 };

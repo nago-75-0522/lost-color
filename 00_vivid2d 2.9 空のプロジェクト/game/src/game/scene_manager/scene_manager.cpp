@@ -7,6 +7,7 @@
 #include"scene/stege_explanation/stage_explanation.h"
 #include"scene/result/result.h"
 #include"scene/stage_manager/stage_manager.h"
+#include"scene/item_explanation/item_explanation.h"
 
 const float CSceneManager::m_fade_speed = 1.0f;
 
@@ -164,6 +165,10 @@ void CSceneManager::_ChangeScene()
 
 	case SCENE_ID::STAGE_EXPLANATION:
 		m_Scene = &CStage_Explanation::GetInstance();
+		break;
+
+	case SCENE_ID::ITEM_EXPLANATION:
+		m_Scene = &CItem_Explanation::GetInstance();
 		break;
 
 	case SCENE_ID::STAGE_MANAGER:
