@@ -18,7 +18,7 @@ COption& COption::GetInstance()
 //コンストラクタ
 COption::COption(void)
 	:m_Player1_Select(CHARACTER_ID::CHARA1)
-	, m_Player2_Select(CHARACTER_ID::CHARA2)
+	, m_Player2_Select(CHARACTER_ID::CHARA1)
 	,m_select_button_color(0xff0000cd)
 {
 	
@@ -99,36 +99,13 @@ void COption::Update(void)
 	m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
 
-	//キーボード用 デバッグ
-	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
-	{
-		CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
-	}
 
-
-	/*
+	
 	SelectCharacter();	//選択中
+	CharacterPic();
 	SetCharacter();		//準備完了シーン切り替え
-	*/
+	
 
-	// P1がまだ決定していない
-	if (m_player1_ok == false)
-	{
-		// P1のキャラクター選択
-		SelectCharacter();
-	}
-	// P1が決定して、P2がまだ決定していない
-	else if (m_player2_ok == false)
-	{
-		// P2のキャラクター選択
-		SelectCharacter();
-	}
-	//2人とも決定済み
-	else
-	{
-		// ステージ選択へ
-		SetCharacter();
-	}
 
 	
 }
@@ -144,42 +121,28 @@ void COption::Draw(void)
 	//キャラクターを表示
 	for (int i = 0; i < (int)CHARACTER_ID::MAX; i++)
 	{
-		vivid::DrawTexture(
-			g_CharacterData[i].file,
-			{
-				g_CharacterData[i].posX,
-				g_CharacterData[i].posY
-			}
-		);
 
-		//選択しているキャラクターか
-		if (i == (int)m_Player1_Select)
+		if (m_player1_ok == false)
 		{
-			//選択しているキャラクターを灰色にする
-			vivid::DrawTexture(
-				g_CharacterData[i].file,
-				{
-					g_CharacterData[i].posX,
-					g_CharacterData[i].posY
-
-				}
-
-			);
+			m_Now_Select = m_Player1_Select;//プレイヤー１選択中
 		}
+
 		else
 		{
-			//選択していないキャラクター
-			vivid::DrawTexture(
-				g_CharacterData[i].file,
-				{
-					g_CharacterData[i].posX,
-					g_CharacterData[i].posY
-				}
-
-				, m_select_button_color//灰色
-			);
+			m_Now_Select = m_Player2_Select;
 		}
 
+		//選択中のキャラクター
+		if (i == (int)m_Now_Select)
+		{
+			vivid::DrawTexture(g_CharacterData[i].file, { g_CharacterData[i].posX,g_CharacterData[i].posY });
+		}
+
+		else
+		{
+			vivid::DrawTexture(g_CharacterData[i].file, { g_CharacterData[i].posX,g_CharacterData[i].posY },m_select_button_color);
+
+		}
 	}
 
 	//ロゴ
@@ -187,7 +150,7 @@ void COption::Draw(void)
 	vivid::DrawTexture("data\\logo\\black2.png", { (vivid::WINDOW_WIDTH / 2) + 50.0f,600.0f });
 
 	DrawPlayer1();//プレイヤー1関係描画
-	DrawPlayer2();//プレイヤー1関係描画
+	DrawPlayer2();//プレイヤー2関係描画
 
 
 	//キャラクター決定後
@@ -214,32 +177,27 @@ void COption::Finalize(void)
 void COption::SetCharacter(void)
 {
 
-#if 0
 	//二人ともが準備Ｏｋになったら
-	if (m_player1_ok == true)
+	if (m_player1_ok == true && m_player2_ok == true)
 	{
-		if (m_player2_ok == true)
+		/* シーンチェンジ処理 */
+		//キーボード用
+		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S))
 		{
-			/* シーンチェンジ処理 */
-			//キーボード用
-			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S))
-			{
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-				vivid::StopSound("data\\sound\\title_bgm.mp3");
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
-			}
-
-			//コントローラー用
-			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
-			{
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-				vivid::StopSound("data\\sound\\title_bgm.mp3");
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
-			}
+			vivid::PlaySound("data\\sound\\click.mp3", false);
+			vivid::StopSound("data\\sound\\title_bgm.mp3");
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 		}
+
+		//コントローラー用
+		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
+		{
+			vivid::PlaySound("data\\sound\\click.mp3", false);
+			vivid::StopSound("data\\sound\\title_bgm.mp3");
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
+		}
+
 	}
-#endif 0
-	
 }
 
 //プレイヤー1描画処理
@@ -268,60 +226,25 @@ void COption::DrawPlayer2(void)
 //決定処理
 void COption::CharacterPic(void)
 {
-
-	if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B) || keyboard::Trigger(keyboard::KEY_ID::S))
+	//プレイヤー１決定処理
+	if (m_player1_ok == false)
 	{
-		switch (m_Player1_Select)
+
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B) || keyboard::Trigger(keyboard::KEY_ID::S))
 		{
-		case CHARACTER_ID::CHARA1:
 			m_player1_ok = true;
-			
-			break;
-
-		case CHARACTER_ID::CHARA2:
-			m_player1_ok = true;
-			break;
-
-		case CHARACTER_ID::CHARA3:
-			m_player1_ok = true;
-			break;
-
-		case CHARACTER_ID::CHARA4:
-			m_player1_ok = true;
-			break;
-
-
-		default:
-			break;
+			vivid::PlaySound("data\\sound\\click.mp3", false);
 		}
-
 	}
-
-	if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B) || keyboard::Trigger(keyboard::KEY_ID::DOWN))
+	
+	//プレイヤー２決定処理
+	else if (m_player2_ok == false)
 	{
-		switch (m_Player2_Select)
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B) || keyboard::Trigger(keyboard::KEY_ID::DOWN))
 		{
-		case CHARACTER_ID::CHARA1:
 			m_player2_ok = true;
-			break;
-
-		case CHARACTER_ID::CHARA2:
-			m_player2_ok = true;
-			break;
-
-		case CHARACTER_ID::CHARA3:
-			m_player2_ok = true;
-			break;
-
-		case CHARACTER_ID::CHARA4:
-			m_player2_ok = true;
-			break;
-
-
-		default:
-			break;
+			vivid::PlaySound("data\\sound\\click.mp3", false);
 		}
-
 	}
 }
 
@@ -329,9 +252,7 @@ void COption::CharacterPic(void)
 //選択中の処理
 void COption::SelectCharacter(void)
 {
-	CharacterPic();
-	namespace controller = vivid::controller;
-	namespace keyboard = vivid::keyboard;
+
 
 	/* コントローラの実装 */
 		//デッドゾーンの設定
