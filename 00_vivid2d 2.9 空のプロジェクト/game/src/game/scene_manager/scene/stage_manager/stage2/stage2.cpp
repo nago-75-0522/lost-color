@@ -78,7 +78,7 @@ void CStage2::Update(void)
 			|| vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B)
 			|| vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{
-			vivid::DrawText(100, "ClearCount +1", { 0,50 });
+			//vivid::DrawText(100, "ClearCount +1", { 0,50 });
 			CSceneManager::GetInstance().AddStageCount();
 			CPlayer_Manager::GetInstance().Update();
 			CSceneManager::GetInstance().Change(SCENE_ID::GAMERISULT);

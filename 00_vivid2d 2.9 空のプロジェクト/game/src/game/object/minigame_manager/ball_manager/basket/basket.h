@@ -11,6 +11,7 @@ public:
     void Draw();
 
     vivid::Vector2 GetPosition() const;
+    vivid::Vector2 GetOldPosition() const;
 
     float GetWidth() const;
     float GetHeight() const;
@@ -18,8 +19,10 @@ public:
 private:
 
     vivid::Vector2 m_Pos;
-
+    vivid::Vector2 m_OldPos;
 
     static const float m_basket_width;
     static const float m_basket_height;
+
+
 };

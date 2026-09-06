@@ -209,19 +209,26 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 		//前フレームの位置
 		m_OldBallCenterY = ball.m_oldpos.y + m_ball_height / 2.0f;
 
-		//player1のかご判定
+		// Player1
+		float oldDiff1 =m_OldBallCenterY - basket1.GetOldPosition().y;
+		float newDiff1 =m_BallCenterY - basket1.GetPosition().y;
+
 		m_Player1BasketCheck =
 			m_BallCenterX >= basket1.GetPosition().x &&
 			m_BallCenterX <= basket1.GetPosition().x + basket1.GetWidth() &&
-			m_OldBallCenterY < basket1.GetPosition().y &&
-			m_BallCenterY >= basket1.GetPosition().y;
+			oldDiff1 < 0.0f &&
+			newDiff1 >= 0.0f;
 
-		//player2のかご判定
+		// Player2
+		float oldDiff2 =m_OldBallCenterY - basket2.GetOldPosition().y;
+		float newDiff2 =m_BallCenterY - basket2.GetPosition().y;
+
 		m_Player2BasketCheck =
 			m_BallCenterX >= basket2.GetPosition().x &&
 			m_BallCenterX <= basket2.GetPosition().x + basket2.GetWidth() &&
-			m_OldBallCenterY < basket2.GetPosition().y &&
-			m_BallCenterY >= basket2.GetPosition().y;
+			oldDiff2 < 0.0f &&
+			newDiff2 >= 0.0f;
+
 
 		if (m_Player1BasketCheck)
 		{

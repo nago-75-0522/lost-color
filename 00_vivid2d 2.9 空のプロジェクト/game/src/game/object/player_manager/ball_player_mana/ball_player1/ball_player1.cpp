@@ -113,7 +113,7 @@ void CBallPlayer1::Update(void)
 	}
 
 	//ジャンプ
-	if (keyboard::Button(keyboard::KEY_ID::W) || stick.x < -DEAD_ZONE ||
+	if (keyboard::Button(keyboard::KEY_ID::W) ||
 		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::A))
 	{
 		//地面にいる時のみ
