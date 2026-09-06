@@ -27,7 +27,9 @@ public:
 		UP,
 	};//キャラの向き
 	CHARA_DIRECTION GetCharaDirection() { return m_Player2_Chara_Dir; }
-
+	bool GetIsPullMove() const { return m_Is_Pull_Move; }
+	void SetIsPullMove(bool flag) { m_Is_Pull_Move = flag; }
+	vivid::Vector2& GetPullTargetPos() { return m_Pull_Target_Pos; }
 private:
 	CFall_Player2(void);
 	//コピーコンストラクタ
@@ -72,6 +74,6 @@ private:
 	bool m_Player2_Fall_Sound;
 	bool m_Player2_Get_Item;
 	ITEM_ID m_Item_ID;
-
-
+	bool m_Is_Pull_Move;
+	vivid::Vector2 m_Pull_Target_Pos;
 };

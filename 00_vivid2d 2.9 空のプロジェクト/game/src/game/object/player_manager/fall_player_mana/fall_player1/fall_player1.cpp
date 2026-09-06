@@ -45,44 +45,91 @@ void CFall_Player1::Initialize()
 	m_Player1_Fall_Sound = true;
 	m_Player1_Get_Item = false;
 	m_Item_ID = ITEM_ID::UNKNOW;
+	m_Pull_Target_Pos = { 0.0f,0.0f };
+	m_Is_Pull_Move = false;
 
 }
 
 void CFall_Player1::Update()
 {
+	if (m_Is_Pull_Move)
+	{
+		vivid::Vector2 dir;
+
+		dir.x = m_Pull_Target_Pos.x - m_Player1_Chara_Pos.x;
+		dir.y = m_Pull_Target_Pos.y - m_Player1_Chara_Pos.y;
+
+		float len =
+			sqrtf(dir.x * dir.x +
+				dir.y * dir.y);
+
+		const float PULL_SPEED = 24.0f;
+
+		if (len <= PULL_SPEED)
+		{
+			m_Player1_Chara_Pos = m_Pull_Target_Pos;
+
+			m_Player1_Marker_Pos.x = m_Player1_Chara_Pos.x;
+			m_Player1_Marker_Pos.y = m_Player1_Chara_Pos.y - m_player1_marker_size.y;
+
+			m_Is_Pull_Move = false;
+		}
+		else
+		{
+			dir.x /= len;
+			dir.y /= len;
+
+			m_Player1_Chara_Pos.x += dir.x * PULL_SPEED;
+			m_Player1_Chara_Pos.y += dir.y * PULL_SPEED;
+
+			m_Player1_Marker_Pos.x = m_Player1_Chara_Pos.x;
+			m_Player1_Marker_Pos.y = m_Player1_Chara_Pos.y - m_player1_marker_size.y;
+		}
+
+		return;
+	}
+
 	switch (m_Player1_Chara_State)
 	{
-
 	case CHARA_STATE::WAIT:
 		Wait_Character();
 		break;
+
 	case CHARA_STATE::MOVE:
 		Move_Character();
 		break;
 	}
 
-	//移動計算
 	m_Player1_Chara_Pos.x += m_Player1_Chara_Speed.x;
 	m_Player1_Chara_Pos.y += m_Player1_Chara_Speed.y;
+
 	m_Player1_Marker_Pos.x = m_Player1_Chara_Pos.x;
 	m_Player1_Marker_Pos.y = m_Player1_Chara_Pos.y - m_player1_marker_size.y;
 
-	int x = (int)((m_Player1_Chara_Pos.x + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
-	int y = (int)((m_Player1_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
+	int x = (int)((m_Player1_Chara_Pos.x + 0.5f) /
+		(float)CFall::GetInstance().GetMapChipSize());
 
-	if (CFall::GetInstance().CheckEmpty(x, y) && m_Player1_Chara_Scale.x >= 0)
+	int y = (int)((m_Player1_Chara_Pos.y + 0.5f) /
+		(float)CFall::GetInstance().GetMapChipSize());
+
+	if (CFall::GetInstance().CheckEmpty(x, y) &&
+		m_Player1_Chara_Scale.x >= 0)
 	{
 		if (m_Player1_Fall_Sound)
 		{
 			m_Player1_Fall_Sound = false;
 			vivid::PlaySound("data\\sound\\fall.wav", false);
 		}
-		m_Player1_Chara_Scale.x = m_Player1_Chara_Scale.y = cos((++m_Player1_Chara_Angle %= 720) * 3.14f / 360.0f);
+
+		m_Player1_Chara_Scale.x =
+			m_Player1_Chara_Scale.y =
+			cos((++m_Player1_Chara_Angle %= 720) *
+				3.14f / 360.0f);
 	}
+
 	Hit_Item_Box();
 	Item_Lottery();
 }
-
 void CFall_Player1::Draw()
 {
 	m_Player1_Chara_Rect.left = m_Player1_Chara_Anime_Frame * m_player1_chara_width;
