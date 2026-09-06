@@ -14,6 +14,8 @@ const float			CBall::m_ball_scale_speed = 1.0f / 15.0f;
 CBall::CBall(void)
 	: m_BallSpawn(0)
 	, m_ColorCount(0)
+	, m_SpawnCount(1)
+	, m_GameFrame(0)
 	, m_BallCenterX(0)
 	, m_BallCenterY(0)
 	, m_Old_Magenta(true)
@@ -50,6 +52,8 @@ void CBall::Initialize(void)
 		ball.m_state = BALL_STATE::SPAWN;//生成
 	}
 	m_BallSpawn = m_ball_spawn_interval;//生成タイマー初期化
+	m_SpawnCount = 1;
+	m_GameFrame = 0;
 
 	//SEの読み込み
 	vivid::LoadSound("data\\sound\\ball.wav");//ballキャッチ時
@@ -64,7 +68,6 @@ void CBall::Initialize(void)
 		m_Yellow = m_Old_Yellow;
 	if (!m_Old_Magenta)
 		m_Magenta = m_Old_Magenta;
-
 }
 
 //更新
@@ -76,6 +79,10 @@ void CBall::Update(void)
 		m_Old_Yellow = CColor_Select::GetInstance().GetYellow();
 	if (m_Old_Magenta)
 		m_Old_Magenta = CColor_Select::GetInstance().GetMagenta();
+
+	m_GameFrame++;
+	if (m_GameFrame > 60 * 20)//20秒後
+		m_SpawnCount = 2;
 
 	SpawnBall();
 	CEffectManager::GetInstance().Update();//エフェクトの更新
@@ -154,11 +161,12 @@ void CBall::Draw(void)
 	CEffectManager::GetInstance().Draw();//エフェクトの描画
 
 #ifdef _DEBUG/*デバックビルドのときのみ有効*/
-	//vivid::DrawText(30, ("Save C=" + std::to_string(m_Old_Cyan)+ " Y=" + std::to_string(m_Old_Yellow) 
-		//+ " M=" + std::to_string(m_Old_Magenta)).c_str(), {100,100});
-	//vivid::DrawText(30, ("Now C=" + std::to_string(m_Cyan)
-		//+ " Y=" + std::to_string(m_Yellow) + " M=" + std::to_string(m_Magenta)).c_str(), { 100, 150 });
-
+#if 0
+	vivid::DrawText(30, ("Save C=" + std::to_string(m_Old_Cyan)+ " Y=" + std::to_string(m_Old_Yellow) 
+		+ " M=" + std::to_string(m_Old_Magenta)).c_str(), {100,100});
+	vivid::DrawText(30, ("Now C=" + std::to_string(m_Cyan)
+		+ " Y=" + std::to_string(m_Yellow) + " M=" + std::to_string(m_Magenta)).c_str(), { 100, 150 });
+#endif
 	vivid::DrawText(30, ("m =" + std::to_string(CBallScore::GetInstance().GetPlayer1Magenta())
 		+ "c=" + std::to_string(CBallScore::GetInstance().GetPlayer1Cyan())
 		+ "y=" + std::to_string(CBallScore::GetInstance().GetPlayer1Yellow())
@@ -397,8 +405,10 @@ CBall::COLOR_ROLE CBall::GetColorRole(BALL_COLOR color)
 		return COLOR_ROLE::COMMON;//残り(イエロー)は共通
 	}
 
-	int disableCount = (!m_Magenta ? 1 : 0) +
-		(!m_Cyan ? 1 : 0) + (!m_Yellow ? 1 : 0);
+	int disableCount =
+		(!m_Magenta ? 1 : 0) + //false=1,true=0
+		(!m_Cyan	? 1 : 0) +
+		(!m_Yellow	? 1 : 0);
 
 	//全色有効
 	if (disableCount == 0)
@@ -497,58 +507,64 @@ CBall::BALL_COLOR CBall::GetPlayer2Color()
 //球の出現管理
 void CBall::SpawnBall(void)
 {
-	//出現管理
+	//生成タイマー
 	if (--m_BallSpawn <= 0)
 	{
-		m_BallSpawn = m_ball_spawn_interval;//タイマーリセット
-
-		for (int i = 0; i < m_max_ball; i++)
+		//タイマーリセット
+		m_BallSpawn = m_ball_spawn_interval;
+		// 指定数のボールを生成
+		for (int j = 0; j < m_SpawnCount; j++)
 		{
-			BALL& ball = m_Balls[i];
-
-			if (ball.m_activeFlag == true)//使用中なら次へ
-				continue;
-
-			//生成時の値の設定
-			ball.m_pos.x = (float)(rand() % (vivid::WINDOW_WIDTH - m_ball_width));
-			ball.m_pos.y = 0.0f;
-			ball.m_velocity = vivid::Vector2::ZERO;
-			ball.m_activeFlag = true;
-			ball.m_isLanding = false;
-			ball.m_anchor = vivid::Vector2(m_ball_width / 2, m_ball_height / 2);
-			ball.m_scale = vivid::Vector2(0.0f, 0.0f);
-			ball.m_state = BALL_STATE::SPAWN;
-
-			//ランダムに色決定
-			int type = rand() % 100;
-			if (type < 45)
+			for (int i = 0; i < m_max_ball; i++)
 			{
-				ball.m_color = GetPlayer1Color();
-			}
-			else if (type < 90)
-			{
-				ball.m_color = GetPlayer2Color();
-			}
-			else if (type < 98)
-			{
-				//共通色
-				if (GetColorRole(BALL_COLOR::MAGENTA) == COLOR_ROLE::COMMON)
-					ball.m_color = BALL_COLOR::MAGENTA;
-				else if (GetColorRole(BALL_COLOR::CYAN) == COLOR_ROLE::COMMON)
-					ball.m_color = BALL_COLOR::CYAN;
+				BALL& ball = m_Balls[i];
+
+				if (ball.m_activeFlag)//使用中なら次へ
+					continue;
+
+				//生成時の値の設定
+				ball.m_pos.x = (float)(rand() % (vivid::WINDOW_WIDTH - m_ball_width));
+				ball.m_pos.y = 0.0f;
+				ball.m_velocity = vivid::Vector2::ZERO;
+				ball.m_activeFlag = true;
+				ball.m_isLanding = false;
+				ball.m_anchor = vivid::Vector2(m_ball_width / 2, m_ball_height / 2);
+				ball.m_scale = vivid::Vector2(0.0f, 0.0f);
+				ball.m_state = BALL_STATE::SPAWN;
+
+				//ランダムに色決定
+				int type = rand() % 100;
+				if (type < 45)
+				{
+					ball.m_color = GetPlayer1Color();
+				}
+				else if (type < 90)
+				{
+					ball.m_color = GetPlayer2Color();
+				}
+				else if (type < 98)
+				{
+					//共通色
+					if (GetColorRole(BALL_COLOR::MAGENTA) == COLOR_ROLE::COMMON)
+						ball.m_color = BALL_COLOR::MAGENTA;
+					else if (GetColorRole(BALL_COLOR::CYAN) == COLOR_ROLE::COMMON)
+						ball.m_color = BALL_COLOR::CYAN;
+					else
+						ball.m_color = BALL_COLOR::YELLOW;
+				}
 				else
-					ball.m_color = BALL_COLOR::YELLOW;
-			}
-			else
-			{
-				ball.m_color = BALL_COLOR::BOMB;
-			}
+				{
+					//爆弾
+					ball.m_color = BALL_COLOR::BOMB;
+				}
 
-			// 1個生成したら終了
-			break;
+				// 生成分が終了
+				break;
+			}
 		}
 	}
 }
+
 // 球の更新
 void CBall::UpdateBall(BALL& ball)
 {

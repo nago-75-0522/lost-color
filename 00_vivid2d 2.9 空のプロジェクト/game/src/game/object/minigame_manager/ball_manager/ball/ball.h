@@ -87,7 +87,7 @@ private:
 
 	//定数
 	static const int	m_max_ball = 50;		//最大表示数
-	static const int    m_color_ratio = 10;
+	static const int    m_color_ratio = 10;		//色抽選用の候補数
 	static const int	m_ball_radius;			//半径
 	static const int	m_ball_width;			//幅
 	static const int	m_ball_height;			//高さ
@@ -101,6 +101,8 @@ private:
 	BALL_COLOR m_ColorList[m_color_ratio];//生成候補色リスト
 	int   m_BallSpawn;//出現タイマー
 	int   m_ColorCount;//候補色数
+	int   m_SpawnCount;//生成数
+	int   m_GameFrame;//経過フレーム
 	float m_BallCenterX;//ボールの中心座標x
 	float m_BallCenterY;//ボールの中心座標y
 	float m_OldBallCenterY;//前フレームの中心座標y
@@ -111,9 +113,9 @@ private:
 	bool  m_Magenta;//マゼンタ生成判定
 	bool  m_Cyan;//シアン生成判定
 	bool  m_Yellow;//イエロー生成判定
-	bool  m_Old_Magenta;//
-	bool  m_Old_Cyan;//
-	bool  m_Old_Yellow;//
+	bool  m_Old_Magenta;//前回保存したマゼンタ有効状態
+	bool  m_Old_Cyan;//前回保存したシアン有効状態
+	bool  m_Old_Yellow;//前回保存したイエロー有効状態
 
 #ifdef _DEBUG
 	int m_BombCount1;

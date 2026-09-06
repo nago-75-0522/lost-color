@@ -55,16 +55,19 @@ void CBall_Player_Manager::CheckPlayerHit()
 
     // 横方向のめり込み量
     // P1がP2の左側にいる場合の重なり量
-    float overlapLeft =
-        player1.GetRight() - player2.GetLeft();
+    float overlapLeft = player1.GetRight() - player2.GetLeft();
     // P1がP2の右側にいる場合の重なり量
-    float overlapRight =
-        player2.GetRight() - player1.GetLeft();
+    float overlapRight = player2.GetRight() - player1.GetLeft();
     //最短距離の方向へ押し戻す
-    float overlap =
-        (overlapLeft < overlapRight)
-        ? overlapLeft
-        : overlapRight;
+    float overlap = 0.0f;
+    if (overlapLeft < overlapRight)
+    {
+        overlap = overlapLeft;
+    }
+    else
+    {
+        overlap = overlapRight;
+    }
 
     // 左右へ押し戻す
     // Player1 が左側にいる場合
@@ -82,7 +85,9 @@ void CBall_Player_Manager::CheckPlayerHit()
         player1.AddPos({ overlap * 0.5f, 0.0f });
         player2.AddPos({ -overlap * 0.5f, 0.0f });
     }
+#if 0
 #ifdef _DEBUG
     vivid::DrawText(30, "HIT", { 500, 100 });
+#endif
 #endif
 }

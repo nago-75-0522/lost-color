@@ -1,6 +1,5 @@
 ﻿#include "ball_manager.h"
 #include "ball_score/ball_score.h"
-#include"../../player_manager/ball_player_mana/ball_player_mana.h"
 
 CBallManager& CBallManager::GetInstance()
 {

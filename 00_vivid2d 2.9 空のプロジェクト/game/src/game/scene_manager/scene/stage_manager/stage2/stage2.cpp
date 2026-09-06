@@ -59,7 +59,7 @@ void CStage2::Update(void)
 				m_Draw = true;
 			else if (CBallScore::GetInstance().GetPlayer1Score() > CBallScore::GetInstance().GetPlayer2Score())
 				m_Winner = true;
-			else if (CBallScore::GetInstance().GetPlayer1Score() < CBallScore::GetInstance().GetPlayer2Score())
+			else
 				m_Winner = false;
 			vivid::StopSound("data\\sound\\BALL_BGM.wav");
 
