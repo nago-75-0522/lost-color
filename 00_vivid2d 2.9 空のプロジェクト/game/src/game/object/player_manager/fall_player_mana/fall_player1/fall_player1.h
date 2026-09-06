@@ -20,7 +20,7 @@ public:
 	static CFall_Player1& GetInstance();
 	ITEM_ID& GetItemID() { return m_Item_ID; }
 	vivid::Vector2& GetCharaPos() { return m_Player1_Chara_Pos; }
-
+	void ForceStop();
 	enum class CHARA_DIRECTION
 	{
 		DOWN,
@@ -55,6 +55,7 @@ private:
 	static const std::string m_player1_marker_path;
 	static const vivid::Vector2 m_player1_marker_size;
 	static const int m_item_box_size;
+	static const vivid::Vector2 m_item_pos;
 	//変数
 	CHARA_DIRECTION m_Player1_Chara_Dir;
 	CHARA_STATE m_Player1_Chara_State;
@@ -71,4 +72,7 @@ private:
 	bool m_Player1_Fall_Sound;
 	bool m_Player1_Get_Item;
 	ITEM_ID m_Item_ID;
+
+
+
 };

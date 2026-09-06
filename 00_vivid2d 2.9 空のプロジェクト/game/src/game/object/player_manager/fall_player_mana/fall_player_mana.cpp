@@ -1,7 +1,4 @@
 #include "fall_player_mana.h"
-#include"../../../scene_manager/scene/stage_manager/stage2/stage2.h"
-#include"fall_player1/fall_player1.h"
-#include"fall_player2/fall_player2.h"
 
 CFall_Player_Manager& CFall_Player_Manager::GetInstance(void)
 {
@@ -17,6 +14,7 @@ void CFall_Player_Manager::Initialize(void)
 	CFall_Player2::GetInstance().Initialize();
 
 	m_Draw = false;
+	m_Player1_Win = false;
 }
 
 void CFall_Player_Manager::Update(void)
@@ -49,6 +47,7 @@ void CFall_Player_Manager::Finalize(void)
 {
 	CFall_Player1::GetInstance().Finalize();
 	CFall_Player2::GetInstance().Finalize();
+
 }
 
 CFall_Player_Manager::CFall_Player_Manager(void)

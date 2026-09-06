@@ -169,6 +169,7 @@
     <ClCompile Include="src\game\object\item_manager\item\item.cpp" />
     <ClCompile Include="src\game\object\item_manager\item_box\item_box.cpp" />
     <ClCompile Include="src\game\object\item_manager\item_manager.cpp" />
+    <ClCompile Include="src\game\object\item_manager\pull\pull.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball\ball.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\ball_manager.cpp" />
     <ClCompile Include="src\game\object\minigame_manager\ball_manager\effect_manager\effect\catch_effect\catch_effect.cpp" />

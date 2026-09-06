@@ -147,7 +147,7 @@ void CStage2::Draw(void)
 }
 
 void CStage2::Finalize(void)
-{
+{	
 }
 
 bool CStage2::GetWinner()

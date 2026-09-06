@@ -10,6 +10,7 @@ const int CFall_Player1::m_player1_chara_center = 24;
 const std::string CFall_Player1::m_player1_marker_path = "data/logo/small_pink_1p.png";
 const vivid::Vector2 CFall_Player1::m_player1_marker_size = { 64.0f,40.0f };
 const int CFall_Player1::m_item_box_size = 50;
+const vivid::Vector2 CFall_Player1::m_item_pos = { 2.0f,2.0f };
 
 CFall_Player1::CFall_Player1()
 	: m_Player1_Chara_Pos{ 0.0f,0.0f }
@@ -51,6 +52,7 @@ void CFall_Player1::Update()
 {
 	switch (m_Player1_Chara_State)
 	{
+
 	case CHARA_STATE::WAIT:
 		Wait_Character();
 		break;
@@ -92,11 +94,14 @@ void CFall_Player1::Draw()
 	switch (m_Item_ID)
 	{
 	case ITEM_ID::HIGH_JUMP:
-		CItem_Manager::GetInstance().m_High_Jump_P1.Draw(vivid::Vector2(0.0f, 0.0f));
+		CItem_Manager::GetInstance().m_High_Jump_P1.DrawAim(*this);
+		CItem_Manager::GetInstance().m_High_Jump_P1.Draw(m_item_pos);
 		break;
 	case ITEM_ID::KNOCK_BACK:
 		break;
 	case ITEM_ID::PULL:
+		CItem_Manager::GetInstance().m_Pull_P1.DrawAim(*this);
+		CItem_Manager::GetInstance().m_Pull_P1.Draw(m_item_pos);
 		break;
 	case ITEM_ID::UNKNOW:
 		break;
@@ -107,6 +112,7 @@ void CFall_Player1::Draw()
 
 void CFall_Player1::Finalize()
 {
+	Initialize();
 }
 
 void CFall_Player1::Wait_Character()
@@ -116,12 +122,14 @@ void CFall_Player1::Wait_Character()
 
 	// スティック入力取得
 	vivid::Vector2 stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
-
 	const float DEAD_ZONE = 0.5f;
 	int x = (int)((m_Player1_Chara_Pos.x + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 	int y = (int)((m_Player1_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 
-
+	if (CItem_Manager::GetInstance().m_High_Jump_P1.Get_Is_Jump_1() || CItem_Manager::GetInstance().m_Pull_P1.Get_Is_Use_2())
+	{
+		return;
+	}
 	if (!CFall::GetInstance().CheckEmpty(x, y))
 	{
 		if (keyboard::Button(keyboard::KEY_ID::W) || stick.y < -DEAD_ZONE ||
@@ -235,6 +243,7 @@ bool CFall_Player1::Get_Item()
 
 void CFall_Player1::Item_Lottery()
 {
+	CItem_Manager::GetInstance().m_High_Jump_P1.Update();
 
 	if (m_Player1_Get_Item)
 	{
@@ -247,8 +256,11 @@ void CFall_Player1::Item_Lottery()
 		CItem_Manager::GetInstance().m_High_Jump_P1.Use(*this);
 		break;
 	case ITEM_ID::KNOCK_BACK:
+
 		break;
 	case ITEM_ID::PULL:
+		CItem_Manager::GetInstance().m_Pull_P1.Use(*this);
+
 		break;
 	case ITEM_ID::UNKNOW:
 		break;
@@ -266,4 +278,11 @@ CFall_Player1& CFall_Player1::GetInstance()
 {
 	static CFall_Player1 instanse;
 	return instanse;
+}
+
+void CFall_Player1::ForceStop()
+{
+	m_Player1_Chara_Speed = { 0.0f,0.0f };
+	m_Player1_Chara_Move_Timer = 0;
+	m_Player1_Chara_State = CHARA_STATE::WAIT;
 }

@@ -52,6 +52,8 @@ void CFall::Initialize()
 
 	fopen_s(&fp, m_map_path, "r");
 
+
+
 	//サイズを調べる
 	fseek(fp, 0, SEEK_END);
 	int size = ftell(fp);
@@ -103,6 +105,9 @@ void CFall::Initialize()
 //更新
 void CFall::Update()
 {
+	CItem_Manager::GetInstance().Update();
+
+
 	if (m_Old_Cyan)
 		m_Old_Cyan = CColor_Select::GetInstance().GetCyan();
 	if (m_Old_Yellow)
@@ -124,75 +129,131 @@ void CFall::Update()
 		(int)(CFall_Player2::GetInstance().GetCharaPos().y + m_chara_center) / m_map_chip_size
 	};
 
-	CItem_Manager::GetInstance().Update();
-
 	for (int i = 0; i < 2; i++)
 	{
 		if (x[i] != m_Old_X[i] || y[i] != m_Old_Y[i] || --m_Floor_Timer[i] < 0)
 		{
 
-
 			m_Floor_Timer[i] = m_floor_time;
 
-			switch ((MAP_CHIP_ID)m_Map[y[i]][x[i]])
-			{
-			case MAP_CHIP_ID::CYAN:
-				//黄色が消されているなら
-				if (m_Yellow == false)
+			if (i == 0 && CItem_Manager::GetInstance().m_High_Jump_P1.Get_Is_Jump_1() == false)
+				switch ((MAP_CHIP_ID)m_Map[y[i]][x[i]])
 				{
-					m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;//次の色が黄色であることを保存
-					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;//見た目は灰色
+				case MAP_CHIP_ID::CYAN:
+					//黄色が消されているなら
+					if (m_Yellow == false)
+					{
+						m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;//次の色が黄色であることを保存
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;//見た目は灰色
+						break;
+					}
+					//何もなければ黄色
+					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;//
 					break;
-				}
-				//何もなければ黄色
-				m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;//
-				break;
 
-			case MAP_CHIP_ID::YELLOW:
-				//赤が消されてるなら
-				if (m_Magenta == false)
-				{
-					m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;//次の色が赤であることを保存
-					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;//見た目は灰色
-					break;
-				}
-				//何もなければ赤
-				m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;
-				break;
-
-			case MAP_CHIP_ID::MAGENTA:
-
-				m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
-				break;
-
-			case MAP_CHIP_ID::GLAY:
-				//青と黄色がない場合　青から黄色
-				if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::CYAN) && m_Yellow == false)
-				{
-					m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::YELLOW);
-					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;
-				}
-				//青がない場合に黄色に変える
-				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::CYAN))
-					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;
-				//黄色と赤がない場合　黄色から赤
-				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW) && m_Magenta == false)
-				{
-					m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::MAGENTA);
-					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;
-				}
-				//黄色がない場合に赤に変える
-				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW))
+				case MAP_CHIP_ID::YELLOW:
+					//赤が消されてるなら
+					if (m_Magenta == false)
+					{
+						m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;//次の色が赤であることを保存
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;//見た目は灰色
+						break;
+					}
+					//何もなければ赤
 					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;
-				//赤が無い場合　床を消す
-				else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::MAGENTA))
-					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
+					break;
 
-			}
+				case MAP_CHIP_ID::MAGENTA:
+
+					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
+					break;
+
+				case MAP_CHIP_ID::GLAY:
+					//青と黄色がない場合　青から黄色
+					if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::CYAN) && m_Yellow == false)
+					{
+						m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::YELLOW);
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;
+					}
+					//青がない場合に黄色に変える
+					else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::CYAN))
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;
+					//黄色と赤がない場合　黄色から赤
+					else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW) && m_Magenta == false)
+					{
+						m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::MAGENTA);
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;
+					}
+					//黄色がない場合に赤に変える
+					else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW))
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;
+					//赤が無い場合　床を消す
+					else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::MAGENTA))
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
+
+				}
+
+			if (i == 1 && CItem_Manager::GetInstance().m_High_Jump_P2.Get_Is_Jump_2() == false)
+				switch ((MAP_CHIP_ID)m_Map[y[i]][x[i]])
+				{
+				case MAP_CHIP_ID::CYAN:
+					//黄色が消されているなら
+					if (m_Yellow == false)
+					{
+						m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;//次の色が黄色であることを保存
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;//見た目は灰色
+						break;
+					}
+					//何もなければ黄色
+					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;//
+					break;
+
+				case MAP_CHIP_ID::YELLOW:
+					//赤が消されてるなら
+					if (m_Magenta == false)
+					{
+						m_Now_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;//次の色が赤であることを保存
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;//見た目は灰色
+						break;
+					}
+					//何もなければ赤
+					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;
+					break;
+
+				case MAP_CHIP_ID::MAGENTA:
+
+					m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
+					break;
+
+				case MAP_CHIP_ID::GLAY:
+					//青と黄色がない場合　青から黄色
+					if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::CYAN) && m_Yellow == false)
+					{
+						m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::YELLOW);
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;
+					}
+					//青がない場合に黄色に変える
+					else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::CYAN))
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::YELLOW;
+					//黄色と赤がない場合　黄色から赤
+					else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW) && m_Magenta == false)
+					{
+						m_Now_Map[y[i]][x[i]] = (unsigned char)(MAP_CHIP_ID::MAGENTA);
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::GLAY;
+					}
+					//黄色がない場合に赤に変える
+					else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::YELLOW))
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::MAGENTA;
+					//赤が無い場合　床を消す
+					else if (m_Now_Map[y[i]][x[i]] == (unsigned char)(MAP_CHIP_ID::MAGENTA))
+						m_Map[y[i]][x[i]] = (unsigned char)MAP_CHIP_ID::EMPTY;
+
+				}
 			m_Old_X[i] = x[i];
 			m_Old_Y[i] = y[i];
 		}
 	}
+
 }
 
 //描画

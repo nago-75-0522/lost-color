@@ -1,4 +1,6 @@
 #pragma once
+#include"fall_player1/fall_player1.h"
+#include"fall_player2/fall_player2.h"
 
 class CFall_Player_Manager
 {

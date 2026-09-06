@@ -2,7 +2,9 @@
 #include"../../scene_manager.h"
 #include"../../../object/player_manager/player_manager.h"
 #include"../color_select/color_select.h"
-
+#include"../stage_manager/stage2/stage2.h"
+#include"../../../object/player_manager/fall_player_mana/fall_player_mana.h"
+#include"../../../object/player_manager/race_player_mana/race_player_mana.h"
 const int CGame_Result::m_max_score = 999999999;//最大スコア
 const int CGame_Result::m_max_score_digiit = 9;//表示桁数
 const int CGame_Result::m_digit_width = 32;
@@ -39,7 +41,7 @@ void CGame_Result::Update()
 		m_Player2_Ready = true;
 
 	if (m_Player1_Ready && m_Player2_Ready &&
-		CSceneManager::GetInstance().FinishStage() >= 3)
+		CSceneManager::GetInstance().FinishStage() >= 4)
 		CSceneManager::GetInstance().Change(SCENE_ID::RESULT);
 	else if (m_Player1_Ready && m_Player2_Ready)
 	{
@@ -210,6 +212,10 @@ void CGame_Result::Draw()
 
 void CGame_Result::Finalize()
 {
+	CPlayer_Manager::GetInstance().Initialize();
+	CFall_Player_Manager::GetInstance().Initialize();
+	CStage2::GetInstance().Initialize();
+	CRace_Player_Manager::GetInstance().Initialize();
 }
 
 void CGame_Result::IniScore()
