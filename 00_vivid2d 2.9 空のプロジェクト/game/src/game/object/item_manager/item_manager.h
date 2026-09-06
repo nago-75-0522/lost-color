@@ -15,11 +15,15 @@ public:
 	CItem_Box m_Item_Box;
 	CHigh_Jump m_High_Jump_P1;
 	CHigh_Jump m_High_Jump_P2;
+	CPull m_Pull_P1;
+	CPull m_Pull_P2;
+
 
 private:
 
 	CItem_Manager();
 	~CItem_Manager() = default;
-	CItem_Manager(const CItem_Manager& rhs);
+	CItem_Manager(const CItem_Manager& rhp) = default;
+	CItem_Manager& operator=(const CItem_Manager& rhp) = delete;
 
 };

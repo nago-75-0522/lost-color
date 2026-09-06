@@ -36,6 +36,7 @@ void CRace_Player_Manager::Finalize()
 {
 	CRace_Player1::GetInstance().Finalize();
 	CRace_Player2::GetInstance().Finalize();
+
 }
 
 //誰が勝ったか返す関数（1or2or3）

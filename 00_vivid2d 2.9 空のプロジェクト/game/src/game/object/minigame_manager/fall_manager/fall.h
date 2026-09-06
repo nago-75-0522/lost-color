@@ -60,7 +60,4 @@ private:
 	bool m_Old_Yellow;
 	bool m_Old_Magenta;
 
-
-	
-
 };

@@ -11,6 +11,7 @@ CPlayer_Manager::CPlayer_Manager()
 
 void CPlayer_Manager::Initialize()
 {
+	m_Draw = false;
 	switch (CMinigame_Manager::GetInstance().GetGame())
 	{
 	case MINIGAME_ID::FALL:

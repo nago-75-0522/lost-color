@@ -1,6 +1,6 @@
 #pragma once
 #include"vivid.h"
-#include "../../../item_manager/item_id.h"
+#include"../../../item_manager/item_manager.h"
 
 class CFall_Player2
 {
@@ -18,6 +18,7 @@ public:
 	static CFall_Player2& GetInstance();
 	ITEM_ID& GetItemID() { return m_Item_ID; }
 	vivid::Vector2& GetCharaPos() { return m_Player2_Chara_Pos; }
+	void ForceStop();
 	enum class CHARA_DIRECTION
 	{
 		DOWN,
@@ -53,6 +54,7 @@ private:
 	static const std::string m_player2_marker_path;
 	static const vivid::Vector2 m_player2_marker_size;
 	static const int m_item_box_size;
+	static const vivid::Vector2 m_item_pos;
 
 	//変数
 	CHARA_DIRECTION m_Player2_Chara_Dir;
