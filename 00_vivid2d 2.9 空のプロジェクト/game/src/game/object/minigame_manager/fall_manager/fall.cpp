@@ -9,8 +9,8 @@
 const int CFall::m_map_chip_size = 64;//１マスの大きさ
 const int CFall::m_map_chip_count_width = vivid::WINDOW_WIDTH / m_map_chip_size;//マス（横）の数
 const int CFall::m_map_chip_count_height = vivid::WINDOW_HEIGHT / m_map_chip_size + 1;//マス（縦）高さ
-const char* CFall::m_map_path = "data\\fall.csv";//マップのパス
-const std::string CFall::m_fall_chip_path = "data\\fall_chip.png";//マス目の画像
+const char* CFall::m_map_path = "data\\fall\\fall.csv";//マップのパス
+const std::string CFall::m_fall_chip_path = "data\\fall\\fall_chip.png";//マス目の画像
 const int CFall::m_floor_time = 60 * 2;//同じマスにずっと乗ってたら床の色が変わる
 const int CFall::m_chara_center = 24;//キャラの中心
 const int CFall::m_map_width = 20;//横のマスの数

@@ -100,7 +100,7 @@ void CHigh_Jump::Finalize()
 
 void CHigh_Jump::Draw(const vivid::Vector2& pos)
 {
-    vivid::DrawTexture("data\\high_jump.png", pos);
+    vivid::DrawTexture("data\\fall\\high_jump.png", pos);
 }
 
 //予測線を出す
@@ -157,11 +157,11 @@ void CHigh_Jump::DrawAim(CFall_Player1& player)
 
             if (i == count)
             {
-                vivid::DrawTexture("data\\landing_point.png", pos, 0xaaffffff);
+                vivid::DrawTexture("data\\fall\\landing_point.png", pos, 0xaaffffff);
             }
             else
             {
-                vivid::DrawTexture("data\\red_rine.png", pos, 0xaaffffff);
+                vivid::DrawTexture("data\\fall\\red_rine.png", pos, 0xaaffffff);
             }
         }
 
@@ -217,11 +217,11 @@ void CHigh_Jump::DrawAim(CFall_Player2& player)
 
         if (i == count)
         {
-            vivid::DrawTexture("data\\landing_point.png", pos, 0xaaffffff);
+            vivid::DrawTexture("data\\fall\\landing_point.png", pos, 0xaaffffff);
         }
         else
         {
-            vivid::DrawTexture("data\\red_rine.png", pos, 0xaaffffff);
+            vivid::DrawTexture("data\\fall\\red_rine.png", pos, 0xaaffffff);
         }
     }
 

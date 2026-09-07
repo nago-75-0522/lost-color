@@ -4,7 +4,7 @@
 const int CFall_Player2::m_player2_chara_height = 48;
 const int CFall_Player2::m_player2_chara_width = 48;
 const int CFall_Player2::m_player2_chara_move_time = 12;
-const std::string CFall_Player2::m_player2_boy_path = "data\\character3.png";
+const std::string CFall_Player2::m_player2_boy_path = "data\\fall\\character3.png";
 const vivid::Vector2 CFall_Player2::m_player2_tree_size = { 64.0f,128.0f };
 const float CFall_Player2::m_player2_chara_move_speed = (float)CFall::GetInstance().GetMapChipSize() / (float)m_player2_chara_move_time;
 const int CFall_Player2::m_player2_chara_center = 24;
@@ -35,9 +35,9 @@ void CFall_Player2::Initialize()
 	m_Player2_Chara_Pos = { 1159.0f,647.0f };
 	m_Player2_Chara_State = CHARA_STATE::WAIT;
 	m_Player2_Chara_Dir = CHARA_DIRECTION::DOWN;
-	m_Player2_Chara_Rect = { m_player2_chara_width,0,m_player2_chara_width * 2,m_player2_chara_height };
+	m_Player2_Chara_Rect = { 0,0,m_player2_chara_width,m_player2_chara_height };
 	m_Player2_Chara_Speed = { 0.0f,0.0f };
-	m_Player2_Chara_Anime_Frame = (1);
+	m_Player2_Chara_Anime_Frame = (0);
 	m_Player2_Chara_Anime_Timer = (0);
 	m_Player2_Chara_Move_Timer = (0);
 	m_Player2_Chara_Anchor = { m_player2_chara_center, m_player2_chara_center };
@@ -47,16 +47,61 @@ void CFall_Player2::Initialize()
 	m_Player2_Fall_Sound = true;
 	m_Player2_Get_Item = false;
 	m_Item_ID = ITEM_ID::UNKNOW;
+	m_Is_Pull_Move=false;
+	m_Pull_Target_Pos = {0.0f,0.0f};
+
 }
 
 void CFall_Player2::Update()
 {
+	if (m_Is_Pull_Move)
+	{
+		vivid::Vector2 dir;
+
+		dir.x = m_Pull_Target_Pos.x - m_Player2_Chara_Pos.x;
+		dir.y = m_Pull_Target_Pos.y - m_Player2_Chara_Pos.y;
+
+		float len =
+			sqrtf(dir.x * dir.x +
+				dir.y * dir.y);
+
+		const float PULL_SPEED = 24.0f;
+
+		if (len <= PULL_SPEED)
+		{
+			m_Player2_Chara_Pos = m_Pull_Target_Pos;
+
+			m_Player2_Marker_Pos.x = m_Player2_Chara_Pos.x;
+			m_Player2_Marker_Pos.y =
+				m_Player2_Chara_Pos.y - m_player2_marker_size.y;
+
+			m_Is_Pull_Move = false;
+		}
+		else
+		{
+			dir.x /= len;
+			dir.y /= len;
+
+			m_Player2_Chara_Pos.x += dir.x * PULL_SPEED;
+			m_Player2_Chara_Pos.y += dir.y * PULL_SPEED;
+
+			m_Player2_Marker_Pos.x = m_Player2_Chara_Pos.x;
+			m_Player2_Marker_Pos.y =
+				m_Player2_Chara_Pos.y - m_player2_marker_size.y;
+		}
+
+		return;
+	}
+
+	// ↓↓↓ここから下は今あるコードをそのまま残す↓↓↓
+
 	switch (m_Player2_Chara_State)
 	{
 
 	case CHARA_STATE::WAIT:
 		WaitCharacter();
 		break;
+
 	case CHARA_STATE::MOVE:
 		MoveCharacter();
 		break;
@@ -65,27 +110,36 @@ void CFall_Player2::Update()
 	//移動計算
 	m_Player2_Chara_Pos.x += m_Player2_Chara_Speed.x;
 	m_Player2_Chara_Pos.y += m_Player2_Chara_Speed.y;
+
 	//プレイヤーマーカー
 	m_Player2_Marker_Pos.x = m_Player2_Chara_Pos.x;
-	m_Player2_Marker_Pos.y = m_Player2_Chara_Pos.y - m_player2_marker_size.y;
+	m_Player2_Marker_Pos.y =
+		m_Player2_Chara_Pos.y - m_player2_marker_size.y;
 
-	int x = (int)((m_Player2_Chara_Pos.x + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
-	int y = (int)((m_Player2_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
+	int x = (int)((m_Player2_Chara_Pos.x + 0.5f) /
+		(float)CFall::GetInstance().GetMapChipSize());
 
-	if (CFall::GetInstance().CheckEmpty(x, y) && m_Player2_Chara_Scale.x >= 0)
+	int y = (int)((m_Player2_Chara_Pos.y + 0.5f) /
+		(float)CFall::GetInstance().GetMapChipSize());
+
+	if (CFall::GetInstance().CheckEmpty(x, y) &&
+		m_Player2_Chara_Scale.x >= 0)
 	{
 		if (m_Player2_Fall_Sound)
 		{
 			m_Player2_Fall_Sound = false;
 			vivid::PlaySound("data\\sound\\fall.wav", false);
 		}
-		m_Player2_Chara_Scale.x = m_Player2_Chara_Scale.y = cos((++m_Player2_Chara_Angle %= 720) * 3.14f / 360.0f);
+
+		m_Player2_Chara_Scale.x =
+			m_Player2_Chara_Scale.y =
+			cos((++m_Player2_Chara_Angle %= 720)
+				* 3.14f / 360.0f);
 	}
+
 	Hit_Item_Box();
 	Item_Lottery();
-
 }
-
 void CFall_Player2::Draw()
 {
 	m_Player2_Chara_Rect.left = m_Player2_Chara_Anime_Frame * m_player2_chara_width;
@@ -257,9 +311,9 @@ void CFall_Player2::Item_Lottery()
 	{
 	case ITEM_ID::HIGH_JUMP:
 		CItem_Manager::GetInstance().m_High_Jump_P2.Use(*this);
-	break;	
-	//case ITEM_ID::KNOCK_BACK:
-		//break;
+	break;
+//	case ITEM_ID::KNOCK_BACK:
+	//	break;
 	case ITEM_ID::PULL:
 		CItem_Manager::GetInstance().m_Pull_P2.Use(*this);
 

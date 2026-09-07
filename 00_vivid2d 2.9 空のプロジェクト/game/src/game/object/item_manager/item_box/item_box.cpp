@@ -39,10 +39,10 @@ void CItem_Box::Draw()
 {
 	for (int i = 0; i < v.size(); ++i)
 	{
-		vivid::DrawTexture("data/item_box5.png", v[i]);
+		vivid::DrawTexture("data\\fall\\item_box5.png", v[i]);
 	}
-	vivid::DrawTexture("data\\frame.png", vivid::Vector2(0.0f, 0.0f));
-	vivid::DrawTexture("data\\frame.png", vivid::Vector2(1216.0f, 0.0f));
+	vivid::DrawTexture("data\\fall\\frame.png", vivid::Vector2(0.0f, 0.0f));
+	vivid::DrawTexture("data\\fall\\frame.png", vivid::Vector2(1216.0f, 0.0f));
 
 }
 
