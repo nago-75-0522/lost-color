@@ -109,7 +109,7 @@ void CBallPlayer2::Update(void)
 		m_Velocity.x = 0.0f;
 	}
 	//ジャンプ
-	if (keyboard::Button(keyboard::KEY_ID::UP) || stick.x < -DEAD_ZONE ||
+	if (keyboard::Button(keyboard::KEY_ID::UP) ||
 		controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::A))
 	{
 		//地面にいる時のみ
