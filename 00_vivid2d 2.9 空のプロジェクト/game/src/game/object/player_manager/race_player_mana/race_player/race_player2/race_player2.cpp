@@ -60,7 +60,7 @@ void CRace_Player2::Draw()
 	m_Draw_Pos.y = m_Camera_Copy_Pos.y + vivid::WINDOW_HEIGHT / 2 + m_Move_Pos.y;
 
 	vivid::DrawTexture("data\\logo\\small_blue_2p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
-	vivid::DrawTexture("data\\cyan_car.png", m_Draw_Pos, 0xffffffff);
+	vivid::DrawTexture("data\\race\\cyan_car.png", m_Draw_Pos, 0xffffffff);
 
 	//vivid::DrawText(40, "Up:" + std::to_string(m_isUp_Move) + "Down:" + std::to_string(m_isDown_Move), { 0.0f,0.0f }, 0xff0000ff);
 	//vivid::DrawText(40, "UpLane:" + std::to_string(m_isUp_Lane) + "DownLane:" + std::to_string(m_isDown_Lane), { 0.0f,40.0f }, 0xff0000ff);
