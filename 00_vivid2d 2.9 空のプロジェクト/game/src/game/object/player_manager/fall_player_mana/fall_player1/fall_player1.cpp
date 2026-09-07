@@ -144,8 +144,8 @@ void CFall_Player1::Draw()
 		CItem_Manager::GetInstance().m_High_Jump_P1.DrawAim(*this);
 		CItem_Manager::GetInstance().m_High_Jump_P1.Draw(m_item_pos);
 		break;
-	case ITEM_ID::KNOCK_BACK:
-		break;
+	//case ITEM_ID::KNOCK_BACK:
+	//	break;
 	case ITEM_ID::PULL:
 		CItem_Manager::GetInstance().m_Pull_P1.DrawAim(*this);
 		CItem_Manager::GetInstance().m_Pull_P1.Draw(m_item_pos);
@@ -302,9 +302,8 @@ void CFall_Player1::Item_Lottery()
 	case ITEM_ID::HIGH_JUMP:
 		CItem_Manager::GetInstance().m_High_Jump_P1.Use(*this);
 		break;
-	case ITEM_ID::KNOCK_BACK:
-
-		break;
+	//case ITEM_ID::KNOCK_BACK:
+		//break;
 	case ITEM_ID::PULL:
 		CItem_Manager::GetInstance().m_Pull_P1.Use(*this);
 

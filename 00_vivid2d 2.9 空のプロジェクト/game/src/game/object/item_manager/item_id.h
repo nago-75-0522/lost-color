@@ -3,7 +3,7 @@
 enum class ITEM_ID
 {
 	HIGH_JUMP,
-	KNOCK_BACK,
+	//KNOCK_BACK,
 	PULL,
 	UNKNOW,
 };
