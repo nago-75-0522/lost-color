@@ -84,7 +84,7 @@ void CStage3::Draw(void)
 	rect.top = 0;
 	rect.bottom = m_win_color_size;
 
-	vivid::DrawTexture("data\\win_color.png", m_Win_Color_Pos, 0xffffffff, rect); //当たりの色表示
+	vivid::DrawTexture("data\\race\\win_color.png", m_Win_Color_Pos, 0xffffffff, rect); //当たりの色表示
 	vivid::DrawText(64, "select", { m_Win_Color_Pos.x + m_win_color_size,m_Win_Color_Pos.y }, 0xff000000);
 
 	if (m_Race_State == RACE_STATE::MAIN)

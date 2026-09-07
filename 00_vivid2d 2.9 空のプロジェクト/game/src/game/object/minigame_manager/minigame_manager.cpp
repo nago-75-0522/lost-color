@@ -26,7 +26,7 @@ void CMinigame_Manager::Update()
 	switch (m_Game)
 	{
 	case MINIGAME_ID::FALL: 
-		CFall::GetInstance().Update();
+		//CFall::GetInstance().Update();
 		break;
 	case MINIGAME_ID::BALL: 
 		CBallManager::GetInstance().Update(); 

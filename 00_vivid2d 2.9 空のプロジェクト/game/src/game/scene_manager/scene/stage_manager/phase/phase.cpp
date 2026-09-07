@@ -2,7 +2,7 @@
 #include"../../../scene_manager.h"
 #include"../../../../object/minigame_manager/minigame_manager.h"
 
-const int CPhase::m_start_time = 60 * 3;
+const int CPhase::m_start_time = 60 * 4 - 1;
 const vivid::Vector2 CPhase::m_logo_pos = { 300.0f,400.0f };
 const vivid::Vector2 CPhase::m_number_pos = { 300.0f,400.0f };
 const unsigned int CPhase::m_color = 0xffffffff;

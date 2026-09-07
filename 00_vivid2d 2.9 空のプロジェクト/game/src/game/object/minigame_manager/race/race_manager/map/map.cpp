@@ -28,7 +28,7 @@ void CMap::Inisitalize(void)
 	FILE* fp = nullptr;
 
 	//ファイルを開く 「r」は読み取り
-	fopen_s(&fp, "data\\race_map.csv", "r");
+	fopen_s(&fp, "data\\race\\race_map.csv", "r");
 
 	//サイズを調べる
 	fseek(fp, 0, SEEK_END);
@@ -176,8 +176,8 @@ void CMap::Draw(void)
 			color_rect.top = 0;
 			color_rect.bottom = m_size;
 
-			vivid::DrawTexture("data\\map.png", pos, 0xffffffff, rect);
-			vivid::DrawTexture("data\\color_map.png", pos, 0xffffffff, color_rect);
+			vivid::DrawTexture("data\\race\\map.png", pos, 0xffffffff, rect);
+			vivid::DrawTexture("data\\race\\color_map.png", pos, 0xffffffff, color_rect);
 		}
 	}
 	//vivid::DrawText(40, "charaNum:" + std::to_string(m_Chara_Num), { 0.f,240.f }, 0xff000000);

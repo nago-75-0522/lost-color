@@ -190,13 +190,12 @@ void CPull::Use(CFall_Player1& player)
 
         if (m_Charge_Timer >= m_max_charge_time)
         {
-            m_Pull_Range_1 = 4;
+            m_Pull_Range_1 = 5;
         }
         else if (m_Charge_Timer >= m_half_charge_time)
         {
-            m_Pull_Range_1 = 3;
+            m_Pull_Range_1 = 4;
         }
-
 
         int myx =
             (int)((player.GetCharaPos().x + 24) / 64);
@@ -245,17 +244,12 @@ void CPull::Use(CFall_Player1& player)
 
             if (!CFall::GetInstance().CheckWall(targetx, targety))
             {
-                auto& enemy = CFall_Player2::GetInstance();
+                CFall_Player2::GetInstance().ForceStop();
+                vivid::Vector2& enemyPos =
+                    CFall_Player2::GetInstance().GetCharaPos();
 
-                enemy.ForceStop();
-
-                enemy.SetIsPullMove(true);
-
-                enemy.GetPullTargetPos().x =
-                    targetx * m_map_chip_size + 8.0f;
-
-                enemy.GetPullTargetPos().y =
-                    targety * m_map_chip_size + 8.0f;
+                enemyPos.x = targetx * m_map_chip_size + 8.0f;
+                enemyPos.y = targety * m_map_chip_size + 8.0f;
 
 
                 player.GetItemID() = ITEM_ID::UNKNOW;
@@ -294,11 +288,11 @@ void CPull::Use(CFall_Player2& player)
 
         if (m_Charge_Timer >= m_max_charge_time)
         {
-            m_Pull_Range_2 = 4;
+            m_Pull_Range_2 = 5;
         }
         else if (m_Charge_Timer >= m_half_charge_time)
         {
-            m_Pull_Range_2 = 3;
+            m_Pull_Range_2 = 4;
         }
 
         int myx =
@@ -348,17 +342,13 @@ void CPull::Use(CFall_Player2& player)
 
             if (!CFall::GetInstance().CheckWall(targetx, targety))
             {
-                auto& enemy = CFall_Player1::GetInstance();
+                CFall_Player1::GetInstance().ForceStop();
+                vivid::Vector2& enemyPos =
+                    CFall_Player1::GetInstance().GetCharaPos();
 
-                enemy.ForceStop();
+                enemyPos.x = targetx * m_map_chip_size + 8.0f;
+                enemyPos.y = targety * m_map_chip_size + 8.0f;
 
-                enemy.SetIsPullMove(true);
-
-                enemy.GetPullTargetPos().x =
-                    targetx * m_map_chip_size + 8.0f;
-
-                enemy.GetPullTargetPos().y =
-                    targety * m_map_chip_size + 8.0f;
 
                 player.GetItemID() = ITEM_ID::UNKNOW;
             }

@@ -59,7 +59,7 @@ void CRace_Player1::Draw()
 	m_Draw_Pos.y = m_Camera_Copy_Pos.y + vivid::WINDOW_HEIGHT / 2 - m_size + m_Move_Pos.y;
 
 	vivid::DrawTexture("data\\logo\\small_pink_1p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
-	vivid::DrawTexture("data\\magenta_car.png", m_Draw_Pos);
+	vivid::DrawTexture("data\\race\\magenta_car.png", m_Draw_Pos);
 
 	//vivid::DrawText(40, "Accele:" + std::to_string(m_isAccele), { 0.0f,0.0f }, 0xffff0000);
 

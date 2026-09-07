@@ -40,7 +40,7 @@ void CBallPlayer1::Initialize(void)
 	m_basket.Initialize();
 
 	// 画像の読み込み
-	vivid::LoadTexture("data\\ball\\character1.png");
+	vivid::LoadTexture("data\\ball\\character2.png");
 
 	// 初期位置
 	m_Pos.x = vivid::GetWindowWidth() / 4.0f;
@@ -113,7 +113,7 @@ void CBallPlayer1::Update(void)
 	}
 
 	//ジャンプ
-	if (keyboard::Button(keyboard::KEY_ID::W) ||
+	if (keyboard::Button(keyboard::KEY_ID::W) || stick.x < -DEAD_ZONE ||
 		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::A))
 	{
 		//地面にいる時のみ
@@ -217,7 +217,7 @@ void CBallPlayer1::Draw(void)
 		break;
 	}
 
-	vivid::DrawTexture("data\\ball\\character1.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
+	vivid::DrawTexture("data\\ball\\character2.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
 }
 
 void CBallPlayer1::Finalize(void)
