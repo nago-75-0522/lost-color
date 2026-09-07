@@ -3,7 +3,7 @@
 #include"vivid.h"
 #include"../color_select/color_select.h"
 #include"../game_risult/game_risult.h"
-
+#include"../../../object/player_manager/player_manager.h"
 CTitle::CTitle()
 	:m_Logo_Time(0)
 	,m_title_logo_file("data\\logo\\ge-mulogo1.png")
@@ -46,8 +46,8 @@ void CTitle::Update(void)
 		vivid::StopSound("data\\sound\\title_bgm.mp3");
 		CGame_Result::GetInstance().IniScore();
 		CColor_Select::GetInstance().IniColor();
+		CPlayer_Manager::GetInstance().Win_Ini();
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
-
 	}
 
 	//コントローラー用
@@ -57,6 +57,7 @@ void CTitle::Update(void)
 		vivid::StopSound("data\\sound\\title_bgm.mp3");
 		CGame_Result::GetInstance().IniScore();
 		CColor_Select::GetInstance().IniColor();
+		CPlayer_Manager::GetInstance().Win_Ini();
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
 
 	}

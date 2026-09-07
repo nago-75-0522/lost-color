@@ -38,8 +38,8 @@ void CResult::Update(void)
 		CFall::GetInstance().IniOld();
 		CBall::GetInstance().IniOld();
 		CStage2::GetInstance().RisultIni();
-		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
 		vivid::StopSound("data\\sound\\result.mp3");
+		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
 
 	}
 	//コントローラー用
@@ -50,8 +50,8 @@ void CResult::Update(void)
 		CFall::GetInstance().IniOld();
 		CBall::GetInstance().IniOld();
 		CStage2::GetInstance().RisultIni();
-		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
 		vivid::StopSound("data\\sound\\result.mp3");
+		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
 	}
 }
 

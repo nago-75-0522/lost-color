@@ -95,6 +95,11 @@ void CPlayer_Manager::Finalize()
 
 }
 
+void CPlayer_Manager::Win_Ini()
+{
+	m_Player1_Win = false;
+}
+
 
 
 bool CPlayer_Manager::GameFinish()

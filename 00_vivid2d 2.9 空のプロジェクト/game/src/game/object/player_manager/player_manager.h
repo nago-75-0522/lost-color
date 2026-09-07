@@ -7,7 +7,7 @@ public:
 	void Update();
 	void Draw();
 	void Finalize();
-
+	void Win_Ini();
 	bool GameFinish(); //ゲームが終わったかどうか
 
 	bool Player1_Win() { return m_Player1_Win; }
