@@ -50,20 +50,31 @@ void CFall_Player1::Initialize()
 	m_Item_ID = ITEM_ID::UNKNOW;
 	m_Pull_Target_Pos = { 0.0f,0.0f };
 	m_Is_Pull_Move = false;
+	m_player1_boy_path = "data\\fall\\character3.png";
+
 
 	//保存したIDの取得
 	CHARACTER_ID player1_id = COption::GetInstance().GetCharacterPlayer1();
 
-	m_player1_boy_path = "data\\fall\\character3.png";
-
+	//選択されたキャラIDのキャラデータ変更
 	switch (player1_id)
 	{
 	case CHARACTER_ID::CHARA1:
 		m_player1_boy_path = "data\\fall\\chara_db.png";
 		break;
 
-	}
+	case CHARACTER_ID::CHARA2:
+		break;
 
+	case CHARACTER_ID::CHARA3:
+		break;
+
+	case CHARACTER_ID::CHARA4:
+		break;
+
+	default:
+		break;
+	}
 }
 
 void CFall_Player1::Update()

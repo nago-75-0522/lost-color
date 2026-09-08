@@ -94,12 +94,13 @@ void CStage_Explanation::NextChangeScene(void)
 			}
 
 			/* コントローラー用 */
-			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
-				vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 			{
 				//カラーセレクトに行く
 				CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
 			}
+				//||(vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+		
 			break;
 
 
@@ -112,14 +113,15 @@ void CStage_Explanation::NextChangeScene(void)
 				CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
 			}
 
+
 			/* コントローラー用 */
-			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
-				vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 			{
 				//カラーセレクトに行く
 				CSceneManager::GetInstance().Change(SCENE_ID::ITEM_EXPLANATION);
 			}
-			break;
+			//||(vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+
 
 
 		case STAGE_ID::STAGE3:
@@ -318,7 +320,7 @@ void CStage_Explanation::BackChengeScene(void)
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::A))
 			{
 				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 			}
 
 		}
@@ -328,14 +330,14 @@ void CStage_Explanation::BackChengeScene(void)
 			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::W))
 			{
 				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 			}
 
 			/* コントローラー用 */
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::A))
 			{
 				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 			}
 		}
 	}
