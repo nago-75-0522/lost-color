@@ -184,7 +184,7 @@ void CFall_Player2::WaitCharacter()
 	int x = (int)((m_Player2_Chara_Pos.x + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 	int y = (int)((m_Player2_Chara_Pos.y + 0.5f) / (float)CFall::GetInstance().GetMapChipSize());
 
-	if (CItem_Manager::GetInstance().m_High_Jump_P1.Get_Is_Jump_2() || CItem_Manager::GetInstance().m_Pull_P2.Get_Is_Use_2())
+	if (CItem_Manager::GetInstance().m_High_Jump_P1.Get_Is_Jump_2() || CItem_Manager::GetInstance().m_Pull_P1.Get_Is_Use_2())
 	{
 		return;
 	}

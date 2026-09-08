@@ -102,7 +102,7 @@ void CColor_Select::Update()
 		{
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
-				&& CPlayer_Manager::GetInstance().Player1_Win())
+				&& !CPlayer_Manager::GetInstance().Player1_Win())
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
@@ -114,7 +114,7 @@ void CColor_Select::Update()
 		{
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
-				&& CPlayer_Manager::GetInstance().Player1_Win())
+				&& !CPlayer_Manager::GetInstance().Player1_Win())
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
@@ -126,7 +126,7 @@ void CColor_Select::Update()
 		{
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
-				&& CPlayer_Manager::GetInstance().Player1_Win())
+				&& !CPlayer_Manager::GetInstance().Player1_Win())
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||

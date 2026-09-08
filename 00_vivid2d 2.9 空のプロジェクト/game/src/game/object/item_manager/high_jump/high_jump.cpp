@@ -39,8 +39,16 @@ void CHigh_Jump::Update()
         {
             t = 1.0f;
 
-            CFall_Player1::GetInstance().GetCharaPos()
-                = m_JumpTarget_1;
+            CFall_Player1::GetInstance().GetCharaPos() =
+                m_JumpTarget_1;
+
+            int x =
+                (int)((m_JumpTarget_1.x + 24) / 64);
+
+            int y =
+                (int)((m_JumpTarget_1.y + 24) / 64);
+
+            CFall::GetInstance().ChangeFloor(x, y);
 
             m_IsJump_1 = false;
         }
@@ -72,8 +80,16 @@ void CHigh_Jump::Update()
         {
             t = 1.0f;
 
-            CFall_Player2::GetInstance().GetCharaPos()
-                = m_JumpTarget_2;
+            CFall_Player2::GetInstance().GetCharaPos() =
+                m_JumpTarget_2;
+
+            int x =
+                (int)((m_JumpTarget_2.x + 24) / 64);
+
+            int y =
+                (int)((m_JumpTarget_2.y + 24) / 64);
+
+            CFall::GetInstance().ChangeFloor(x, y);
 
             m_IsJump_2 = false;
         }

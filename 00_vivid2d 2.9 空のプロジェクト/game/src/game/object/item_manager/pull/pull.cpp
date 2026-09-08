@@ -261,7 +261,6 @@ void CPull::Use(CFall_Player1& player)
                 player.GetItemID() = ITEM_ID::UNKNOW;
             }
         }
-        m_Is_Use_1 = false;
         m_Charge_Timer = 0;
     }
 }
@@ -363,7 +362,6 @@ void CPull::Use(CFall_Player2& player)
                 player.GetItemID() = ITEM_ID::UNKNOW;
             }
         }
-        m_Is_Use_2 = false;
         m_Charge_Timer = 0;
     }
 }
