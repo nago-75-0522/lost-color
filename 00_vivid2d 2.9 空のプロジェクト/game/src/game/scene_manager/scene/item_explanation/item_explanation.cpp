@@ -171,14 +171,14 @@ void CItem_Explanation::BackChengeScene(void)
 			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::UP))
 			{
 				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			}
 
 			/* コントローラー用 */
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::A))
 			{
 				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			}
 
 		}
