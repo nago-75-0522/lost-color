@@ -119,6 +119,7 @@ void CStage_Select::StageSelect(void)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)(((int)m_Now_Select + 1) % (int)STAGE_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 
 		}
 
@@ -127,6 +128,7 @@ void CStage_Select::StageSelect(void)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 			
 		}
 
@@ -137,6 +139,7 @@ void CStage_Select::StageSelect(void)
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)(((int)m_Now_Select + 1) % (int)STAGE_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		else if (controller::Trigger(controller::DEVICE_ID::PLAYER1,controller::BUTTON_ID::LEFT)||
@@ -145,6 +148,7 @@ void CStage_Select::StageSelect(void)
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 	}
 	else if (CPlayer_Manager::GetInstance().Player1_Win() == true)
@@ -155,6 +159,7 @@ void CStage_Select::StageSelect(void)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)(((int)m_Now_Select + 1) % (int)STAGE_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		// 左に倒した瞬間
@@ -162,6 +167,7 @@ void CStage_Select::StageSelect(void)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		/* 十字キー実装 */
@@ -171,6 +177,7 @@ void CStage_Select::StageSelect(void)
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)(((int)m_Now_Select + 1) % (int)STAGE_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		else if (controller::Trigger(controller::DEVICE_ID::PLAYER2,controller::BUTTON_ID::LEFT)||
@@ -179,6 +186,7 @@ void CStage_Select::StageSelect(void)
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 	}
 	// 現在の値を保存

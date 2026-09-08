@@ -10,10 +10,12 @@
 #include"scene/item_explanation/item_explanation.h"
 
 const float CSceneManager::m_fade_speed = 1.0f;
+const int	CSceneManager::m_oparation_limit_time = 30;//3分だとしたら180 デバッグ用 
 
 CSceneManager::CSceneManager()
 	:m_Scene(nullptr)
 	, m_StageCount(0)
+	,m_NotOparation_Time(0.0f)
 {
 }
 
@@ -26,6 +28,8 @@ CSceneManager& CSceneManager::GetInstance()
 //初期化
 void CSceneManager::Initialize()
 {
+	
+
 	//フェードインから開始
 	m_FadeState = FADE::FADE_IN;
 	m_FadeAlpha = 1.0f;
@@ -50,6 +54,8 @@ void CSceneManager::Update()
 		
 		if (!m_Scene)
 			return;
+
+		ResetScene();//リセットタイトルシーン用 タイマーを進める
 
 		m_Scene->Update();
 
@@ -106,7 +112,7 @@ void CSceneManager::Draw()
 
 		m_Scene->Draw();
 
-	// フェード中なら黒画像を重ねる
+	//フェード中なら黒画像を重ねる
 	if (m_FadeState != FADE::FADE_NOME)
 	{
 		//0.0～1.0を0～255に変換
@@ -128,14 +134,16 @@ void CSceneManager::Finalize()
 void CSceneManager::Change(SCENE_ID id)
 {
 
-	// 同じシーンなら何もしない
+	//同じシーンなら何もしない
 	if (m_CurrentID == id)
 		return;
 
 	//呼び出されたシーンをいれる
 	m_NextID = id;//id次のやつ
 
-	// フェードアウト開始
+	ResetTimer();
+
+	//フェードアウト開始
 	m_FadeState = FADE::FADE_OUT;
 }
 
@@ -214,5 +222,27 @@ int CSceneManager::FinishStage()
 void CSceneManager::ResetStageCount()
 {
 	m_StageCount = 0;
+}
+
+//操作なしが続いたらタイトルに戻る
+void CSceneManager::ResetScene()
+{
+
+	//経過時間を加算
+	m_NotOparation_Time += vivid::GetDeltaTime();
+
+	//一定時間経過したらタイトルへ戻る
+	if(m_NotOparation_Time >= m_oparation_limit_time)
+	{
+		m_NotOparation_Time = 0;
+		//タイトルへ戻る
+		Change(SCENE_ID::TITLE);
+	}
+}
+
+//タイマーリセット
+void CSceneManager::ResetTimer()
+{
+	m_NotOparation_Time = 0;
 }
 
