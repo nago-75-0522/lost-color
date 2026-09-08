@@ -44,7 +44,6 @@ void CBallPlayer1::Initialize(void)
 
 	// 画像の読み込み
 	vivid::LoadTexture("data\\ball\\character2.png");
-	CEffectManager::GetInstance().Initialize();
 
 	// 初期位置
 	m_Pos.x = vivid::GetWindowWidth() / 4.0f;
@@ -71,8 +70,6 @@ void CBallPlayer1::Initialize(void)
 
 void CBallPlayer1::Update(void)
 {
-	CEffectManager::GetInstance().Update();
-
 	namespace controller = vivid::controller;
 	namespace keyboard = vivid::keyboard;
 
@@ -241,7 +238,6 @@ void CBallPlayer1::Update(void)
 void CBallPlayer1::Draw(void)
 {
 	m_basket.Draw();
-	CEffectManager::GetInstance().Draw();
 
 	vivid::Rect rect = {};
 	vivid::Vector2 m_anchor(m_width / 2.0f, 0.0f);
