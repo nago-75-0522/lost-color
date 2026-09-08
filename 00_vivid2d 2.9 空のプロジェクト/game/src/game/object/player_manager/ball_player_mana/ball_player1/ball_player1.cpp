@@ -75,6 +75,7 @@ void CBallPlayer1::Update(void)
 
 	// 左スティック取得
 	vivid::Vector2 stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
+	float triger = controller::GetTriggerRight(controller::DEVICE_ID::PLAYER1);
 
 	// デッドゾーン設定
 	const float DEAD_ZONE = 0.5f;
@@ -128,7 +129,7 @@ void CBallPlayer1::Update(void)
 
 	//攻撃
 	if ((keyboard::Trigger(keyboard::KEY_ID::S) ||
-		controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)) && m_AttackTimer <= 0)
+		(triger > DEAD_ZONE)) && m_AttackTimer <= 0)
 	{
 		m_AttackTimer = 15;
 		//攻撃開始時はヒットフラグをリセット

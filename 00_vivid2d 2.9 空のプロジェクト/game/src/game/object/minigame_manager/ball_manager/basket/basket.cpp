@@ -22,7 +22,7 @@ void CBasket::Update(const vivid::Vector2& playerPos, int attackTimer, bool isRi
 
     vivid::Vector2 pivot = playerPos;
 
-    const float radius = 80.0f;
+    const float radius = 80.0f;//キャラとの間
 
     if (attackTimer <= 0)
     {
