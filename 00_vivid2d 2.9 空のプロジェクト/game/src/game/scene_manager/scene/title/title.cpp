@@ -68,6 +68,9 @@ void CTitle::Draw(void)
 {
 
 	vivid::DrawText(48, "title", { 0.0f,0.0f });
+
+	//タイトル背景
+	vivid::DrawTexture("data\\title_bg2.png", { 0.0f,0.0f });
 	
 	vivid::Rect rect = { 0,0,0,0 };
 	rect.right = m_title_logo_width;
@@ -77,8 +80,8 @@ void CTitle::Draw(void)
 	//タイトルロゴの表示時間の計算 if(条件)
 	if (m_Logo_Time > 10 * 60 )
 	{
-		/* タイトル動画	 動画再生中にどこかのキーを押すとタイトルに戻る　スペース押すと次の処理行く */
-		PlayMovie("data\\db.mp4", 1, DX_MOVIEPLAYTYPE_BCANCEL);//DX_MOVIEPLAYTYPE_BCANCEL　キー入力あり
+		/* タイトル動画	 動画再生中にどこかのキーを押すとタイトルに戻る スペース押すと次の処理行く */
+		PlayMovie("data\\db.mp4", 1, DX_MOVIEPLAYTYPE_BCANCEL);//DX_MOVIEPLAYTYPE_BCANCELキー入力あり
 
 		//キーボード用
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
@@ -100,6 +103,8 @@ void CTitle::Draw(void)
 		}
 
 	}
+
+	
 
 	//タイトルロゴ
 	vivid::DrawTexture(m_title_logo_file, m_TitlePos);
