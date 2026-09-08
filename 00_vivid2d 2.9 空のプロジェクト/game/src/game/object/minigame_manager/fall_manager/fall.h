@@ -18,8 +18,8 @@ public:
 	bool GetOldYellow() { return m_Old_Yellow; }
 	bool GetOldMagenta() { return m_Old_Magenta; }
 	void IniOld();
-
-
+	void ChangeFloor(int x, int y);
+	
 	MAP_CHIP_ID GetMapChipID();
 
 private:
