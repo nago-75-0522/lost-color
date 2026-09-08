@@ -340,3 +340,14 @@ void COption::SelectCharacter(void)
 }
 
 
+//プレイヤー1ID取得
+CHARACTER_ID COption::GetCharacterPlayer1(void)
+{
+	return m_Player1_Select;
+}
+
+//プレイヤー2ID取得
+CHARACTER_ID COption::GetCharacterPlayer2(void)
+{
+	return m_Player2_Select;
+}

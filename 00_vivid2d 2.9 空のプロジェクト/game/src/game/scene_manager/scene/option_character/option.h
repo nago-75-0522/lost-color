@@ -54,6 +54,16 @@ public:
 	void DrawPlayer1(void);//プレイヤー1描画処理
 	void DrawPlayer2(void);//プレイヤー2描画処理
 
+	//IDの保存処理
+	static void SetCharaID(CHARACTER_ID charaid);
+
+	//IDの取得処理
+	CHARACTER_ID GetCharacterPlayer1(void);
+	CHARACTER_ID GetCharacterPlayer2(void);
+
+	//キャラ選択
+	CHARACTER_ID m_Player1_Select;
+	CHARACTER_ID m_Player2_Select;
 
 
 private:
@@ -80,9 +90,6 @@ private:
 	//キャラクター関係
 	bool m_player1_ok;
 	bool m_player2_ok;
-
-	CHARACTER_ID m_Player1_Select;
-	CHARACTER_ID m_Player2_Select;
 
 
 	/*	キーボード */
