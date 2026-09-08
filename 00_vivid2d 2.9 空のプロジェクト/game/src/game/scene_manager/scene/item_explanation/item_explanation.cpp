@@ -87,11 +87,11 @@ void CItem_Explanation::NextChangeScene(void)
 		}
 
 		/* コントローラー用 */
-		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B) ||
-			vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
+		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B)) //||vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{
 			//カラーセレクトに行く
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+
 		}
 	}
 
