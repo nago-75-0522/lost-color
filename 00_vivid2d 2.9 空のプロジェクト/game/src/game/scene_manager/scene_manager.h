@@ -38,7 +38,14 @@ public:
 
 	int FinishStage();//終了時
 
-	void ResetStageCount();//タイトルに行ったらリセットをかける
+	//タイトルに行ったらリセットをかける
+	void ResetStageCount();
+
+	//放置されたらタイトルに戻る処理
+	void ResetScene();
+
+	//タイマーをリセット
+	void ResetTimer();
 
 private:
 
@@ -58,10 +65,14 @@ private:
 	SCENE_ID m_NextID;		//次のシーン
 
 	/* フェード */
-	static const float m_fade_speed;//フェード速度
-	FADE	m_FadeState;			//フェード状態
-	float	m_FadeAlpha;			//フェード透明度
+	static const	float m_fade_speed;				//フェード速度
+					FADE	m_FadeState;			//フェード状態
+					float	m_FadeAlpha;			//フェード透明度
 
-	int m_StageCount;//ステージ回数
+					int m_StageCount;//ステージ回数
+
+					float  m_NotOparation_Time;			//操作なし時間
+	static	const	int m_oparation_limit_time;			//タイトル戻るまでの時間
+
 };
 

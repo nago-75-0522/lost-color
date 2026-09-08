@@ -103,36 +103,55 @@ void CColor_Select::Update()
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
 				&& !CPlayer_Manager::GetInstance().Player1_Win())
+			{
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
+				CSceneManager::GetInstance().ResetTimer();
+			}
+				
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
 				&& CPlayer_Manager::GetInstance().Player1_Win())
+			{
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
+				CSceneManager::GetInstance().ResetTimer();
+			}
 		}
 		else if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 		{
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
 				&& !CPlayer_Manager::GetInstance().Player1_Win())
+			{
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
+				CSceneManager::GetInstance().ResetTimer();
+			}
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
 				&& CPlayer_Manager::GetInstance().Player1_Win())
+			{
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
+				CSceneManager::GetInstance().ResetTimer();
+			}
 		}
 		else if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE3)
 		{
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::S) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)
 				&& !CPlayer_Manager::GetInstance().Player1_Win())
+			{
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
+				CSceneManager::GetInstance().ResetTimer();
+			}
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
 				&& CPlayer_Manager::GetInstance().Player1_Win())
+			{
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
+				CSceneManager::GetInstance().ResetTimer();
+			}
 		}
 	}
 }
@@ -196,7 +215,7 @@ void CColor_Select::ColorSel(void)
 			keyboard::Trigger(keyboard::KEY_ID::D))
 		{
 			int color = (int)m_Now_Color;
-
+			CSceneManager::GetInstance().ResetTimer();
 			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
 				vivid::PlaySound("data\\sound\\select.mp3", false);
@@ -216,7 +235,7 @@ void CColor_Select::ColorSel(void)
 			keyboard::Trigger(keyboard::KEY_ID::A))
 		{
 			int color = (int)m_Now_Color;
-
+			CSceneManager::GetInstance().ResetTimer();
 			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
 				vivid::PlaySound("data\\sound\\select.mp3", false);
@@ -241,7 +260,7 @@ void CColor_Select::ColorSel(void)
 			keyboard::Trigger(keyboard::KEY_ID::RIGHT))
 		{
 			int color = (int)m_Now_Color;
-
+			CSceneManager::GetInstance().ResetTimer();
 			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
 				vivid::PlaySound("data\\sound\\select.mp3", false);
@@ -261,7 +280,7 @@ void CColor_Select::ColorSel(void)
 				keyboard::Trigger(keyboard::KEY_ID::LEFT))
 		{
 			int color = (int)m_Now_Color;
-
+			CSceneManager::GetInstance().ResetTimer();
 			for (int i = 0; i < (int)COLOR::MAX; i++)
 			{
 				vivid::PlaySound("data\\sound\\select.mp3", false);

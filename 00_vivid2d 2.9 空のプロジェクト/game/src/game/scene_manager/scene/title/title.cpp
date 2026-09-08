@@ -4,6 +4,9 @@
 #include"../color_select/color_select.h"
 #include"../game_risult/game_risult.h"
 #include"../../../object/player_manager/player_manager.h"
+
+const int CTitle::m_logo_limit_timer = 600;
+
 CTitle::CTitle()
 	:m_Logo_Time(0)
 	,m_title_logo_file("data\\logo\\ge-mulogo1.png")
@@ -77,11 +80,12 @@ void CTitle::Draw(void)
 	rect.bottom = m_title_logo_height;
 
 
-	//タイトルロゴの表示時間の計算 if(条件)
-	if (m_Logo_Time > 10 * 60 )
+	//タイトルロゴの表示時間の計算
+	if (m_Logo_Time > m_logo_limit_timer)
 	{
 		/* タイトル動画	 動画再生中にどこかのキーを押すとタイトルに戻る スペース押すと次の処理行く */
 		PlayMovie("data\\db.mp4", 1, DX_MOVIEPLAYTYPE_BCANCEL);//DX_MOVIEPLAYTYPE_BCANCELキー入力あり
+	
 
 		//キーボード用
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))

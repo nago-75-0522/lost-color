@@ -64,12 +64,6 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 //初期化
 void COption::Initialize(void)
 {
-
-
-	namespace controller = vivid::controller;
-
-	
-
 	//m_Button_Pos = vivid::Vector2::ZERO;//位置
 
 #if 0
@@ -94,20 +88,25 @@ void COption::Initialize(void)
 //更新
 void COption::Update(void)
 {
-	namespace controller = vivid::controller;
-	// スティック入力取得
+
+	//スティック入力取得
 	m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
-
-
 	
 	SelectCharacter();	//選択中
 	CharacterPic();
 	SetCharacter();		//準備完了シーン切り替え
-	
 
-
-	
+	//二人ともが準備Ｏｋになったら
+	if (m_player1_ok == true && m_player2_ok == true)
+	{
+		//もう一度Bを押したらステージ選択へ
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B) || keyboard::Trigger(keyboard::KEY_ID::SPACE))
+		{
+			vivid::PlaySound("data\\sound\\click.mp3", false);
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
+		}
+	}
 }
 
 //描画
@@ -157,13 +156,7 @@ void COption::Draw(void)
 	if(m_player1_ok == true && m_player2_ok == true)
 	{
 			vivid::DrawTexture("data\\logo\\startUI.png", { (vivid::WINDOW_WIDTH / 2) - 210.0f, (vivid::WINDOW_HEIGHT / 2 - 54) });
-			//もう一度Bを押したらステージ選択へ
-			if(controller::Trigger(controller::DEVICE_ID::PLAYER1,controller::BUTTON_ID::B) ||keyboard::Trigger(keyboard::KEY_ID::SPACE))
-			{
-				vivid::PlaySound("data\\sound\\click.mp3", false);
-
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
-			}
+			
 		}
 
 };
@@ -187,6 +180,7 @@ void COption::SetCharacter(void)
 			vivid::PlaySound("data\\sound\\click.mp3", false);
 			vivid::StopSound("data\\sound\\title_bgm.mp3");
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		//コントローラー用
@@ -195,6 +189,7 @@ void COption::SetCharacter(void)
 			vivid::PlaySound("data\\sound\\click.mp3", false);
 			vivid::StopSound("data\\sound\\title_bgm.mp3");
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 	}
@@ -234,6 +229,7 @@ void COption::CharacterPic(void)
 		{
 			m_player1_ok = true;
 			vivid::PlaySound("data\\sound\\click.mp3", false);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 	}
 	
@@ -244,6 +240,7 @@ void COption::CharacterPic(void)
 		{
 			m_player2_ok = true;
 			vivid::PlaySound("data\\sound\\click.mp3", false);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 	}
 }
@@ -271,6 +268,7 @@ void COption::SelectCharacter(void)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Player1_Select = (CHARACTER_ID)(((int)m_Player1_Select + 1) % (int)CHARACTER_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		// 左に倒した瞬間
@@ -278,6 +276,7 @@ void COption::SelectCharacter(void)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Player1_Select = (CHARACTER_ID)((((int)m_Player1_Select - 1) + (int)CHARACTER_ID::MAX) % (int)CHARACTER_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		/* 十字キー実装 */
@@ -287,6 +286,7 @@ void COption::SelectCharacter(void)
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Player1_Select = (CHARACTER_ID)(((int)m_Player1_Select + 1) % (int)CHARACTER_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		else if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT) ||
@@ -295,6 +295,7 @@ void COption::SelectCharacter(void)
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Player1_Select = (CHARACTER_ID)((((int)m_Player1_Select - 1) + (int)CHARACTER_ID::MAX) % (int)CHARACTER_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 	}
 
@@ -307,6 +308,7 @@ void COption::SelectCharacter(void)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Player2_Select = (CHARACTER_ID)(((int)m_Player2_Select + 1) % (int)CHARACTER_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		// 左に倒した瞬間
@@ -314,6 +316,7 @@ void COption::SelectCharacter(void)
 		{
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Player2_Select = (CHARACTER_ID)((((int)m_Player2_Select - 1) + (int)CHARACTER_ID::MAX) % (int)CHARACTER_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		/* 十字キー実装 */
@@ -323,6 +326,7 @@ void COption::SelectCharacter(void)
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Player2_Select = (CHARACTER_ID)(((int)m_Player2_Select + 1) % (int)CHARACTER_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 
 		else if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT) ||
@@ -331,12 +335,15 @@ void COption::SelectCharacter(void)
 			//選択ボタンの変更
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Player2_Select = (CHARACTER_ID)((((int)m_Player2_Select - 1) + (int)CHARACTER_ID::MAX) % (int)CHARACTER_ID::MAX);
+			CSceneManager::GetInstance().ResetTimer();
 		}
 	}
 
 	// 現在の値を保存
 	player1_prev_stick_x = m_Player1_Stick.x;
 	player2_prev_stick_x = m_Player2_Stick.x;
+
+	
 }
 
 
