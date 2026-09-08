@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "vivid.h"
-#include"../ball_stageset/ball_stageset.h"
+
 class CBasket
 {
 public:
     CBasket(void);
     ~CBasket(void) = default;
     void Initialize();
-    void Update(const vivid::Vector2& playerPos);
+    void Update(const vivid::Vector2& playerPos, int attackTimer, bool isRight);
     void Draw();
 
     vivid::Vector2 GetPosition() const;
@@ -16,6 +16,11 @@ public:
     float GetWidth() const;
     float GetHeight() const;
 
+    float GetLeft() const;
+    float GetRight() const;
+    float GetTop() const;
+    float GetBottom() const;
+
 private:
 
     vivid::Vector2 m_Pos;
@@ -23,4 +28,6 @@ private:
 
     static const float m_basket_width;
     static const float m_basket_height;
+
+    float m_Angle;//回転角度
 };

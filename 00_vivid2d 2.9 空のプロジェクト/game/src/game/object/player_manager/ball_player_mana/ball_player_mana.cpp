@@ -20,6 +20,8 @@ void CBall_Player_Manager::Update(void)
 
     //プレイヤー同士の当たり判定
     CheckPlayerHit();
+    //カゴの攻撃
+    CheckBasketAttack();
     //ボールとカゴの判定
     CBall::GetInstance().CheckHit(player1.GetBasket(), player2.GetBasket());
 }
@@ -85,9 +87,37 @@ void CBall_Player_Manager::CheckPlayerHit()
         player1.AddPos({ overlap * 0.5f, 0.0f });
         player2.AddPos({ -overlap * 0.5f, 0.0f });
     }
-#if 0
-#ifdef _DEBUG
-    vivid::DrawText(30, "HIT", { 500, 100 });
-#endif
-#endif
+}
+//カゴの攻撃
+void CBall_Player_Manager::CheckBasketAttack()
+{
+    //p1->p2
+    bool hit1 = player1.GetBasket().GetRight() > player2.GetLeft() &&
+        player1.GetBasket().GetLeft() < player2.GetRight() &&
+        player1.GetBasket().GetBottom() > player2.GetTop() &&
+        player1.GetBasket().GetTop() < player2.GetBottom();
+
+    if (player1.IsAttack() && hit1)
+    {
+        player1.SetAttackHit(true);
+        if (player1.GetCenterPosition().x < player2.GetCenterPosition().x)
+            player2.AddPos({ 200.0f,-60.0f });//横=200、上＝60
+        else
+            player2.AddPos({ -200.0f, -60.0f });
+    }
+
+    //p2->p1
+    bool hit2 = player2.GetBasket().GetRight() > player1.GetLeft() &&
+        player2.GetBasket().GetLeft() < player1.GetRight() &&
+        player2.GetBasket().GetBottom() > player1.GetTop() &&
+        player2.GetBasket().GetTop() < player1.GetBottom();
+
+    if (player2.IsAttack() && hit2)
+    {
+        player2.SetAttackHit(true);
+        if (player2.GetCenterPosition().x < player1.GetCenterPosition().x)
+            player1.AddPos({ 200.0f,-60.0f });
+        else
+            player1.AddPos({ -200.0f, -60.0f });
+    }
 }

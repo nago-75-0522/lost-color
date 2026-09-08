@@ -4,7 +4,6 @@
 #include"../../../../scene_manager/scene/color_select/color_select.h"
 #include"../.../../effect_manager/effect_manager.h"
 
-const int			CBall::m_ball_radius = 16;
 const int			CBall::m_ball_width = 32;
 const int			CBall::m_ball_height = 32;
 const int			CBall::m_ball_spawn_interval = 1 * 30;
@@ -13,7 +12,6 @@ const float			CBall::m_ball_scale_speed = 1.0f / 15.0f;
 //コンストラクタ
 CBall::CBall(void)
 	: m_BallSpawn(0)
-	, m_ColorCount(0)
 	, m_SpawnCount(1)
 	, m_GameFrame(0)
 	, m_BallCenterX(0)
@@ -44,9 +42,7 @@ void CBall::Initialize(void)
 		ball.m_pos = vivid::Vector2::ZERO;
 		ball.m_oldpos = vivid::Vector2::ZERO;
 		ball.m_velocity = vivid::Vector2::ZERO;
-		ball.m_radius = m_ball_radius;
 		ball.m_activeFlag = false;//無効
-		ball.m_isLanding = false;//着地していない
 		ball.m_anchor = vivid::Vector2(m_ball_width / 2, m_ball_height / 2);
 		ball.m_scale = vivid::Vector2(0.0f, 0.0f);//開始サイズ
 		ball.m_state = BALL_STATE::SPAWN;//生成
@@ -189,7 +185,6 @@ void CBall::IniOld()
 	m_Old_Yellow = true;
 	m_Old_Magenta = true;
 }
-
 
 //当たり判定
 //内容は(円)と(矩形)の判定
@@ -358,7 +353,6 @@ void CBall::AddScore(BALL& ball, int playerNo)
 			CBallScore::GetInstance().AddPlayer2Yellow();
 			break;
 		}
-
 	}
 
 	//点数
@@ -490,7 +484,6 @@ CBall::COLOR_ROLE CBall::GetColorRole(BALL_COLOR color)
 			return COLOR_ROLE::PLAYER2;//残りを2p用に
 		}
 	}
-
 	return COLOR_ROLE::COMMON;
 }
 //1pの画像色
@@ -533,7 +526,6 @@ void CBall::SpawnBall(void)
 				ball.m_pos.y = 0.0f;
 				ball.m_velocity = vivid::Vector2::ZERO;
 				ball.m_activeFlag = true;
-				ball.m_isLanding = false;
 				ball.m_anchor = vivid::Vector2(m_ball_width / 2, m_ball_height / 2);
 				ball.m_scale = vivid::Vector2(0.0f, 0.0f);
 				ball.m_state = BALL_STATE::SPAWN;
@@ -613,4 +605,3 @@ void CBall::UpdateBall(BALL& ball)
 		break;
 	}
 }
-

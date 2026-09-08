@@ -67,9 +67,7 @@ private:
 		vivid::Vector2 m_pos;		  //位置
 		vivid::Vector2 m_oldpos;	  //前フレームの位置
 		vivid::Vector2 m_velocity;	  //速さ
-		float          m_radius;	  //半径
 		bool           m_activeFlag;  //有効・無効
-		bool           m_isLanding;	  //着地フラグ(地面についているか)
 		vivid::Vector2 m_anchor;	  //基準点
 		vivid::Vector2 m_scale;		  //拡大率
 		BALL_COLOR	   m_color;		  //色
@@ -87,20 +85,14 @@ private:
 
 	//定数
 	static const int	m_max_ball = 50;		//最大表示数
-	static const int    m_color_ratio = 10;		//色抽選用の候補数
-	static const int	m_ball_radius;			//半径
 	static const int	m_ball_width;			//幅
 	static const int	m_ball_height;			//高さ
 	static const int	m_ball_spawn_interval;	//発生間隔
-	static const int	m_ball_default_score;	//デフォルトスコア
 	static const float	m_ball_scale_speed;		//拡大スピード
-
 
 	//変数
 	BALL  m_Balls[m_max_ball];//ボールの配列(存在する全ボール)
-	BALL_COLOR m_ColorList[m_color_ratio];//生成候補色リスト
 	int   m_BallSpawn;//出現タイマー
-	int   m_ColorCount;//候補色数
 	int   m_SpawnCount;//生成数
 	int   m_GameFrame;//経過フレーム
 	float m_BallCenterX;//ボールの中心座標x

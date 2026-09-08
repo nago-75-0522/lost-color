@@ -22,8 +22,8 @@ private:
 	CBall_Player_Manager& operator =(const CBall_Player_Manager& rhs) = delete;
 
 	void CheckPlayerHit();
+	void CheckBasketAttack();
 
 	CBallPlayer1 player1;
 	CBallPlayer2 player2;
 };
-

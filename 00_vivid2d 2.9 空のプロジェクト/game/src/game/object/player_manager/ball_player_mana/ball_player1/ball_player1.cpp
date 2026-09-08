@@ -1,9 +1,10 @@
 ﻿#include"ball_player1.h"
 #include"../../../minigame_manager/ball_manager/ball/ball.h"
+#include"../../../minigame_manager/ball_manager/ball_score/ball_score.h"
+#include"../../../minigame_manager/ball_manager/effect_manager/effect_manager.h"
 
 const int CBallPlayer1::m_width = 280;
 const int CBallPlayer1::m_height = 140;
-const float CBallPlayer1::m_radius = 70.0f;
 const float CBallPlayer1::m_speed = 5.0f;
 const float CBallPlayer1::m_jump_power = -15.0f;
 const vivid::Vector2 CBallPlayer1::m_player1_marker_size = { 64.0f,40.0f };
@@ -22,6 +23,8 @@ CBallPlayer1::CBallPlayer1(void)
 	, m_AnimeFrame(0)
 	, m_AnimeTimer(0)
 	, m_MoveInput(false)
+	, m_AttackTimer(0)
+	, m_AttackHit(false)
 {
 }
 
@@ -41,11 +44,12 @@ void CBallPlayer1::Initialize(void)
 
 	// 画像の読み込み
 	vivid::LoadTexture("data\\ball\\character2.png");
+	CEffectManager::GetInstance().Initialize();
 
 	// 初期位置
 	m_Pos.x = vivid::GetWindowWidth() / 4.0f;
 	m_Pos.y = m_stageset.GroundLine() - m_height;
-	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
+	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f), m_AttackTimer, m_Direction == CHARACTER_DIR::RIGHT);
 	m_Player1MarkerPos.x = m_Pos.x + m_width / 2 - m_player1_marker_size.x / 2;
 	m_Player1MarkerPos.y = m_stageset.GroundLine();
 
@@ -60,10 +64,15 @@ void CBallPlayer1::Initialize(void)
 
 	m_Direction = CHARACTER_DIR::LEFT;
 	m_DirectionNext = CHARACTER_DIR::LEFT;
+
+	m_AttackTimer = 0;
+	m_AttackHit = false;
 }
 
 void CBallPlayer1::Update(void)
 {
+	CEffectManager::GetInstance().Update();
+
 	namespace controller = vivid::controller;
 	namespace keyboard = vivid::keyboard;
 
@@ -111,7 +120,6 @@ void CBallPlayer1::Update(void)
 	{
 		m_Velocity.x = 0.0f;
 	}
-
 	//ジャンプ
 	if (keyboard::Button(keyboard::KEY_ID::W) ||
 		controller::Button(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::A))
@@ -121,8 +129,46 @@ void CBallPlayer1::Update(void)
 			m_Velocity.y = m_jump_power;
 	}
 
+	//攻撃
+	if ((keyboard::Trigger(keyboard::KEY_ID::S) ||
+		controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)) && m_AttackTimer <= 0)
+	{
+		m_AttackTimer = 15;
+		//攻撃開始時はヒットフラグをリセット
+		m_AttackHit = false;
+	}
+	if (m_AttackTimer > 0)
+	{
+		m_AttackTimer--;
+		//攻撃終了時
+		if (m_AttackTimer == 0)
+		{
+			//1度も相手に当たらなかった
+			if (!m_AttackHit)
+			{
+				if (!m_AttackHit)
+				{
+					// 空振りペナルティ
+					CBallScore::GetInstance().AddPlayer1Score(-10);
 
-	// 向き変更時(スピードを０に)
+					unsigned int color;
+					if (CBall::GetInstance().GetPlayer1Color() == CBall::BALL_COLOR::MAGENTA)
+						color = 0xffff00ff;
+					else
+						color = 0xffffff00;
+
+					//位置
+					vivid::Vector2 effectPos;
+					effectPos.x = m_Pos.x + m_width * 0.5f;
+					effectPos.y = m_Pos.y + m_height * 0.5f;
+					//エフェクト生成
+					CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
+				}
+			}
+		}
+	}
+
+	// 向き変更
 	if (m_Direction != m_DirectionNext)
 	{
 		m_Direction = m_DirectionNext;
@@ -139,7 +185,7 @@ void CBallPlayer1::Update(void)
 	m_Player1MarkerPos.y = m_stageset.GroundLine();
 
 	//カゴ
-	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f));
+	m_basket.Update(m_Pos + vivid::Vector2(m_width / 2.0f, 0.0f), m_AttackTimer, m_Direction == CHARACTER_DIR::RIGHT);
 
 	//壁判定 
 	float m_BasketLeft = m_basket.GetPosition().x;	//カゴの左端
@@ -195,6 +241,7 @@ void CBallPlayer1::Update(void)
 void CBallPlayer1::Draw(void)
 {
 	m_basket.Draw();
+	CEffectManager::GetInstance().Draw();
 
 	vivid::Rect rect = {};
 	vivid::Vector2 m_anchor(m_width / 2.0f, 0.0f);
@@ -224,44 +271,49 @@ void CBallPlayer1::Finalize(void)
 {
 }
 
-//キャラクター情報
-const vivid::Vector2& CBallPlayer1::GetPosition() const
-{
-	return m_Pos;
-}
+//当たり判定用矩形
+//左端
 float CBallPlayer1::GetLeft() const
 {
 	return m_Pos.x + 90.0f;
 }
+//右端
 float CBallPlayer1::GetRight() const
 {
 	return m_Pos.x + 190.0f;
 }
+//上
 float CBallPlayer1::GetTop() const
 {
 	return m_Pos.y;
 }
+//下
 float CBallPlayer1::GetBottom() const
 {
 	return m_Pos.y + m_height;
 }
-
-
+//位置変更
 void CBallPlayer1::AddPos(const vivid::Vector2& move)
 {
 	m_Pos += move;
 }
-
+//攻撃判定
+//攻撃アニメーション中の有効フレームのみtrue
+bool CBallPlayer1::IsAttack() const
+{
+	return m_AttackTimer >= 5 && m_AttackTimer <= 10;
+}
+//攻撃ヒットフラグの設定
+void CBallPlayer1::SetAttackHit(bool hit)
+{
+	m_AttackHit = hit;
+}
+//キャラクター中心座標取得
 vivid::Vector2 CBallPlayer1::GetCenterPosition(void)
 {
 	return m_Pos + vivid::Vector2(m_width / 2.0f, m_height / 2.0f);
 }
-
-float CBallPlayer1::GetRadius(void)
-{
-	return m_radius;
-}
-
+//カゴ取得
 CBasket& CBallPlayer1::GetBasket()
 {
 	return m_basket;
