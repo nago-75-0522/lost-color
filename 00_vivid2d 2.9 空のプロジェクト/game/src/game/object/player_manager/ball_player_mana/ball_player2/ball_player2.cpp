@@ -4,7 +4,7 @@
 #include"../../../minigame_manager/ball_manager/effect_manager/effect_manager.h"
 
 const int CBallPlayer2::m_width = 280;
-const int CBallPlayer2::m_height = 140;
+const int CBallPlayer2::m_height = 190;
 const float CBallPlayer2::m_speed = 5.0;
 const float CBallPlayer2::m_jump_power = -15.0f;
 const vivid::Vector2 CBallPlayer2::m_player2_marker_size = { 64.0f,40.0f };
@@ -43,7 +43,7 @@ void CBallPlayer2::Initialize(void)
 	m_basket.Initialize();
 
 	// 画像の読み込み
-	vivid::LoadTexture("data\\ball\\character2.png");
+	vivid::LoadTexture("data\\ball\\humanM.png");
 
 	// 初期位置
 	m_Pos.x = vivid::GetWindowWidth() / 2.0f;
@@ -258,7 +258,7 @@ void CBallPlayer2::Draw(void)
 		break;
 	}
 
-	vivid::DrawTexture("data\\ball\\character2.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
+	vivid::DrawTexture("data\\ball\\humanM.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
 }
 
 void CBallPlayer2::Finalize(void)

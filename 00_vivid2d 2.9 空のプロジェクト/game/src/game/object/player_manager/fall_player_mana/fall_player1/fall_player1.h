@@ -77,5 +77,5 @@ private:
 	ITEM_ID m_Item_ID;
 	bool m_Is_Pull_Move;
 	vivid::Vector2 m_Pull_Target_Pos;
-	std::string m_player1_boy_path;
+	std::string m_Player1_Path;
 };

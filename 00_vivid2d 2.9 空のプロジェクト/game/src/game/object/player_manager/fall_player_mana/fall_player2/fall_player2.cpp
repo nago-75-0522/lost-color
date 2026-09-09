@@ -49,7 +49,7 @@ void CFall_Player2::Initialize()
 	m_Item_ID = ITEM_ID::UNKNOW;
 	m_Is_Pull_Move=false;
 	m_Pull_Target_Pos = {0.0f,0.0f};
-	m_player2_boy_path = "data\\fall\\character3.png";
+	m_Player2_Path = "data\\fall\\humanC.png";
 
 	//保存したIDの取得
 	CHARACTER_ID player2_id = COption::GetInstance().GetCharacterPlayer2();
@@ -57,17 +57,17 @@ void CFall_Player2::Initialize()
 	switch (player2_id)
 	{
 	case CHARACTER_ID::CHARA1:
-		m_player2_boy_path = "data\\fall\\chara_db.png";
+		m_Player2_Path = "data\\fall\\humanC.png";
 
 		break;
 	case CHARACTER_ID::CHARA2:
-
+		m_Player2_Path = "data\\fall\\catC.png";
 		break;
 	case CHARACTER_ID::CHARA3:
-
+		m_Player2_Path = "data\\fall\\bearC.png";
 		break;
 	case CHARACTER_ID::CHARA4:
-
+		m_Player2_Path = "data\\fall\\rabbitC.png";
 		break;
 
 	default:
@@ -171,7 +171,7 @@ void CFall_Player2::Draw()
 	m_Player2_Chara_Rect.bottom = m_Player2_Chara_Rect.top + m_player2_chara_height;
 	vivid::DrawTexture(m_player2_marker_path, m_Player2_Marker_Pos);
 
-	vivid::DrawTexture(m_player2_boy_path, m_Player2_Chara_Pos, 0xffffffff, m_Player2_Chara_Rect, m_Player2_Chara_Anchor, m_Player2_Chara_Scale);
+	vivid::DrawTexture(m_Player2_Path, m_Player2_Chara_Pos, 0xffffffff, m_Player2_Chara_Rect, m_Player2_Chara_Anchor, m_Player2_Chara_Scale);
 	switch (m_Item_ID)
 	{
 	case ITEM_ID::HIGH_JUMP:

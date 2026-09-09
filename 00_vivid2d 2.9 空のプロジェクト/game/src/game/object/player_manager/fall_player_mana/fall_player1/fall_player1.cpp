@@ -32,7 +32,6 @@ CFall_Player1::CFall_Player1()
 
 void CFall_Player1::Initialize()
 {
-	m_player1_boy_path = "data\\fall\\character3.png";
 	m_Player1_Chara_Pos = { 72.0f,69.0f };
 	m_Player1_Chara_State = CHARA_STATE::WAIT;
 	m_Player1_Chara_Dir = CHARA_DIRECTION::DOWN;
@@ -50,7 +49,7 @@ void CFall_Player1::Initialize()
 	m_Item_ID = ITEM_ID::UNKNOW;
 	m_Pull_Target_Pos = { 0.0f,0.0f };
 	m_Is_Pull_Move = false;
-	m_player1_boy_path = "data\\fall\\character3.png";
+	m_Player1_Path = "data\\fall\\humanM.png";
 
 
 	//保存したIDの取得
@@ -60,16 +59,19 @@ void CFall_Player1::Initialize()
 	switch (player1_id)
 	{
 	case CHARACTER_ID::CHARA1:
-		m_player1_boy_path = "data\\fall\\chara_db.png";
+		m_Player1_Path = "data\\fall\\humanM.png";
 		break;
 
 	case CHARACTER_ID::CHARA2:
+		m_Player1_Path = "data\\fall\\catM.png";
 		break;
 
 	case CHARACTER_ID::CHARA3:
+		m_Player1_Path = "data\\fall\\bearM.png";
 		break;
 
 	case CHARACTER_ID::CHARA4:
+		m_Player1_Path = "data\\fall\\rabbitM.png";
 		break;
 
 	default:
@@ -163,8 +165,9 @@ void CFall_Player1::Draw()
 	m_Player1_Chara_Rect.right = m_Player1_Chara_Rect.left + m_player1_chara_width;
 	m_Player1_Chara_Rect.top = (int)m_Player1_Chara_Dir * m_player1_chara_height;
 	m_Player1_Chara_Rect.bottom = m_Player1_Chara_Rect.top + m_player1_chara_height;
+
 	vivid::DrawTexture(m_player1_marker_path, m_Player1_Marker_Pos);
-	vivid::DrawTexture(m_player1_boy_path, m_Player1_Chara_Pos, 0xffffffff, m_Player1_Chara_Rect, m_Player1_Chara_Anchor, m_Player1_Chara_Scale);
+	vivid::DrawTexture(m_Player1_Path, m_Player1_Chara_Pos, 0xffffffff, m_Player1_Chara_Rect, m_Player1_Chara_Anchor, m_Player1_Chara_Scale);
 	switch (m_Item_ID)
 	{
 	case ITEM_ID::HIGH_JUMP:

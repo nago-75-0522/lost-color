@@ -4,10 +4,10 @@
 //キャラクター選択
 enum class CHARACTER_ID
 {
-	CHARA1,
-	CHARA2,
-	CHARA3,
-	CHARA4,
+	CHARA1,//human
+	CHARA2,//cat
+	CHARA3,//bear
+	CHARA4,//rabbit
 	MAX,
 };
 

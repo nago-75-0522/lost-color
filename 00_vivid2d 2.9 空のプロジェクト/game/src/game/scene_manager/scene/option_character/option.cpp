@@ -29,7 +29,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 {
 	//CHARACTER_ID::CHARA1
 	{
-		"data\\debug\\cha1.png",
+		"data\\human.png",
 		1,
 		100.0f,
 		100.0f,
@@ -37,7 +37,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 
 	//CHARACTER_ID::CHARA2
 	{
-		"data\\debug\\cha2.png",
+		"data\\cat.png",
 		2,
 		400.0f,
 		100.0f,
@@ -45,7 +45,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 
 //CHARACTER_ID::CHARA3
 	{
-		"data\\debug\\cha3.png",
+		"data\\bear.png",
 		3,
 		700.0f,
 		100.0f,
@@ -53,7 +53,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 
 	//CHARACTER_ID::CHARA4
 	{
-		"data\\debug\\cha4.png",
+		"data\\rabbit.png",
 		4,
 		1000.0f,
 		100.0f,
@@ -112,8 +112,6 @@ void COption::Update(void)
 //描画
 void COption::Draw(void)
 {
-
-
 	vivid::DrawTexture("data\\debug\\option_bg.png", { 0.0f,0.0f });
 	vivid::DrawText(48, "キャラクターを選択してね", { 0.0f,0.0f });
 
@@ -155,9 +153,8 @@ void COption::Draw(void)
 	//キャラクター決定後
 	if(m_player1_ok == true && m_player2_ok == true)
 	{
-			vivid::DrawTexture("data\\logo\\startUI.png", { (vivid::WINDOW_WIDTH / 2) - 210.0f, (vivid::WINDOW_HEIGHT / 2 - 54) });
-			
-		}
+		vivid::DrawTexture("data\\logo\\startUI.png", { (vivid::WINDOW_WIDTH / 2) - 210.0f, (vivid::WINDOW_HEIGHT / 2 - 54) });
+	}
 
 };
 
