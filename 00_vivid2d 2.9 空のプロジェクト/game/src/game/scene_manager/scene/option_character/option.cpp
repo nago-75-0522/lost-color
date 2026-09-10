@@ -31,7 +31,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 	{
 		"data\\human.png",
 		1,
-		100.0f,
+		50.0f,
 		100.0f,
 	},
 
@@ -39,7 +39,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 	{
 		"data\\cat.png",
 		2,
-		400.0f,
+		350.0f,
 		100.0f,
 	},
 
@@ -47,7 +47,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 	{
 		"data\\bear.png",
 		3,
-		700.0f,
+		650.0f,
 		100.0f,
 	},
 
@@ -55,7 +55,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 	{
 		"data\\rabbit.png",
 		4,
-		1000.0f,
+		950.0f,
 		100.0f,
 	}
 };
