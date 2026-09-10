@@ -148,15 +148,15 @@ void CItem_Explanation::BackChengeScene(void)
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::W) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::UP))
 		{
 			//カラーセレクトに行く
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 		}
 
 		/* コントローラー用 */
-		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::A) ||
-			vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::A))
+		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::A)) //||vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{
-			//説明処理
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
+			//カラーセレクトに行く
+			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
+
 		}
 	}
 
@@ -171,14 +171,14 @@ void CItem_Explanation::BackChengeScene(void)
 			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::UP))
 			{
 				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 			}
 
 			/* コントローラー用 */
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::A))
 			{
 				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 			}
 
 		}
@@ -187,17 +187,17 @@ void CItem_Explanation::BackChengeScene(void)
 			/* キーボード用 */
 			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::W))
 			{
-				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				//ステージ説明
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			}
 
 			/* コントローラー用 */
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::A))
 			{
-				//カラーセレクトに行く
-				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			}
 		}
 	}
+
 }
 
