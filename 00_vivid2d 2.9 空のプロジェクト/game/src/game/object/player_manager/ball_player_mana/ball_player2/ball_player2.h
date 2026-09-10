@@ -76,4 +76,6 @@ private:
 	bool		   m_AttackHit;		//攻撃があたったか
 
 	vivid::Vector2 m_Player2MarkerPos;//2P表示
+	std::string	   m_Player2_Path;
+
 };

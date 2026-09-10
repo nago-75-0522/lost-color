@@ -2,6 +2,7 @@
 #include"../../../minigame_manager/ball_manager/ball/ball.h"
 #include"../../../minigame_manager/ball_manager/ball_score/ball_score.h"
 #include"../../../minigame_manager/ball_manager/effect_manager/effect_manager.h"
+#include"../../../../scene_manager/scene/option_character/option.h"
 
 const int CBallPlayer1::m_width = 280;
 const int CBallPlayer1::m_height = 190;
@@ -42,9 +43,6 @@ void CBallPlayer1::Initialize(void)
 {
 	m_basket.Initialize();
 
-	// 画像の読み込み
-	vivid::LoadTexture("data\\ball\\humanC.png");
-
 	// 初期位置
 	m_Pos.x = vivid::GetWindowWidth() / 4.0f;
 	m_Pos.y = m_stageset.GroundLine() - m_height;
@@ -66,6 +64,45 @@ void CBallPlayer1::Initialize(void)
 
 	m_AttackTimer = 0;
 	m_AttackHit = false;
+
+	CHARACTER_ID player1_id = COption::GetInstance().GetCharacterPlayer1();
+	CBall::BALL_COLOR color = CBall::GetInstance().GetPlayer1Color();
+	switch (player1_id)
+	{
+	case CHARACTER_ID::CHARA1: // 人間
+		switch (color)
+		{
+		case CBall::BALL_COLOR::MAGENTA:m_Player1_Path = "data\\ball\\humanM.png";break;
+		case CBall::BALL_COLOR::YELLOW:m_Player1_Path = "data\\ball\\humanY.png";break;
+		}
+		break;
+
+	case CHARACTER_ID::CHARA2: // 猫
+		switch (color)
+		{
+		case CBall::BALL_COLOR::MAGENTA:m_Player1_Path = "data\\ball\\catM.png";break;
+		case CBall::BALL_COLOR::YELLOW:m_Player1_Path = "data\\ball\\catY.png";break;
+		}
+		break;
+
+	case CHARACTER_ID::CHARA3: // 熊
+		switch (color)
+		{
+		case CBall::BALL_COLOR::MAGENTA:m_Player1_Path = "data\\ball\\bearM.png";break;
+		case CBall::BALL_COLOR::YELLOW:m_Player1_Path = "data\\ball\\bearY.png";break;
+		}
+		break;
+
+	case CHARACTER_ID::CHARA4: // うさぎ
+		switch (color)
+		{
+		case CBall::BALL_COLOR::MAGENTA:m_Player1_Path = "data\\ball\\rabbitM.png";break;
+		case CBall::BALL_COLOR::YELLOW:m_Player1_Path = "data\\ball\\rabbitY.png";break;
+		}
+		break;
+	}
+	//画像読み込み
+	vivid::LoadTexture(m_Player1_Path.c_str());
 }
 
 void CBallPlayer1::Update(void)
@@ -260,8 +297,7 @@ void CBallPlayer1::Draw(void)
 		vivid::DrawTexture("data\\logo\\small_yellow_1p.png", m_Player1MarkerPos);
 		break;
 	}
-
-	vivid::DrawTexture("data\\ball\\humanC.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
+	vivid::DrawTexture(m_Player1_Path.c_str(),m_Pos,0xffffffff,rect,m_anchor,m_scale);
 }
 
 void CBallPlayer1::Finalize(void)

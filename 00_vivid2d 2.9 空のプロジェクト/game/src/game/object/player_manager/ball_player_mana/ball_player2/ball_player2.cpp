@@ -2,6 +2,7 @@
 #include"../../../minigame_manager/ball_manager/ball/ball.h"
 #include"../../../minigame_manager/ball_manager/ball_score/ball_score.h"
 #include"../../../minigame_manager/ball_manager/effect_manager/effect_manager.h"
+#include"../../../../scene_manager/scene/option_character/option.h"
 
 const int CBallPlayer2::m_width = 280;
 const int CBallPlayer2::m_height = 190;
@@ -42,9 +43,6 @@ void CBallPlayer2::Initialize(void)
 {
 	m_basket.Initialize();
 
-	// 画像の読み込み
-	vivid::LoadTexture("data\\ball\\humanM.png");
-
 	// 初期位置
 	m_Pos.x = vivid::GetWindowWidth() / 2.0f;
 	m_Pos.y = m_stageset.GroundLine() - m_height;
@@ -66,6 +64,45 @@ void CBallPlayer2::Initialize(void)
 
 	m_AttackTimer = 0;
 	m_AttackHit = false;
+
+	CHARACTER_ID player2_id = COption::GetInstance().GetCharacterPlayer2();
+	CBall::BALL_COLOR color = CBall::GetInstance().GetPlayer2Color();
+	switch (player2_id)
+	{
+	case CHARACTER_ID::CHARA1: // 人間
+		switch (color)
+		{
+		case CBall::BALL_COLOR::CYAN:m_Player2_Path = "data\\ball\\humanC.png"; break;
+		case CBall::BALL_COLOR::YELLOW:m_Player2_Path = "data\\ball\\humanY.png"; break;
+		}
+		break;
+
+	case CHARACTER_ID::CHARA2: // 猫
+		switch (color)
+		{
+		case CBall::BALL_COLOR::CYAN:m_Player2_Path = "data\\ball\\catC.png"; break;
+		case CBall::BALL_COLOR::YELLOW:m_Player2_Path = "data\\ball\\catY.png"; break;
+		}
+		break;
+
+	case CHARACTER_ID::CHARA3: // 熊
+		switch (color)
+		{
+		case CBall::BALL_COLOR::CYAN:m_Player2_Path = "data\\ball\\bearC.png"; break;
+		case CBall::BALL_COLOR::YELLOW:m_Player2_Path = "data\\ball\\bearY.png"; break;
+		}
+		break;
+
+	case CHARACTER_ID::CHARA4: // うさぎ
+		switch (color)
+		{
+		case CBall::BALL_COLOR::CYAN:m_Player2_Path = "data\\ball\\rabbitC.png"; break;
+		case CBall::BALL_COLOR::YELLOW:m_Player2_Path = "data\\ball\\rabbitY.png"; break;
+		}
+		break;
+	}
+	// 画像の読み込み
+	vivid::LoadTexture(m_Player2_Path.c_str());
 }
 
 void CBallPlayer2::Update(void)
@@ -258,7 +295,7 @@ void CBallPlayer2::Draw(void)
 		break;
 	}
 
-	vivid::DrawTexture("data\\ball\\humanM.png", m_Pos, 0xffffffff, rect, m_anchor, m_scale);
+	vivid::DrawTexture(m_Player2_Path.c_str(), m_Pos, 0xffffffff, rect, m_anchor, m_scale);
 }
 
 void CBallPlayer2::Finalize(void)
