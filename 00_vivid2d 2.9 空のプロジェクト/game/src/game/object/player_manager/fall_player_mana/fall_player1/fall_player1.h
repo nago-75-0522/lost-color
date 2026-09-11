@@ -56,7 +56,6 @@ private:
 	static const int m_player1_chara_move_time;
 	static const float m_player1_chara_move_speed;
 	static const vivid::Vector2 m_player1_tree_size;
-	static const std::string m_player1_boy_path;
 	static const int m_player1_chara_center;
 	static const std::string m_player1_marker_path;
 	static const vivid::Vector2 m_player1_marker_size;
@@ -82,6 +81,6 @@ private:
 	vivid::Vector2 m_Pull_Target_Pos;
 	bool m_Is_Knock_Move;
 	vivid::Vector2 m_Knock_Target_Pos;
-
+	std::string m_Player1_Path;
 
 };

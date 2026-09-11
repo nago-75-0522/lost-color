@@ -1,11 +1,9 @@
 #include"fall_player2.h"
 #include"../../../minigame_manager/fall_manager/fall.h"
-
+#include"..\..\..\..\scene_manager\scene\option_character\option.h"
 const int CFall_Player2::m_player2_chara_height = 48;
 const int CFall_Player2::m_player2_chara_width = 48;
 const int CFall_Player2::m_player2_chara_move_time = 12;
-const std::string CFall_Player2::m_player2_boy_path = "data\\fall\\character3.png";
-const vivid::Vector2 CFall_Player2::m_player2_tree_size = { 64.0f,128.0f };
 const float CFall_Player2::m_player2_chara_move_speed = (float)CFall::GetInstance().GetMapChipSize() / (float)m_player2_chara_move_time;
 const int CFall_Player2::m_player2_chara_center = 24;
 const std::string CFall_Player2::m_player2_marker_path = "data/logo/small_blue_2p.png";
@@ -27,8 +25,10 @@ CFall_Player2::CFall_Player2()
 	, m_Player2_Get_Item(false)
 	, m_Item_ID(ITEM_ID::UNKNOW)
 	, m_Is_Pull_Move(false)
+	, m_Player2_Path("data\\fall\\humanC.png")
 {
 }
+
 
 void CFall_Player2::Initialize()
 {
@@ -51,7 +51,34 @@ void CFall_Player2::Initialize()
 	m_Pull_Target_Pos = { 0.0f,0.0f };
 	m_Is_Knock_Move = false;
 	m_Knock_Target_Pos = { 0.0f,0.0f };
+	m_Player2_Path = "data\\fall\\humanC.png";
+	//保存したIDの取得
+	CHARACTER_ID player2_id = COption::GetInstance().GetCharacterPlayer2();
+
+	switch (player2_id)
+	{
+	case CHARACTER_ID::CHARA1:
+		m_Player2_Path = "data\\fall\\humanC.png";
+
+		break;
+	case CHARACTER_ID::CHARA2:
+
+		m_Player2_Path = "data\\fall\\catC.png";
+		break;
+	case CHARACTER_ID::CHARA3:
+
+		m_Player2_Path = "data\\fall\\bearC.png";
+		break;
+	case CHARACTER_ID::CHARA4:
+
+		m_Player2_Path = "data\\fall\\rabbitC.png";
+		break;
+
+	default:
+		break;
+	}
 }
+
 
 void CFall_Player2::Update()
 {
@@ -199,7 +226,7 @@ void CFall_Player2::Draw()
 	m_Player2_Chara_Rect.bottom = m_Player2_Chara_Rect.top + m_player2_chara_height;
 	vivid::DrawTexture(m_player2_marker_path, m_Player2_Marker_Pos);
 
-	vivid::DrawTexture(m_player2_boy_path, m_Player2_Chara_Pos, 0xffffffff, m_Player2_Chara_Rect, m_Player2_Chara_Anchor, m_Player2_Chara_Scale);
+	vivid::DrawTexture(m_Player2_Path, m_Player2_Chara_Pos, 0xffffffff, m_Player2_Chara_Rect, m_Player2_Chara_Anchor, m_Player2_Chara_Scale);
 	switch (m_Item_ID)
 	{
 	case ITEM_ID::HIGH_JUMP:
