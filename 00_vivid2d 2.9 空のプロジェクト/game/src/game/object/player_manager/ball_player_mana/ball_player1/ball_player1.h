@@ -58,6 +58,9 @@ private:
 	static const float m_speed;		// 移動速度
 	static const float m_jump_power;// ジャンプ力
 	static const vivid::Vector2 m_player1_marker_size;//マーカーサイズ
+	static const float m_player_hit_left;//プレイヤ－当たり判定
+	static const float m_player_hit_right;//プレイヤー当たり判定
+	static const int   m_attack_time;//攻撃時間
 
 	//アニメーション情報
 	static const int   m_anime_frame[];

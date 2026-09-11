@@ -28,6 +28,7 @@ private:
 
     static const float m_basket_width;
     static const float m_basket_height;
+    static const float m_pi;//円周率
 
     float m_Angle;//回転角度
 };

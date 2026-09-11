@@ -2,6 +2,7 @@
 
 const float CBasket::m_basket_width = 100.0f;
 const float CBasket::m_basket_height = 70.0f;
+const float CBasket::m_pi = 3.14159265f;
 
 CBasket::CBasket(void)
 	:m_Pos(0.0f, 0.0f)
@@ -21,8 +22,9 @@ void CBasket::Update(const vivid::Vector2& playerPos, int attackTimer, bool isRi
 	m_OldPos = m_Pos;
 
     vivid::Vector2 pivot = playerPos;
+    pivot.y += 60.0f;
 
-    const float radius = 80.0f;//キャラとの間
+    const float radius = 80.0f;//攻撃半径
 
     if (attackTimer <= 0)
     {
@@ -44,7 +46,7 @@ void CBasket::Update(const vivid::Vector2& playerPos, int attackTimer, bool isRi
         }
     }
 
-    float rad = m_Angle * 3.14f / 180.0f;
+    float rad = m_Angle * m_pi / 180.0f;
 
     m_Pos.x = pivot.x + cosf(rad) * radius - m_basket_width / 2.0f;
     m_Pos.y = pivot.y - sinf(rad) * radius;

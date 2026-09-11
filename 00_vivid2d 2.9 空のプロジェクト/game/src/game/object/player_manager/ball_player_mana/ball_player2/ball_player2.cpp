@@ -9,6 +9,9 @@ const int CBallPlayer2::m_height = 190;
 const float CBallPlayer2::m_speed = 5.0;
 const float CBallPlayer2::m_jump_power = -15.0f;
 const vivid::Vector2 CBallPlayer2::m_player2_marker_size = { 64.0f,40.0f };
+const float CBallPlayer2::m_player_hit_left = 90.0f;
+const float CBallPlayer2::m_player_hit_right = 190.0f;
+const int   CBallPlayer2::m_attack_time = 15;
 
 //各アニメーションのフレーム数
 const int CBallPlayer2::m_anime_frame[] = { 4,6 };
@@ -168,7 +171,7 @@ void CBallPlayer2::Update(void)
 	if ((keyboard::Trigger(keyboard::KEY_ID::DOWN) ||
 		(triger > DEAD_ZONE)) && m_AttackTimer <= 0)
 	{
-		m_AttackTimer = 15;
+		m_AttackTimer = m_attack_time;
 		//攻撃開始時はヒットフラグをリセット
 		m_AttackHit = false;
 	}
@@ -185,7 +188,7 @@ void CBallPlayer2::Update(void)
 				//空振りペナルティ
 				CBallScore::GetInstance().AddPlayer2Score(-10);
 				unsigned int color;
-				if (CBall::GetInstance().GetPlayer1Color() == CBall::BALL_COLOR::CYAN)
+				if (CBall::GetInstance().GetPlayer2Color() == CBall::BALL_COLOR::CYAN)
 					color = 0xff00ffff;//シアン
 				else
 					color = 0xffffff00;//イエロー
@@ -306,12 +309,12 @@ void CBallPlayer2::Finalize(void)
 //左端
 float CBallPlayer2::GetLeft() const
 {
-	return m_Pos.x + 90.0f;
+	return m_Pos.x + m_player_hit_left;
 }
 //右端
 float CBallPlayer2::GetRight() const
 {
-	return m_Pos.x + 190.0f;
+	return m_Pos.x + m_player_hit_right;
 }
 //上
 float CBallPlayer2::GetTop() const
