@@ -23,15 +23,13 @@ public:
     void Use(CFall_Player2& player);
     bool Get_Is_Jump_1() { return m_IsJump_1; }
     bool Get_Is_Jump_2() { return m_IsJump_2; }
-
 private:
     static const int m_max_high_jump_charge;
     static const int m_half_high_jump_charge;
-
     static const vivid::Vector2 m_max_change_num;
     static const vivid::Vector2 m_half_change_num;
     static const vivid::Vector2 m_change_num;
-private:
+    static const int m_chip_size;
 
     bool m_IsJump_1;
     bool m_IsJump_2;

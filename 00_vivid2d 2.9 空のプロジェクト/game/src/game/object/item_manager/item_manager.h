@@ -17,7 +17,8 @@ public:
 	CHigh_Jump m_High_Jump_P2;
 	CPull m_Pull_P1;
 	CPull m_Pull_P2;
-
+	CKnock_Back m_Knock_Back_P1;
+	CKnock_Back m_Knock_Back_P2;
 
 private:
 

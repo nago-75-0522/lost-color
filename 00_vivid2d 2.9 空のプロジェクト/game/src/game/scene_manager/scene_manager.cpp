@@ -10,7 +10,7 @@
 #include"scene/item_explanation/item_explanation.h"
 
 const float CSceneManager::m_fade_speed = 1.0f;
-const int	CSceneManager::m_oparation_limit_time = 5;//3分だとしたら180 デバッグ用 
+const int	CSceneManager::m_oparation_limit_time = 60*500;//3分だとしたら180 デバッグ用 
 
 CSceneManager::CSceneManager()
 	:m_Scene(nullptr)
@@ -227,7 +227,6 @@ void CSceneManager::ResetStageCount()
 //操作なしが続いたらタイトルに戻る
 void CSceneManager::ResetScene()
 {
-
 	//経過時間を加算
 	m_NotOparation_Time += vivid::GetDeltaTime();
 

@@ -1,10 +1,10 @@
 #include"fall_player2.h"
 #include"../../../minigame_manager/fall_manager/fall.h"
-#include"..\..\..\..\scene_manager\scene\option_character\option.h"
 
 const int CFall_Player2::m_player2_chara_height = 48;
 const int CFall_Player2::m_player2_chara_width = 48;
 const int CFall_Player2::m_player2_chara_move_time = 12;
+const std::string CFall_Player2::m_player2_boy_path = "data\\fall\\character3.png";
 const vivid::Vector2 CFall_Player2::m_player2_tree_size = { 64.0f,128.0f };
 const float CFall_Player2::m_player2_chara_move_speed = (float)CFall::GetInstance().GetMapChipSize() / (float)m_player2_chara_move_time;
 const int CFall_Player2::m_player2_chara_center = 24;
@@ -26,7 +26,7 @@ CFall_Player2::CFall_Player2()
 	, m_Player2_Marker_Pos{ 0.0f,0.0f }
 	, m_Player2_Get_Item(false)
 	, m_Item_ID(ITEM_ID::UNKNOW)
-
+	, m_Is_Pull_Move(false)
 {
 }
 
@@ -47,36 +47,69 @@ void CFall_Player2::Initialize()
 	m_Player2_Fall_Sound = true;
 	m_Player2_Get_Item = false;
 	m_Item_ID = ITEM_ID::UNKNOW;
-	m_Is_Pull_Move=false;
-	m_Pull_Target_Pos = {0.0f,0.0f};
-	m_Player2_Path = "data\\fall\\humanC.png";
-
-	//保存したIDの取得
-	CHARACTER_ID player2_id = COption::GetInstance().GetCharacterPlayer2();
-
-	switch (player2_id)
-	{
-	case CHARACTER_ID::CHARA1:
-		m_Player2_Path = "data\\fall\\humanC.png";
-
-		break;
-	case CHARACTER_ID::CHARA2:
-		m_Player2_Path = "data\\fall\\catC.png";
-		break;
-	case CHARACTER_ID::CHARA3:
-		m_Player2_Path = "data\\fall\\bearC.png";
-		break;
-	case CHARACTER_ID::CHARA4:
-		m_Player2_Path = "data\\fall\\rabbitC.png";
-		break;
-
-	default:
-		break;
-	}
+	m_Is_Pull_Move = false;
+	m_Pull_Target_Pos = { 0.0f,0.0f };
+	m_Is_Knock_Move = false;
+	m_Knock_Target_Pos = { 0.0f,0.0f };
 }
 
 void CFall_Player2::Update()
 {
+	if (m_Is_Knock_Move)
+	{
+		vivid::Vector2 dir;
+
+		dir.x =
+			m_Knock_Target_Pos.x -
+			m_Player2_Chara_Pos.x;
+
+		dir.y =
+			m_Knock_Target_Pos.y -
+			m_Player2_Chara_Pos.y;
+
+		float len =
+			sqrtf(dir.x * dir.x +
+				dir.y * dir.y);
+
+		const float KNOCK_SPEED = 24.0f;
+
+		if (len <= KNOCK_SPEED)
+		{
+			m_Player2_Chara_Pos =
+				m_Knock_Target_Pos;
+
+			m_Player2_Marker_Pos.x =
+				m_Player2_Chara_Pos.x;
+
+			m_Player2_Marker_Pos.y =
+				m_Player2_Chara_Pos.y -
+				m_player2_marker_size.y;
+
+			m_Is_Knock_Move = false;
+
+			ForceStop();
+		}
+		else
+		{
+			dir.x /= len;
+			dir.y /= len;
+
+			m_Player2_Chara_Pos.x +=
+				dir.x * KNOCK_SPEED;
+
+			m_Player2_Chara_Pos.y +=
+				dir.y * KNOCK_SPEED;
+
+			m_Player2_Marker_Pos.x =
+				m_Player2_Chara_Pos.x;
+
+			m_Player2_Marker_Pos.y =
+				m_Player2_Chara_Pos.y -
+				m_player2_marker_size.y;
+		}
+
+		return;
+	}
 	if (m_Is_Pull_Move)
 	{
 		vivid::Vector2 dir;
@@ -95,8 +128,7 @@ void CFall_Player2::Update()
 			m_Player2_Chara_Pos = m_Pull_Target_Pos;
 
 			m_Player2_Marker_Pos.x = m_Player2_Chara_Pos.x;
-			m_Player2_Marker_Pos.y =
-				m_Player2_Chara_Pos.y - m_player2_marker_size.y;
+			m_Player2_Marker_Pos.y = m_Player2_Chara_Pos.y - m_player2_marker_size.y;
 
 			m_Is_Pull_Move = false;
 		}
@@ -109,15 +141,11 @@ void CFall_Player2::Update()
 			m_Player2_Chara_Pos.y += dir.y * PULL_SPEED;
 
 			m_Player2_Marker_Pos.x = m_Player2_Chara_Pos.x;
-			m_Player2_Marker_Pos.y =
-				m_Player2_Chara_Pos.y - m_player2_marker_size.y;
+			m_Player2_Marker_Pos.y = m_Player2_Chara_Pos.y - m_player2_marker_size.y;
 		}
 
 		return;
 	}
-
-	// ↓↓↓ここから下は今あるコードをそのまま残す↓↓↓
-
 	switch (m_Player2_Chara_State)
 	{
 
@@ -171,15 +199,17 @@ void CFall_Player2::Draw()
 	m_Player2_Chara_Rect.bottom = m_Player2_Chara_Rect.top + m_player2_chara_height;
 	vivid::DrawTexture(m_player2_marker_path, m_Player2_Marker_Pos);
 
-	vivid::DrawTexture(m_Player2_Path, m_Player2_Chara_Pos, 0xffffffff, m_Player2_Chara_Rect, m_Player2_Chara_Anchor, m_Player2_Chara_Scale);
+	vivid::DrawTexture(m_player2_boy_path, m_Player2_Chara_Pos, 0xffffffff, m_Player2_Chara_Rect, m_Player2_Chara_Anchor, m_Player2_Chara_Scale);
 	switch (m_Item_ID)
 	{
 	case ITEM_ID::HIGH_JUMP:
 		CItem_Manager::GetInstance().m_High_Jump_P2.DrawAim(*this);
 		CItem_Manager::GetInstance().m_High_Jump_P2.Draw(m_item_pos);
 		break;
-	//case ITEM_ID::KNOCK_BACK:
-		//break;
+	case ITEM_ID::KNOCK_BACK:
+		CItem_Manager::GetInstance().m_Knock_Back_P2.DrawAim(*this);
+		CItem_Manager::GetInstance().m_Knock_Back_P2.Draw(m_item_pos);
+		break;
 	case ITEM_ID::PULL:
 		CItem_Manager::GetInstance().m_Pull_P2.DrawAim(*this);
 		CItem_Manager::GetInstance().m_Pull_P2.Draw(m_item_pos);
@@ -334,9 +364,10 @@ void CFall_Player2::Item_Lottery()
 	{
 	case ITEM_ID::HIGH_JUMP:
 		CItem_Manager::GetInstance().m_High_Jump_P2.Use(*this);
-	break;
-//	case ITEM_ID::KNOCK_BACK:
-	//	break;
+		break;
+	case ITEM_ID::KNOCK_BACK:
+		CItem_Manager::GetInstance().m_Knock_Back_P2.Use(*this);
+		break;
 	case ITEM_ID::PULL:
 		CItem_Manager::GetInstance().m_Pull_P2.Use(*this);
 

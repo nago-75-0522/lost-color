@@ -8,16 +8,22 @@ CItem_Manager::CItem_Manager()
 void CItem_Manager::Initialize()
 {
 	m_Item_Box.Initialize();
+	m_Knock_Back_P1.Initialize();
+	m_Knock_Back_P2.Initialize();
 }
 
 void CItem_Manager::Update()
 {
 	m_Item_Box.Update();
+	m_Knock_Back_P1.Update();
+	m_Knock_Back_P2.Update();
 }
 
 void CItem_Manager::Draw()
 {
 	m_Item_Box.Draw();
+	m_Knock_Back_P1.Draw();
+	m_Knock_Back_P2.Draw();
 }
 
 void CItem_Manager::Finalize()

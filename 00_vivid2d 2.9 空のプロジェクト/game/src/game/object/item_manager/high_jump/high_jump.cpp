@@ -6,6 +6,7 @@ const int CHigh_Jump::m_half_high_jump_charge = 60 * 0.5;
 const vivid::Vector2 CHigh_Jump::m_half_change_num = { 192.0f,192.0f };
 const vivid::Vector2 CHigh_Jump::m_max_change_num = { 256.0f,256.0f };
 const vivid::Vector2 CHigh_Jump::m_change_num = { 128.0f,128.0f };
+const int CHigh_Jump::m_chip_size = CFall::GetInstance().GetMapChipSize();
 
 CHigh_Jump::CHigh_Jump()
     :m_High_Jump_Timer_1(0)
@@ -42,6 +43,8 @@ void CHigh_Jump::Update()
             CFall_Player1::GetInstance().GetCharaPos() =
                 m_JumpTarget_1;
 
+            CFall_Player1::GetInstance().ForceStop();
+
             int x =
                 (int)((m_JumpTarget_1.x + 24) / 64);
 
@@ -51,10 +54,11 @@ void CHigh_Jump::Update()
             CFall::GetInstance().ChangeFloor(x, y);
 
             m_IsJump_1 = false;
+
+            return;    // ← これを追加
         }
 
         vivid::Vector2 pos;
-
         pos.x =
             m_JumpStart_1.x +
             (m_JumpTarget_1.x - m_JumpStart_1.x) * t;
@@ -83,6 +87,8 @@ void CHigh_Jump::Update()
             CFall_Player2::GetInstance().GetCharaPos() =
                 m_JumpTarget_2;
 
+            CFall_Player2::GetInstance().ForceStop();
+
             int x =
                 (int)((m_JumpTarget_2.x + 24) / 64);
 
@@ -92,6 +98,8 @@ void CHigh_Jump::Update()
             CFall::GetInstance().ChangeFloor(x, y);
 
             m_IsJump_2 = false;
+
+            return;    // ← これを追加
         }
 
         vivid::Vector2 pos;
@@ -126,10 +134,10 @@ void CHigh_Jump::DrawAim(CFall_Player1& player)
     namespace keyboard = vivid::keyboard;
     float triger = controller::GetTriggerRight(controller::DEVICE_ID::PLAYER1);
     const float DEAD_ZONE = 0.5f;
-    if (CFall_Player1::GetInstance().GetScale().x >= 1)
+    if (CFall_Player1::GetInstance().GetScale().x < 1 ||
+        CFall_Player2::GetInstance().GetScale().x >= 1)
     {
-        if (CFall_Player2::GetInstance().GetScale().x < 1 ||
-            (!keyboard::Button(keyboard::KEY_ID::F) &&
+        if ((!keyboard::Button(keyboard::KEY_ID::F) &&
                 !(triger > DEAD_ZONE)))
         {
             return;
@@ -168,9 +176,6 @@ void CHigh_Jump::DrawAim(CFall_Player1& player)
                 break;
             }
 
-            vivid::Vector2 pos_gap;
-
-
             if (i == count)
             {
                 vivid::DrawTexture("data\\fall\\landing_point.png", pos, 0xaaffffff);
@@ -190,8 +195,12 @@ void CHigh_Jump::DrawAim(CFall_Player2& player)
     namespace keyboard = vivid::keyboard;
     float triger = controller::GetTriggerRight(controller::DEVICE_ID::PLAYER2);
     const float DEAD_ZONE = 0.5f;
-    if (CFall_Player2::GetInstance().GetScale().x < 1 ||
-        (!keyboard::Button(keyboard::KEY_ID::L) &&
+    if (CFall_Player1::GetInstance().GetScale().x < 1 ||
+        CFall_Player2::GetInstance().GetScale().x < 1)
+    {
+        return;
+    }
+    if ((!keyboard::Button(keyboard::KEY_ID::L) &&
             !(triger > DEAD_ZONE)))
     {
         return;
@@ -291,14 +300,11 @@ void CHigh_Jump::Use(CFall_Player1& player)
             jumpCount = 3;
         }
 
-        const int chipSize =
-            CFall::GetInstance().GetMapChipSize();
-
         int nowX =
-            (int)((player.GetCharaPos().x + 24) / chipSize);
+            (int)((player.GetCharaPos().x + 24) / m_chip_size);
 
         int nowY =
-            (int)((player.GetCharaPos().y + 24) / chipSize);
+            (int)((player.GetCharaPos().y + 24) / m_chip_size);
 
         int targetX = nowX;
         int targetY = nowY;
@@ -351,8 +357,8 @@ void CHigh_Jump::Use(CFall_Player1& player)
             CFall_Player1::GetInstance().ForceStop();
 
             // プレイヤーを中央へ
-            m_JumpTarget_1.x = targetX * chipSize + 8.0f;
-            m_JumpTarget_1.y = targetY * chipSize + 8.0f;
+            m_JumpTarget_1.x = targetX * m_chip_size + 8.0f;
+            m_JumpTarget_1.y = targetY * m_chip_size + 8.0f;
 
             player.GetItemID() = ITEM_ID::UNKNOW;
         }
@@ -408,14 +414,11 @@ void CHigh_Jump::Use(CFall_Player2& player)
             jumpCount = 3;
         }
 
-        const int chipSize =
-            CFall::GetInstance().GetMapChipSize();
-
         int nowX =
-            (int)((player.GetCharaPos().x + 24) / chipSize);
+            (int)((player.GetCharaPos().x + 24) / m_chip_size);
 
         int nowY =
-            (int)((player.GetCharaPos().y + 24) / chipSize);
+            (int)((player.GetCharaPos().y + 24) / m_chip_size);
 
         int targetX = nowX;
         int targetY = nowY;
@@ -468,8 +471,8 @@ void CHigh_Jump::Use(CFall_Player2& player)
             CFall_Player2::GetInstance().ForceStop();
 
             // プレイヤーを中央に
-            m_JumpTarget_2.x = targetX * chipSize + 8.0f;
-            m_JumpTarget_2.y = targetY * chipSize + 8.0f;
+            m_JumpTarget_2.x = targetX * m_chip_size + 8.0f;
+            m_JumpTarget_2.y = targetY * m_chip_size + 8.0f;
 
             player.GetItemID() = ITEM_ID::UNKNOW;
         }
@@ -477,3 +480,4 @@ void CHigh_Jump::Use(CFall_Player2& player)
         m_High_Jump_Timer_2 = 0;
     }
 }
+

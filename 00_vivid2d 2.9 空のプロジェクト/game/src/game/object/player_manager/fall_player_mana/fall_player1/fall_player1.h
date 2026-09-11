@@ -32,6 +32,9 @@ public:
 	bool GetIsPullMove() const { return m_Is_Pull_Move; }
 	void SetIsPullMove(bool flag) { m_Is_Pull_Move = flag; }
 	vivid::Vector2& GetPullTargetPos() { return m_Pull_Target_Pos; }
+	bool& GetIsKnockMove() { return m_Is_Knock_Move; }
+
+	vivid::Vector2& GetKnockTargetPos() { return m_Knock_Target_Pos; }
 private:
 	CFall_Player1(void);
 	//コピーコンストラクタ
@@ -53,12 +56,12 @@ private:
 	static const int m_player1_chara_move_time;
 	static const float m_player1_chara_move_speed;
 	static const vivid::Vector2 m_player1_tree_size;
+	static const std::string m_player1_boy_path;
 	static const int m_player1_chara_center;
 	static const std::string m_player1_marker_path;
 	static const vivid::Vector2 m_player1_marker_size;
 	static const int m_item_box_size;
 	static const vivid::Vector2 m_item_pos;
-
 	//変数
 	CHARA_DIRECTION m_Player1_Chara_Dir;
 	CHARA_STATE m_Player1_Chara_State;
@@ -77,5 +80,8 @@ private:
 	ITEM_ID m_Item_ID;
 	bool m_Is_Pull_Move;
 	vivid::Vector2 m_Pull_Target_Pos;
-	std::string m_Player1_Path;
+	bool m_Is_Knock_Move;
+	vivid::Vector2 m_Knock_Target_Pos;
+
+
 };

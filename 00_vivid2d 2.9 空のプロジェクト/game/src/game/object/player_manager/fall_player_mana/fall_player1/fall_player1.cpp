@@ -1,10 +1,9 @@
 #include"fall_player1.h"
 #include"../../../minigame_manager/fall_manager/fall.h"
-#include"..\..\..\..\scene_manager\scene\option_character\option.h"
-
 const int CFall_Player1::m_player1_chara_height = 48;
 const int CFall_Player1::m_player1_chara_width = 48;
 const int CFall_Player1::m_player1_chara_move_time = 12;
+const std::string CFall_Player1::m_player1_boy_path = "data\\fall\\character3.png";
 const vivid::Vector2 CFall_Player1::m_player1_tree_size = { 64.0f,128.0f };
 const float CFall_Player1::m_player1_chara_move_speed = (float)CFall::GetInstance().GetMapChipSize() / (float)m_player1_chara_move_time;
 const int CFall_Player1::m_player1_chara_center = 24;
@@ -49,38 +48,67 @@ void CFall_Player1::Initialize()
 	m_Item_ID = ITEM_ID::UNKNOW;
 	m_Pull_Target_Pos = { 0.0f,0.0f };
 	m_Is_Pull_Move = false;
-	m_Player1_Path = "data\\fall\\humanM.png";
-
-
-	//保存したIDの取得
-	CHARACTER_ID player1_id = COption::GetInstance().GetCharacterPlayer1();
-
-	//選択されたキャラIDのキャラデータ変更
-	switch (player1_id)
-	{
-	case CHARACTER_ID::CHARA1:
-		m_Player1_Path = "data\\fall\\humanM.png";
-		break;
-
-	case CHARACTER_ID::CHARA2:
-		m_Player1_Path = "data\\fall\\catM.png";
-		break;
-
-	case CHARACTER_ID::CHARA3:
-		m_Player1_Path = "data\\fall\\bearM.png";
-		break;
-
-	case CHARACTER_ID::CHARA4:
-		m_Player1_Path = "data\\fall\\rabbitM.png";
-		break;
-
-	default:
-		break;
-	}
+	m_Is_Knock_Move = false;
+	m_Knock_Target_Pos = { 0.0f,0.0f };
 }
 
 void CFall_Player1::Update()
 {
+	if (m_Is_Knock_Move)
+	{
+		vivid::Vector2 dir;
+
+		dir.x =
+			m_Knock_Target_Pos.x -
+			m_Player1_Chara_Pos.x;
+
+		dir.y =
+			m_Knock_Target_Pos.y -
+			m_Player1_Chara_Pos.y;
+
+		float len =
+			sqrtf(dir.x * dir.x +
+				dir.y * dir.y);
+
+		const float KNOCK_SPEED = 24.0f;
+
+		if (len <= KNOCK_SPEED)
+		{
+			m_Player1_Chara_Pos =
+				m_Knock_Target_Pos;
+
+			m_Player1_Marker_Pos.x =
+				m_Player1_Chara_Pos.x;
+
+			m_Player1_Marker_Pos.y =
+				m_Player1_Chara_Pos.y -
+				m_player1_marker_size.y;
+
+			m_Is_Knock_Move = false;
+
+			ForceStop();
+		}
+		else
+		{
+			dir.x /= len;
+			dir.y /= len;
+
+			m_Player1_Chara_Pos.x +=
+				dir.x * KNOCK_SPEED;
+
+			m_Player1_Chara_Pos.y +=
+				dir.y * KNOCK_SPEED;
+
+			m_Player1_Marker_Pos.x =
+				m_Player1_Chara_Pos.x;
+
+			m_Player1_Marker_Pos.y =
+				m_Player1_Chara_Pos.y -
+				m_player1_marker_size.y;
+		}
+
+		return;
+	}
 	if (m_Is_Pull_Move)
 	{
 		vivid::Vector2 dir;
@@ -102,6 +130,8 @@ void CFall_Player1::Update()
 			m_Player1_Marker_Pos.y = m_Player1_Chara_Pos.y - m_player1_marker_size.y;
 
 			m_Is_Pull_Move = false;
+
+			CItem_Manager::GetInstance().m_Knock_Back_P1.Check_Hit();
 		}
 		else
 		{
@@ -165,17 +195,18 @@ void CFall_Player1::Draw()
 	m_Player1_Chara_Rect.right = m_Player1_Chara_Rect.left + m_player1_chara_width;
 	m_Player1_Chara_Rect.top = (int)m_Player1_Chara_Dir * m_player1_chara_height;
 	m_Player1_Chara_Rect.bottom = m_Player1_Chara_Rect.top + m_player1_chara_height;
-
 	vivid::DrawTexture(m_player1_marker_path, m_Player1_Marker_Pos);
-	vivid::DrawTexture(m_Player1_Path, m_Player1_Chara_Pos, 0xffffffff, m_Player1_Chara_Rect, m_Player1_Chara_Anchor, m_Player1_Chara_Scale);
+	vivid::DrawTexture(m_player1_boy_path, m_Player1_Chara_Pos, 0xffffffff, m_Player1_Chara_Rect, m_Player1_Chara_Anchor, m_Player1_Chara_Scale);
 	switch (m_Item_ID)
 	{
 	case ITEM_ID::HIGH_JUMP:
 		CItem_Manager::GetInstance().m_High_Jump_P1.DrawAim(*this);
 		CItem_Manager::GetInstance().m_High_Jump_P1.Draw(m_item_pos);
 		break;
-	//case ITEM_ID::KNOCK_BACK:
-		//break;
+	case ITEM_ID::KNOCK_BACK:
+		CItem_Manager::GetInstance().m_Knock_Back_P1.DrawAim(*this);
+		CItem_Manager::GetInstance().m_Knock_Back_P1.Draw(m_item_pos);
+		break;
 	case ITEM_ID::PULL:
 		CItem_Manager::GetInstance().m_Pull_P1.DrawAim(*this);
 		CItem_Manager::GetInstance().m_Pull_P1.Draw(m_item_pos);
@@ -306,6 +337,7 @@ bool CFall_Player1::Hit_Item_Box()
 		{
 			CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM()
 				.erase(CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM().begin() + i);
+
 			m_Player1_Get_Item = true;
 			return true;
 		}
@@ -332,12 +364,11 @@ void CFall_Player1::Item_Lottery()
 	case ITEM_ID::HIGH_JUMP:
 		CItem_Manager::GetInstance().m_High_Jump_P1.Use(*this);
 		break;
-	//case ITEM_ID::KNOCK_BACK:
-
-		//break;
+	case ITEM_ID::KNOCK_BACK:
+		CItem_Manager::GetInstance().m_Knock_Back_P1.Use(*this);
+		break;
 	case ITEM_ID::PULL:
 		CItem_Manager::GetInstance().m_Pull_P1.Use(*this);
-
 		break;
 	case ITEM_ID::UNKNOW:
 		break;
