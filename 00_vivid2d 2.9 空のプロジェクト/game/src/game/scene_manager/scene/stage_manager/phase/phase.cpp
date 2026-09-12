@@ -20,6 +20,11 @@ void CPhase::Initialize()
 {
 	m_Game_State = GAME_STATE::START;
 	m_Start_Timer = m_start_time;
+	vivid::LoadSound("data\\sound\\finish.wav");
+	vivid::LoadSound("data\\sound\\start.wav");
+	vivid::LoadSound("data\\sound\\countdown.wav");
+	m_Old_Count = -1;
+	m_PlayFinishSE = false;
 }
 
 void CPhase::Update()
@@ -46,8 +51,15 @@ void CPhase::Draw()
 {
 	if (m_Game_State == GAME_STATE::FINISH)
 	{
-		if (m_Start_Timer < 0)
-			vivid::DrawTexture("data/logo/finish.png", m_logo_pos, m_color);
+		if (m_Game_State == GAME_STATE::FINISH)
+		{
+			if (!m_PlayFinishSE)
+			{
+				vivid::PlaySound("data\\sound\\finish.wav", false);
+				m_PlayFinishSE = true;
+			}
+		    vivid::DrawTexture("data/logo/finish.png",m_logo_pos,m_color);
+		}
 	}
 
 	if (m_Game_State != GAME_STATE::START)
@@ -57,20 +69,30 @@ void CPhase::Draw()
 
 	if (count > 0)
 	{
+		if (count != m_Old_Count)
+		{
+			vivid::PlaySound("data\\sound\\countdown.wav", false);
+			m_Old_Count = count;
+		}
+
 		vivid::Rect rect;
 		rect.left = count * m_digit_width;
 		rect.right = rect.left + m_digit_width;
 		rect.top = 0;
 		rect.bottom = m_digit_height;
-
 		vivid::DrawTexture("data/logo/number(黒).png", m_number_pos, m_color, rect);
 	}
-	else if (count <= 0)
+	if (count <= 0)
 	{
-		vivid::DrawTexture("data/logo/start.png", m_logo_pos, m_color);
+		if (m_Old_Count != 0)
+		{
+			vivid::PlaySound("data\\sound\\start.wav", false);
+			m_Old_Count = 0;
+		}
+
+      vivid::DrawTexture("data/logo/start.png",m_logo_pos,m_color);
 	}
 }
-
 void CPhase::Finalize()
 {
 }

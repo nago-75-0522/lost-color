@@ -37,8 +37,9 @@ void CStage3::Initialize(void)
 	m_Move_Start_Timer = m_move_start_time;
 	m_Phase.Initialize();
 	m_Added = false;
-
 	m_Race_State = RACE_STATE::PRESENTATION;
+	vivid::LoadSound("data\\sound\\race.wav");
+	vivid::PlaySound("data\\sound\\race.wav", true);
 }
 
 void CStage3::Update(void)
@@ -94,6 +95,7 @@ void CStage3::Draw(void)
 
 void CStage3::Finalize(void)
 {
+	vivid::StopSound("data\\sound\\race.wav");
 }
 
 void CStage3::Presentation(void)

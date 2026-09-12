@@ -61,6 +61,10 @@ void IRace_Player::Initialize()
 	m_isBack_Cnt_Pull = false;
 
 	m_isGoal = false;
+
+	m_Is_Sound = false;
+
+	vivid::LoadSound("data\\sound\\acceleration.wav");
 }
 
 void IRace_Player::Update(void)
@@ -74,6 +78,7 @@ void IRace_Player::Update(void)
 	case 0:
 		if (!m_isPush)
 		{
+			m_Is_Sound = false;
 			m_isUp_Move = false;
 			m_isDown_Move = false;
 		}
@@ -114,6 +119,11 @@ void IRace_Player::Update(void)
 		m_isPush = false;
 		break;
 	case 8:
+		if (m_Is_Sound == false)
+		{
+			m_Is_Sound = true;
+			vivid::PlaySound("data\\sound\\acceleration.wav", false);
+		}
 		m_isAccele = true;
 		break;
 	case 9:

@@ -83,6 +83,8 @@ protected:
 
 	bool m_isGoal; //ゴールしたかどうか
 
+	bool m_Is_Sound;
+
 	PLAYER_CATEGORY m_Category; //1Pか2Pか
 };
 

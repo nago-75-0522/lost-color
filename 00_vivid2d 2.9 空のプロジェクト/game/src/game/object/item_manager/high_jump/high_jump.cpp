@@ -20,52 +20,55 @@ void CHigh_Jump::Initialize()
     m_High_Jump_Timer_1 = 0;
     m_High_Jump_Timer_2 = 0;
     m_Change_Num = { 0.0f,0.0f };
-    m_IsJump_1 = false;
-    m_IsJump_2 = false;
+    m_Is_Jump_1 = false;
+    m_Is_Jump_2 = false;
     m_Old_Trigger_1 = false;
     m_Old_Trigger_2 = false;
-    m_JumpTimer_1 = 0.0f;
-    m_JumpTimer_2 = 0.0f;
+    m_Jump_Timer_1 = 0.0f;
+    m_Jump_Timer_2 = 0.0f;
+    vivid::LoadSound("data\\sound\\high_jump.wav");
+    vivid::LoadSound("data\\sound\\half_jump.wav");
+    vivid::LoadSound("data\\sound\\max_jump.wav");
 }
 
 void CHigh_Jump::Update()
 {// Player1
-    if (m_IsJump_1)
+    if (m_Is_Jump_1)
     {
-        m_JumpTimer_1++;
+        m_Jump_Timer_1++;
 
-        float t = m_JumpTimer_1 / m_JumpTime;
+        float t = m_Jump_Timer_1 / m_JumpTime;
 
         if (t >= 1.0f)
         {
             t = 1.0f;
 
             CFall_Player1::GetInstance().GetCharaPos() =
-                m_JumpTarget_1;
+                m_Jump_Target_1;
 
             CFall_Player1::GetInstance().ForceStop();
 
             int x =
-                (int)((m_JumpTarget_1.x + 24) / 64);
+                (int)((m_Jump_Target_1.x + 24) / 64);
 
             int y =
-                (int)((m_JumpTarget_1.y + 24) / 64);
+                (int)((m_Jump_Target_1.y + 24) / 64);
 
             CFall::GetInstance().ChangeFloor(x, y);
 
-            m_IsJump_1 = false;
+            m_Is_Jump_1 = false;
 
             return;    // ← これを追加
         }
 
         vivid::Vector2 pos;
         pos.x =
-            m_JumpStart_1.x +
-            (m_JumpTarget_1.x - m_JumpStart_1.x) * t;
+            m_Jump_Start_1.x +
+            (m_Jump_Target_1.x - m_Jump_Start_1.x) * t;
 
         pos.y =
-            m_JumpStart_1.y +
-            (m_JumpTarget_1.y - m_JumpStart_1.y) * t;
+            m_Jump_Start_1.y +
+            (m_Jump_Target_1.y - m_Jump_Start_1.y) * t;
 
         pos.y -= 80.0f * 4.0f * t * (1.0f - t);
 
@@ -74,30 +77,30 @@ void CHigh_Jump::Update()
 
     // Player2
 
-    if (m_IsJump_2)
+    if (m_Is_Jump_2)
     {
-        m_JumpTimer_2++;
+        m_Jump_Timer_2++;
 
-        float t = m_JumpTimer_2 / m_JumpTime;
+        float t = m_Jump_Timer_2 / m_JumpTime;
 
         if (t >= 1.0f)
         {
             t = 1.0f;
 
             CFall_Player2::GetInstance().GetCharaPos() =
-                m_JumpTarget_2;
+                m_Jump_Target_2;
 
             CFall_Player2::GetInstance().ForceStop();
 
             int x =
-                (int)((m_JumpTarget_2.x + 24) / 64);
+                (int)((m_Jump_Target_2.x + 24) / 64);
 
             int y =
-                (int)((m_JumpTarget_2.y + 24) / 64);
+                (int)((m_Jump_Target_2.y + 24) / 64);
 
             CFall::GetInstance().ChangeFloor(x, y);
 
-            m_IsJump_2 = false;
+            m_Is_Jump_2 = false;
 
             return;    // ← これを追加
         }
@@ -105,12 +108,12 @@ void CHigh_Jump::Update()
         vivid::Vector2 pos;
 
         pos.x =
-            m_JumpStart_2.x +
-            (m_JumpTarget_2.x - m_JumpStart_2.x) * t;
+            m_Jump_Start_2.x +
+            (m_Jump_Target_2.x - m_Jump_Start_2.x) * t;
 
         pos.y =
-            m_JumpStart_2.y +
-            (m_JumpTarget_2.y - m_JumpStart_2.y) * t;
+            m_Jump_Start_2.y +
+            (m_Jump_Target_2.y - m_Jump_Start_2.y) * t;
 
         pos.y -= 80.0f * 4.0f * t * (1.0f - t);
 
@@ -270,13 +273,13 @@ void CHigh_Jump::Use(CFall_Player1& player)
         return;
     }
 
-    bool nowTrigger = (triger > DEAD_ZONE);
-    bool triggerRelease = (m_Old_Trigger_1 && !nowTrigger);
+    bool now_trigger = (triger > DEAD_ZONE);
+    bool trigger_release = (m_Old_Trigger_1 && !now_trigger);
 
-    m_Old_Trigger_1 = nowTrigger;
+    m_Old_Trigger_1 = now_trigger;
 
     // チャージ
-    if (keyboard::Button(keyboard::KEY_ID::F) || nowTrigger)
+    if (keyboard::Button(keyboard::KEY_ID::F) || now_trigger)
     {
         ++m_High_Jump_Timer_1;
 
@@ -287,17 +290,17 @@ void CHigh_Jump::Use(CFall_Player1& player)
     }
 
     // 発動
-    if (keyboard::Released(keyboard::KEY_ID::F) || triggerRelease)
+    if (keyboard::Released(keyboard::KEY_ID::F) || trigger_release)
     {
-        int jumpCount = 2;
+        int jump_count = 2;
 
         if (m_High_Jump_Timer_1 >= m_max_high_jump_charge)
         {
-            jumpCount = 4;
+            jump_count = 4;
         }
         else if (m_High_Jump_Timer_1 >= m_half_high_jump_charge)
         {
-            jumpCount = 3;
+            jump_count = 3;
         }
 
         int nowX =
@@ -309,7 +312,7 @@ void CHigh_Jump::Use(CFall_Player1& player)
         int targetX = nowX;
         int targetY = nowY;
 
-        for (int i = 1; i <= jumpCount; i++)
+        for (int i = 1; i <= jump_count; i++)
         {
             int checkX = nowX;
             int checkY = nowY;
@@ -350,15 +353,26 @@ void CHigh_Jump::Use(CFall_Player1& player)
 
         if (targetX != nowX || targetY != nowY)
         {
-            m_IsJump_1 = true;
-            m_JumpTimer_1 = 0.0f;
-
-            m_JumpStart_1 = player.GetCharaPos();
+            m_Is_Jump_1 = true;
+            m_Jump_Timer_1 = 0.0f;
+            m_Jump_Start_1 = player.GetCharaPos();
             CFall_Player1::GetInstance().ForceStop();
-
+            
+                if (jump_count == 2)
+                {
+                    vivid::PlaySound("data\\sound\\high_jump.wav", false);
+                }
+                else if (jump_count == 4)
+                {
+                    vivid::PlaySound("data\\sound\\max_jump.wav", false);
+                }
+                else if (jump_count == 3)
+                {
+                    vivid::PlaySound("data\\sound\\half_jump.wav", false);
+                }
             // プレイヤーを中央へ
-            m_JumpTarget_1.x = targetX * m_chip_size + 8.0f;
-            m_JumpTarget_1.y = targetY * m_chip_size + 8.0f;
+            m_Jump_Target_1.x = targetX * m_chip_size + 8.0f;
+            m_Jump_Target_1.y = targetY * m_chip_size + 8.0f;
 
             player.GetItemID() = ITEM_ID::UNKNOW;
         }
@@ -384,13 +398,13 @@ void CHigh_Jump::Use(CFall_Player2& player)
         return;
     }
 
-    bool nowTrigger = (triger > DEAD_ZONE);
-    bool triggerRelease = (m_Old_Trigger_2 && !nowTrigger);
+    bool now_trigger = (triger > DEAD_ZONE);
+    bool trigger_release = (m_Old_Trigger_2 && !now_trigger);
 
-    m_Old_Trigger_2 = nowTrigger;
+    m_Old_Trigger_2 = now_trigger;
 
     // チャージ
-    if (keyboard::Button(keyboard::KEY_ID::L) || nowTrigger)
+    if (keyboard::Button(keyboard::KEY_ID::L) || now_trigger)
     {
         ++m_High_Jump_Timer_2;
 
@@ -401,17 +415,17 @@ void CHigh_Jump::Use(CFall_Player2& player)
     }
 
     // 発動
-    if (keyboard::Released(keyboard::KEY_ID::L) || triggerRelease)
+    if (keyboard::Released(keyboard::KEY_ID::L) || trigger_release)
     {
-        int jumpCount = 2;
+        int jump_count = 2;
 
         if (m_High_Jump_Timer_2 >= m_max_high_jump_charge)
         {
-            jumpCount = 4;
+            jump_count = 4;
         }
         else if (m_High_Jump_Timer_2 >= m_half_high_jump_charge)
         {
-            jumpCount = 3;
+            jump_count = 3;
         }
 
         int nowX =
@@ -423,7 +437,7 @@ void CHigh_Jump::Use(CFall_Player2& player)
         int targetX = nowX;
         int targetY = nowY;
 
-        for (int i = 1; i <= jumpCount; i++)
+        for (int i = 1; i <= jump_count; i++)
         {
             int checkX = nowX;
             int checkY = nowY;
@@ -464,15 +478,26 @@ void CHigh_Jump::Use(CFall_Player2& player)
 
         if (targetX != nowX || targetY != nowY)
         {
-            m_IsJump_2 = true;
-            m_JumpTimer_2 = 0.0f;
-            m_JumpStart_2 = player.GetCharaPos();
+            m_Is_Jump_2 = true;
+            m_Jump_Timer_2 = 0.0f;
+            m_Jump_Start_2 = player.GetCharaPos();
 
             CFall_Player2::GetInstance().ForceStop();
-
+            if (jump_count == 2)
+            {
+                vivid::PlaySound("data\\sound\\high_jump.wav", false);
+            }
+            else if (jump_count == 4)
+            {
+                vivid::PlaySound("data\\sound\\max_jump.wav", false);
+            }
+            else if (jump_count == 3)
+            {
+                vivid::PlaySound("data\\sound\\half_jump.wav", false);
+            }
             // プレイヤーを中央に
-            m_JumpTarget_2.x = targetX * m_chip_size + 8.0f;
-            m_JumpTarget_2.y = targetY * m_chip_size + 8.0f;
+            m_Jump_Target_2.x = targetX * m_chip_size + 8.0f;
+            m_Jump_Target_2.y = targetY * m_chip_size + 8.0f;
 
             player.GetItemID() = ITEM_ID::UNKNOW;
         }

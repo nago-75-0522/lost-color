@@ -15,6 +15,7 @@ void CPull::Initialize()
     m_Charge_Timer = 0;
     m_Pull_Range_1 = 0;
     m_Pull_Range_2 = 0;
+    vivid::LoadSound("data\\sound\\wind.wav");
 }
 
 void CPull::Update()
@@ -257,6 +258,8 @@ void CPull::Use(CFall_Player1& player)
                 enemy.GetPullTargetPos().y =
                     targety * m_map_chip_size + 8.0f;
 
+                vivid::PlaySound("data\\sound\\wind.wav", false);
+
 
                 player.GetItemID() = ITEM_ID::UNKNOW;
             }
@@ -358,6 +361,8 @@ void CPull::Use(CFall_Player2& player)
 
                 enemy.GetPullTargetPos().y =
                     targety * m_map_chip_size + 8.0f;
+
+                vivid::PlaySound("data\\sound\\wind.wav", false);
 
                 player.GetItemID() = ITEM_ID::UNKNOW;
             }

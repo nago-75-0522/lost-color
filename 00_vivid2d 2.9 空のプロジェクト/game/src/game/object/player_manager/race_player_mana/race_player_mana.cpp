@@ -223,7 +223,6 @@ void CRace_Player_Manager::isWhichAccele(void)
 		else if (p2.GetBackCount() == 0)
 		{
 			//** 該当プレイヤーは1p **//
-
 			p1.SetBackOK(true); //該当のものを下がらせる対象に
 			judge_category = p1.GetPlayerCategory(); //1p
 

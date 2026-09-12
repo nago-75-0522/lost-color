@@ -26,6 +26,8 @@ void CGame_Result::Initialize()
 	m_Player1_Score_Pos = { 200,300 };
 	m_Player2_Score_Pos = {680,300};
 	m_ScoreAdded = false;
+	vivid::LoadSound("data\\sound\\gamerisult.wav");
+	vivid::PlaySound("data\\sound\\gamerisult.wav", true);
 }
 
 void CGame_Result::Update()
@@ -216,6 +218,7 @@ void CGame_Result::Finalize()
 	CFall_Player_Manager::GetInstance().Initialize();
 	CStage2::GetInstance().gameRisIni();
 	CRace_Player_Manager::GetInstance().Initialize();
+	vivid::StopSound("data\\sound\\gamerisult.wav");
 }
 
 void CGame_Result::IniScore()

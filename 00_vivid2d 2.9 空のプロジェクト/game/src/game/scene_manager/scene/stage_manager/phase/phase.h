@@ -29,6 +29,7 @@ private:
 	static const int m_digit_height;
 	static const int m_max_digit;
 	int m_Start_Timer;
-
+	int m_Old_Count;
+	bool m_PlayFinishSE;
 	GAME_STATE m_Game_State;
 };

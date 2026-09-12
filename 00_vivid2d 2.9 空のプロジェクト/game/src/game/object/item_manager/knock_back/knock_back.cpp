@@ -28,13 +28,19 @@ void CKnock_Back::Initialize()
         banana.m_Owner = 0;
         banana.m_LeftOwnerTile = false;
         banana.m_Color = m_color;
+        banana.m_IsFlying = false;
+        banana.m_FlyT = 0.0f;
+        banana.m_StartPos = { 0.0f,0.0f };
+        banana.m_TargetPos = { 0.0f,0.0f };
     }
     m_Charge_Timer = 0;
     m_Knock_Back_Pos_1 = { 0.0f,0.0f };
     m_Knock_Back_Pos_2 = { 0.0f,0.0f };
     m_Knock_Back_State = KNOCK_BACK_STATE::ON;
     m_Blinking_Timer = m_blinking_time;
-
+    vivid::LoadSound("data\\sound\\max_jump.wav");
+    vivid::LoadSound("data\\sound\\slip.wav");
+    vivid::LoadSound("data\\sound\\put.wav");
 }
 
 void CKnock_Back::Update()
@@ -44,31 +50,58 @@ void CKnock_Back::Update()
         KNOCK_BACK& banana = m_Knock_Back[i]; //参照型に置き換え
         if (banana.m_Active_Flag == true)
         {
+            // 飛行中
+            if (banana.m_IsFlying)
+            {
+                banana.m_FlyT += 0.08f;
+
+                if (banana.m_FlyT >= 1.0f)
+                {
+                    banana.m_FlyT = 1.0f;
+                    banana.m_IsFlying = false;
+                }
+
+                float t = banana.m_FlyT;
+
+                banana.m_Knock_Back_Pos.x =
+                    banana.m_StartPos.x +
+                    (banana.m_TargetPos.x - banana.m_StartPos.x) * t;
+
+                banana.m_Knock_Back_Pos.y =
+                    banana.m_StartPos.y +
+                    (banana.m_TargetPos.y - banana.m_StartPos.y) * t;
+
+                continue;
+            }
+
             --banana.m_Duration;
+
             if (banana.m_Duration < 3 * 60)
             {
                 switch (m_Knock_Back_State)
                 {
                 case CKnock_Back::KNOCK_BACK_STATE::ON:
                     banana.m_Color = m_color;
+
                     if (--m_Blinking_Timer <= 0)
                     {
                         m_Blinking_Timer = m_blinking_time;
                         m_Knock_Back_State = KNOCK_BACK_STATE::OFF;
                     }
                     break;
+
                 case CKnock_Back::KNOCK_BACK_STATE::OFF:
                     banana.m_Color = m_invisible_color;
+
                     if (--m_Blinking_Timer <= 0)
                     {
                         m_Blinking_Timer = m_blinking_time;
                         m_Knock_Back_State = KNOCK_BACK_STATE::ON;
                     }
                     break;
-                default:
-                    break;
                 }
             }
+
             if (banana.m_Duration <= 0)
             {
                 banana.m_Duration = m_duration_time;
@@ -91,7 +124,19 @@ void CKnock_Back::Draw()
         }
 
 
-        vivid::DrawTexture("data\\fall\\knock_back.png", banana.m_Knock_Back_Pos, banana.m_Color);
+        vivid::Vector2 drawPos = banana.m_Knock_Back_Pos;
+
+        if (banana.m_IsFlying)
+        {
+            float t = banana.m_FlyT;
+
+            float height =
+                sinf(t * 3.141592f) * 80.0f;
+
+            drawPos.y -= height;
+        }
+
+        vivid::DrawTexture("data\\fall\\knock_back.png",drawPos,banana.m_Color);
     }
 }
 
@@ -331,12 +376,27 @@ void CKnock_Back::Use(CFall_Player1& player)
             if (!banana.m_Active_Flag)
             {
                 banana.m_Active_Flag = true;
+                banana.m_StartPos = player.GetCharaPos();
 
-                banana.m_Knock_Back_Pos =
+                banana.m_TargetPos =
                 {
                     m_Knock_Back_Pos_1.x * m_chip_size + 8.0f,
                     m_Knock_Back_Pos_1.y * m_chip_size + 8.0f
                 };
+
+                if (range == 0)
+                {
+                    banana.m_Knock_Back_Pos = banana.m_TargetPos;
+                    banana.m_IsFlying = false;
+                    banana.m_FlyT = 1.0f;
+                }
+                else
+                {
+                    banana.m_Knock_Back_Pos = banana.m_StartPos;
+                    banana.m_IsFlying = true;
+                    banana.m_FlyT = 0.0f;
+                }
+               
                 banana.m_Duration = m_duration_time;
 
                 banana.m_Owner = 1;
@@ -344,6 +404,10 @@ void CKnock_Back::Use(CFall_Player1& player)
                 banana.m_Color = m_color;
                 m_Knock_Back_State = KNOCK_BACK_STATE::ON;
                 m_Blinking_Timer = m_blinking_time;
+                if (range == 0)
+                    vivid::PlaySound("data\\sound\\put.wav", false);
+                else if(range>=2)
+                vivid::PlaySound("data\\sound\\max_jump.wav", false);
                 player.GetItemID() = ITEM_ID::UNKNOW;
 
                 break;
@@ -442,13 +506,27 @@ void CKnock_Back::Use(CFall_Player2& player)
             if (!banana.m_Active_Flag)
             {
                 banana.m_Active_Flag = true;
+                banana.m_StartPos = player.GetCharaPos();
 
-                banana.m_Knock_Back_Pos =
+                banana.m_TargetPos =
                 {
                     m_Knock_Back_Pos_2.x * m_chip_size + 8.0f,
                     m_Knock_Back_Pos_2.y * m_chip_size + 8.0f
                 };
 
+                if (range == 0)
+                {
+                    banana.m_Knock_Back_Pos = banana.m_TargetPos;
+                    banana.m_IsFlying = false;
+                    banana.m_FlyT = 1.0f;
+                }
+                else
+                {
+                    banana.m_Knock_Back_Pos = banana.m_StartPos;
+                    banana.m_IsFlying = true;
+                    banana.m_FlyT = 0.0f;
+                }
+                
                 banana.m_Duration = m_duration_time;
 
                 banana.m_Owner = 2;
@@ -457,6 +535,11 @@ void CKnock_Back::Use(CFall_Player2& player)
 
                 m_Knock_Back_State = KNOCK_BACK_STATE::ON;
                 m_Blinking_Timer = m_blinking_time;
+
+                if(range==0)
+                    vivid::PlaySound("data\\sound\\put.wav", false);
+                else if (range >= 2)
+                    vivid::PlaySound("data\\sound\\max_jump.wav", false);
 
                 player.GetItemID() = ITEM_ID::UNKNOW;
 
@@ -494,11 +577,11 @@ void CKnock_Back::Check_Hit()
             (int)((CFall_Player2::GetInstance().GetCharaPos().y + 24)
                 / m_chip_size);
 
-        if (!banana.m_Active_Flag)
+        if (!banana.m_Active_Flag|| banana.m_IsFlying)
         {
             continue;
         }
-
+        
         if (banana.m_Owner == 1)
         {
             if (!(bx == p1x && by == p1y))
@@ -525,6 +608,8 @@ void CKnock_Back::Check_Hit()
             {
                 continue;
             }
+
+            vivid::PlaySound("data\\sound\\slip.wav", false);
 
             CFall_Player1& player =
                 CFall_Player1::GetInstance();
@@ -590,11 +675,15 @@ void CKnock_Back::Check_Hit()
         }
         if (!CFall_Player2::GetInstance().GetIsPullMove() && bx == p2x && by == p2y)
         {
+
             if (banana.m_Owner == 2 &&
                 !banana.m_LeftOwnerTile)
             {
                 continue;
             }
+
+            vivid::PlaySound("data\\sound\\slip.wav", false);
+
             CFall_Player2& player =
                 CFall_Player2::GetInstance();
 

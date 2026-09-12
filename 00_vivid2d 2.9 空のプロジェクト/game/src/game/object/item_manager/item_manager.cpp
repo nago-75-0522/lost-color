@@ -10,6 +10,10 @@ void CItem_Manager::Initialize()
 	m_Item_Box.Initialize();
 	m_Knock_Back_P1.Initialize();
 	m_Knock_Back_P2.Initialize();
+	m_High_Jump_P1.Initialize();
+	m_High_Jump_P2.Initialize();
+	m_Pull_P1.Initialize();
+	m_Pull_P2.Initialize();
 }
 
 void CItem_Manager::Update()

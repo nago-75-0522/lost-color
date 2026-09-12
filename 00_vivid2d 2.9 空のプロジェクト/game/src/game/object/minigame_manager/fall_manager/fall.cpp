@@ -106,8 +106,8 @@ void CFall::Initialize()
 void CFall::Update()
 {
 	CItem_Manager::GetInstance().Update();
-
-
+	
+#if 0
 	if (m_Old_Cyan)
 		m_Old_Cyan = CColor_Select::GetInstance().GetCyan();
 	if (m_Old_Yellow)
@@ -156,7 +156,7 @@ void CFall::Update()
 			m_Old_Y[i] = y[i];
 		}
 	}
-
+#endif
 }
 
 //描画

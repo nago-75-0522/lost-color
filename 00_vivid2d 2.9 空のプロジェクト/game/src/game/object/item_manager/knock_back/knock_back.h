@@ -33,6 +33,10 @@ private:
 		int m_Owner; // 1=P1 2=P2
 		bool m_LeftOwnerTile;
 		unsigned int m_Color;
+		bool m_IsFlying;
+		vivid::Vector2 m_StartPos;
+		vivid::Vector2 m_TargetPos;
+		float m_FlyT;
 	};
 
 	enum class KNOCK_BACK_STATE
