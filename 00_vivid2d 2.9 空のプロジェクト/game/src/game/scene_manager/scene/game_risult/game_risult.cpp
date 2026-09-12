@@ -214,7 +214,7 @@ void CGame_Result::Finalize()
 {
 	CPlayer_Manager::GetInstance().Initialize();
 	CFall_Player_Manager::GetInstance().Initialize();
-	CStage2::GetInstance().Initialize();
+	CStage2::GetInstance().gameRisIni();
 	CRace_Player_Manager::GetInstance().Initialize();
 }
 

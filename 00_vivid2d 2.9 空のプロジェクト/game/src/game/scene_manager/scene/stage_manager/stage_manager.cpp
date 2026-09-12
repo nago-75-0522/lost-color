@@ -33,11 +33,9 @@ void CStageManager::Initialize()
 		CStage1::GetInstance().Initialize();
 		break;
 
-
 	case STAGE_ID::STAGE2:
 		CStage2::GetInstance().Initialize();
 		break;
-
 
 	case STAGE_ID::STAGE3:
 		CStage3::GetInstance().Initialize();

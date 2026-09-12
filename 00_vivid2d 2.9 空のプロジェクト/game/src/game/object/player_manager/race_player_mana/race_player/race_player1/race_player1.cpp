@@ -34,7 +34,6 @@ void CRace_Player1::Update(void)
 				m_isPush = true;
 				m_isUp_Move = true;
 			}
-
 		}
 
 		if (keyboard::Trigger(keyboard::KEY_ID::S) || stick.y > DEAD_ZONE ||
@@ -46,7 +45,6 @@ void CRace_Player1::Update(void)
 				m_isPush = true;
 				m_isDown_Move = true;
 			}
-
 		}
 	}
 
@@ -55,7 +53,7 @@ void CRace_Player1::Update(void)
 
 void CRace_Player1::Draw()
 {
-	m_Draw_Pos.x = m_Camera_Copy_Pos.x + vivid::WINDOW_WIDTH / 2 - m_size / 2 + m_Move_Pos.x;
+	m_Draw_Pos.x = vivid::WINDOW_WIDTH / 2 - m_size / 2 + m_Move_Pos.x;
 	m_Draw_Pos.y = m_Camera_Copy_Pos.y + vivid::WINDOW_HEIGHT / 2 - m_size + m_Move_Pos.y;
 
 	vivid::DrawTexture("data\\logo\\small_pink_1p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });

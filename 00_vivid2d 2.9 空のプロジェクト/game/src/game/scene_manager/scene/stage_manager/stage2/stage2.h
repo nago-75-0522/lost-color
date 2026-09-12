@@ -17,9 +17,11 @@ public:
 	//インスタンス呼び出す
 	static CStage2& GetInstance();
 
+
 	bool GetWinner();
 	bool GetDraw();
 	void RisultIni();
+	void gameRisIni();
 private:
 	CStage2(void);
 	//コピーコンストラクタ

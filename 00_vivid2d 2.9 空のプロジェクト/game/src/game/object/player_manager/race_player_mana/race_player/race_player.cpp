@@ -3,13 +3,13 @@
 #include"../../../minigame_manager/race/race_manager/map/map.h"
 #include"../../../minigame_manager/race/race_manager/race_manager.h"
 
-const vivid::Vector2 IRace_Player::m_speed = { 8.0f,8.0f };
+const vivid::Vector2 IRace_Player::m_speed = { 12.0f,12.0f };
 const int IRace_Player::m_size = 64;
 const float IRace_Player::m_move_time = 120.f / m_speed.y;
 const int IRace_Player::m_back_time = 1 * 60; //1秒
 
 IRace_Player::IRace_Player(PLAYER_CATEGORY category)
-	: m_Player_Pos(0.0f, 0.0f)
+	: m_Player_Pos(461 * m_size - vivid::WINDOW_WIDTH / 2, vivid::WINDOW_HEIGHT / 2)
 	, m_Draw_Pos(0.0f, 0.0f)
 	, m_Move_Pos(0.0f, 0.0f)
 	, m_Velocity(0.0f, 0.0f)
@@ -36,7 +36,7 @@ IRace_Player::IRace_Player(PLAYER_CATEGORY category)
 
 void IRace_Player::Initialize()
 {
-	m_Player_Pos = { 0.0f,0.0f };
+	m_Player_Pos = { 461 * m_size - vivid::WINDOW_WIDTH / 2,vivid::WINDOW_HEIGHT / 2 };
 	m_Draw_Pos = { 0.0f,0.0f };
 	m_Move_Pos = { 0.0f,0.0f };
 	m_Velocity.x = m_speed.x;
@@ -138,7 +138,6 @@ void IRace_Player::Update(void)
 			{
 				m_Move_Pos.y -= m_Velocity.y;
 			}
-
 		}
 		else if (m_isDown_Move)
 		{
@@ -154,7 +153,7 @@ void IRace_Player::Update(void)
 		m_isDown_Lane = m_isDown_Move;
 	}
 
-	if (m_Move_Timer < 0)
+	if (m_Move_Timer < 0 || m_Now_Num_Map == 14)
 	{
 		//リセット
 		m_Move_Timer = m_move_time;
@@ -162,7 +161,6 @@ void IRace_Player::Update(void)
 		m_isUp_Move = false;
 		m_isDown_Move = false;
 		m_Velocity.y = 0.f;
-
 	}
 }
 
@@ -178,7 +176,6 @@ bool IRace_Player::isOffscreen(void)
 
 	return false;
 }
-
 
 //後ろに下がるときに入れる用、もしくは元の場所に戻す用
 void IRace_Player::SetMovePosX(float x)

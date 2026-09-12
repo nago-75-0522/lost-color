@@ -1,4 +1,5 @@
 #include"camera.h"
+#include"../../../../player_manager/race_player_mana/race_player_mana.h"
 
 #if 0
 //必要ない
@@ -22,7 +23,9 @@ CCamera& CCamera::operator=(const CCamera& rhs)
 
 void CCamera::Initialize()
 {
-	m_Camera_Pos = { 0.0f,0.0f };
+	CRace_Player_Manager& pm = CRace_Player_Manager::GetInstance();
+
+	m_Camera_Pos = { pm.GetPosition().x - vivid::WINDOW_WIDTH / 2,0.f };
 }
 
 void CCamera::Finalzie()

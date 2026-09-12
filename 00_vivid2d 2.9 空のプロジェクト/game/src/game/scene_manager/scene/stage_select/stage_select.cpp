@@ -208,7 +208,6 @@ void CStage_Select::StagePic(void)
 		switch (m_Now_Select)
 		{
 		case STAGE_ID::STAGE1:
-
 			CStage_Select::SetSelectStage(STAGE_ID::STAGE1);
 			vivid::StopSound("data\\sound\\title_bgm.mp3");
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
@@ -224,6 +223,7 @@ void CStage_Select::StagePic(void)
 			
 		case STAGE_ID::STAGE3:
 			CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
+			vivid::StopSound("data\\sound\\title_bgm.mp3");
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			break;
 		
@@ -260,6 +260,8 @@ void CStage_Select::StagePic(void)
 	
 			case STAGE_ID::STAGE3:
 				CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 				break;
 			

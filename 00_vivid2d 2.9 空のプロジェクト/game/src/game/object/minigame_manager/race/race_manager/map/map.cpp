@@ -2,8 +2,8 @@
 #include"../camera/camera.h"
 #include"../../../../player_manager/race_player_mana/race_player_mana.h"
 
-const int CMap::m_map_width = 187;// 1280 / 64 * 2 (マップの横マスの数）
-const int CMap::m_map_height = 12;// 720 / 64
+const int CMap::m_map_width = 461;// 1280 / 64 * 2 (マップの横マスの数）
+const int CMap::m_map_height = 13;// 720 / 64
 const int CMap::m_size = 64; //タイルサイズ
 const vivid::Vector2 CMap::m_distance = { m_map_width * m_size - vivid::WINDOW_WIDTH, 0.0f };
 
@@ -89,16 +89,32 @@ void CMap::Update(void)
 	CCamera& camera = CCamera::GetInstance();
 
 	//カメラの場所を決める
-	camera.SetCameraPos(pm.GetPosition());
+	camera.SetCameraPos(vivid::Vector2{ pm.GetPosition().x - vivid::WINDOW_WIDTH / 2 ,pm.GetPosition().y - vivid::WINDOW_HEIGHT / 2 });
+
+	int startX = (int)(camera.GetCameraPos().x / m_size) - 1;
+	int startY = (int)(camera.GetCameraPos().y / m_size) - 1;
+
+	int endX = startX + vivid::WINDOW_WIDTH / m_size + 2;
+	int endY = startY + vivid::WINDOW_HEIGHT / m_size + 2;
 
 	//全部見る
-	for (int y = 0; y < m_map_height; y++)
+	for (int y = startY; y < endY; y++)
 	{
-		for (int x = 0; x < m_map_width; x++)
+		if (y < 0 || y >= m_map_height)
 		{
+			continue;
+		}
+
+		for (int x = startX; x < endX; x++)
+		{
+			if (x < 0 || x >= m_map_width)
+			{
+				continue;
+			}
+
 			vivid::Vector2 pos;
 
-			pos.x = x * m_size - camera.GetCameraPos().x - m_distance.x;
+			pos.x = x * m_size - camera.GetCameraPos().x;
 			pos.y = y * m_size - camera.GetCameraPos().y;
 
 			float camera_posX = camera.GetCameraPos().x;
@@ -117,13 +133,6 @@ void CMap::Update(void)
 					else
 						m_Up_Num = 5;
 				}
-
-				//一番左のマスだったら
-				if (x == 0)
-				{
-					//スピードをゼロにする（背景移動を止める）
-					pm.SetSpeed(0.f);
-				}
 			}
 		}
 	}
@@ -134,15 +143,35 @@ void CMap::Update(void)
 void CMap::Draw(void)
 {
 	CCamera& camera = CCamera::GetInstance();
+	CRace_Player_Manager& pm = CRace_Player_Manager::GetInstance();
 
-	for (int y = 0; y < m_map_height; y++)
+	int startX = (int)(camera.GetCameraPos().x / m_size) - 1;
+	int startY = (int)(camera.GetCameraPos().y / m_size) - 1;
+
+	vivid::Vector2 pos = camera.GetCameraPos();
+
+	int endX = startX + vivid::WINDOW_WIDTH / m_size + 2;
+	int endY = startY + vivid::WINDOW_HEIGHT / m_size + 2; //描画範囲
+
+	//全部見る
+	for (int y = startY; y < endY; y++)
 	{
-		for (int x = 0; x < m_map_width; x++)
+		if (y < 0 || y >= m_map_height)
 		{
+			continue;
+		}
+
+		for (int x = startX; x < endX; x++)
+		{
+			if (x < 0 || x >= m_map_width)
+			{
+				continue;
+			}
+
 			vivid::Vector2 pos;
 
 			//背景描画する場所決め
-			pos.x = x * m_size - camera.GetCameraPos().x - m_distance.x;//これにより表示される初期位置が変わる
+			pos.x = x * m_size - camera.GetCameraPos().x;
 			pos.y = y * m_size - camera.GetCameraPos().y;
 
 			vivid::Rect rect;
@@ -229,8 +258,8 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 	if (pm.GetDrawPosition(PLAYER_CATEGORY::PLAYER1).y == CENTER_P1)
 	{
 		//実験用
-		bool xOK1 = (int)pos.x + m_Player1_Num >= player1_pos_x - 8; //8の誤差
-		bool xOK2 = (int)pos.x + m_Player1_Num <= player1_pos_x + 8;
+		bool xOK1 = (int)pos.x + m_Player1_Num >= player1_pos_x - 12; //8の誤差
+		bool xOK2 = (int)pos.x + m_Player1_Num <= player1_pos_x + 12;
 		bool yOK1 = pos.y > 256.f;
 		bool yOK2 = pos.y < 448.f;
 
@@ -246,8 +275,8 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 	else if (pm.GetDrawPosition(PLAYER_CATEGORY::PLAYER1).y == UP_P1)
 	{
 		//実験用
-		bool xOK1 = (int)pos.x + m_Player1_Num >= player1_pos_x - 8;
-		bool xOK2 = (int)pos.x + m_Player1_Num <= player1_pos_x + 8;
+		bool xOK1 = (int)pos.x + m_Player1_Num >= player1_pos_x - 12;
+		bool xOK2 = (int)pos.x + m_Player1_Num <= player1_pos_x + 12;
 		bool yOK1 = pos.y > 128.f;
 		bool yOK2 = pos.y < 320.f;
 
@@ -263,8 +292,8 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 	else if (pm.GetDrawPosition(PLAYER_CATEGORY::PLAYER1).y == DOWN_P1)
 	{
 		//実験用
-		bool xOK1 = (int)pos.x + m_Player1_Num >= player1_pos_x - 8;
-		bool xOK2 = (int)pos.x + m_Player1_Num <= player1_pos_x + 8;
+		bool xOK1 = (int)pos.x + m_Player1_Num >= player1_pos_x - 12;
+		bool xOK2 = (int)pos.x + m_Player1_Num <= player1_pos_x + 12;
 		bool yOK1 = pos.y > 384.f;
 		bool yOK2 = pos.y < 576.f;
 
@@ -290,8 +319,8 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 	if (pm.GetDrawPosition(PLAYER_CATEGORY::PLAYER2).y == CENTER_P2)
 	{
 		//実験用
-		bool xOK1 = (int)pos.x + m_Player2_Num >= player2_pos_x - 8;
-		bool xOK2 = (int)pos.x + m_Player2_Num <= player2_pos_x + 8;
+		bool xOK1 = (int)pos.x + m_Player2_Num >= player2_pos_x - 12;
+		bool xOK2 = (int)pos.x + m_Player2_Num <= player2_pos_x + 12;
 		bool yOK1 = pos.y > 256.f;
 		bool yOK2 = pos.y < 448.f;
 
@@ -308,8 +337,8 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 	else if (pm.GetDrawPosition(PLAYER_CATEGORY::PLAYER2).y == UP_P2)
 	{
 		//実験用
-		bool xOK1 = (int)pos.x + m_Player2_Num >= player2_pos_x - 8;
-		bool xOK2 = (int)pos.x + m_Player2_Num <= player2_pos_x + 8;
+		bool xOK1 = (int)pos.x + m_Player2_Num >= player2_pos_x - 12;
+		bool xOK2 = (int)pos.x + m_Player2_Num <= player2_pos_x + 12;
 		bool yOK1 = pos.y > 128.f;
 		bool yOK2 = pos.y < 320.f;
 
@@ -325,8 +354,8 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 	else if (pm.GetDrawPosition(PLAYER_CATEGORY::PLAYER2).y == DOWN_P2)
 	{
 		//実験用
-		bool xOK1 = (int)pos.x + m_Player2_Num >= player2_pos_x - 8;
-		bool xOK2 = (int)pos.x + m_Player2_Num <= player2_pos_x + 8;
+		bool xOK1 = (int)pos.x + m_Player2_Num >= player2_pos_x - 12;
+		bool xOK2 = (int)pos.x + m_Player2_Num <= player2_pos_x + 12;
 		bool yOK1 = pos.y > 384.f;
 		bool yOK2 = pos.y < 576.f;
 

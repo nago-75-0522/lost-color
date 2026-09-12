@@ -26,7 +26,7 @@ void CRace_Player2::Update(void)
 
 	if (m_Now_Num_Map == 0)
 	{
-		if (keyboard::Button(keyboard::KEY_ID::UP) || stick.y < -DEAD_ZONE ||
+		if (keyboard::Trigger(keyboard::KEY_ID::UP) || stick.y < -DEAD_ZONE ||
 			controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::UP))
 		{
 			//キーが押されてなかったら押した判定にする
@@ -38,7 +38,7 @@ void CRace_Player2::Update(void)
 			}
 		}
 
-		if (keyboard::Button(keyboard::KEY_ID::DOWN) || stick.y > DEAD_ZONE ||
+		if (keyboard::Trigger(keyboard::KEY_ID::DOWN) || stick.y > DEAD_ZONE ||
 			controller::Button(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::DOWN))
 		{
 			//キーが押されてなかったら押した判定にする
@@ -51,12 +51,11 @@ void CRace_Player2::Update(void)
 	}
 
 	IRace_Player::Update();
-
 }
 
 void CRace_Player2::Draw()
 {
-	m_Draw_Pos.x = m_Camera_Copy_Pos.x + vivid::WINDOW_WIDTH / 2 - m_size / 2 + m_Move_Pos.x;
+	m_Draw_Pos.x = vivid::WINDOW_WIDTH / 2 - m_size / 2 + m_Move_Pos.x;
 	m_Draw_Pos.y = m_Camera_Copy_Pos.y + vivid::WINDOW_HEIGHT / 2 + m_Move_Pos.y;
 
 	vivid::DrawTexture("data\\logo\\small_blue_2p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });

@@ -152,7 +152,6 @@ void CRace_Player_Manager::isWhichAccele(void)
 		if (p1.GetBackCount() >= 1)
 		{
 			//** 該当プレイヤーは1p **//
-
 			//前に進むようにする
 			back_pos *= -1; //プラス→マイナス
 			judge_category = p1.GetPlayerCategory(); //1p
@@ -251,7 +250,6 @@ void CRace_Player_Manager::isWhichAccele(void)
 
 	//判定の位置調整用の数字セット（後ろに行くとき、前に行くとき両方使う）
 	map.SetNum(m_Distance_Num, judge_category);
-
 }
 
 
@@ -263,7 +261,7 @@ CRace_Player_Manager& CRace_Player_Manager::GetInstance()
 }
 
 CRace_Player_Manager::CRace_Player_Manager()
-	:m_Distance_Num(0)
+	: m_Distance_Num(0)
 	, m_isAdd_Num(false)
 	, m_isWinnerNum(0)
 	, m_isFinish(false)

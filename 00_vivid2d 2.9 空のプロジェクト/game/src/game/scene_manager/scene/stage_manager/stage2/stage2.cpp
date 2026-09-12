@@ -165,3 +165,18 @@ void CStage2::RisultIni()
 	m_Winner=false;
 	m_Draw = false;
 }
+
+void CStage2::gameRisIni()
+{
+	CMinigame_Manager::GetInstance().SetGame(MINIGAME_ID::BALL);
+	m_State = STAGE2_STATE::MAIN;
+	m_ResultTimer = 0;
+	m_Winner = false;
+	m_Draw = false;
+	m_ball_timer.Initialize();
+	CMinigame_Manager::GetInstance().Initialize();
+	CPlayer_Manager::GetInstance().Initialize();
+
+	m_Phase.Initialize();
+
+}
