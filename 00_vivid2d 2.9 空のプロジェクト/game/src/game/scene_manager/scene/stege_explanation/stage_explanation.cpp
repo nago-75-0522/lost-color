@@ -51,7 +51,7 @@ void CStage_Explanation::Initialize(void)
 
 	case STAGE_ID::STAGE3:
 		m_glaph_handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
-		m_explanation_path = "data\\explanation\\stage1ex.png";		//画像の読み込み
+		m_explanation_path = "data\\explanation\\仮stage3ex.png";		//画像の読み込み
 		PlayMovieToGraph(m_glaph_handle);							//動画再生
 		break;
 

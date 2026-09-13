@@ -69,6 +69,8 @@ public:
 	CHARACTER_ID m_Player2_Select;
 
 
+
+
 private:
 	//コンストラクタ・デストラクタ
 	COption(void);
@@ -83,12 +85,19 @@ private:
 	const unsigned int m_select_button_color;//灰色
 
 	//文字関連
-	static int m_select_width;//選んでねの画像幅
-	static int m_select_height;//選んでねの画像高さ
+	static const int m_select_width;//選んでねの画像幅
+	static const int m_select_height;//選んでねの画像高さ
 
-	static int m_ok_width;//ok幅
-	static int m_ok_height;//ok高さ
+	static const int m_ok_width;//ok幅
+	static const int m_ok_height;//ok高さ
 
+	static const float m_logo_pos_x;//ロゴ位置
+	static const float m_logo_pos_y;//
+
+	static const float m_logo_space;//ロゴの間隔
+
+	static const int m_start_logo_width;	//幅
+	static const int m_start_logo_heigth;	//高さ
 	
 	//キャラクター関係
 	bool m_player1_ok;

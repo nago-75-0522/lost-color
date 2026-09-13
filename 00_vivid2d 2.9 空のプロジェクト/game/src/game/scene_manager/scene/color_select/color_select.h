@@ -51,6 +51,10 @@ private:
 	static const vivid::Vector2 m_Yellow_Pos;
 	static const vivid::Vector2 m_Magenta_Pos;
 	static const unsigned int m_selected_color;//一回選ばれたことのある色用
+	static const std::string m_color_select_path;//画像データ
+	static const int m_color_width;				//選択幅
+	//static const int m_color_height;			//選択高さ
+
 	
 	//変数
 	vivid::Vector2 m_color_pos;

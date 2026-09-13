@@ -8,6 +8,19 @@
 namespace controller = vivid::controller;
 namespace keyboard = vivid::keyboard;
 
+const float COption::m_logo_pos_y = 600.0f;
+const float COption::m_logo_pos_x = 50.0f;
+const float COption::m_logo_space = 300.0f;
+	
+const int COption::m_start_logo_width = 420;
+const int COption::m_start_logo_heigth = 180;
+
+const int COption::m_ok_width = 200;
+const int COption::m_ok_height = 100;
+
+const int COption::m_select_height = 100;
+
+
 //インスタンス取得
 COption& COption::GetInstance()
 {
@@ -113,8 +126,10 @@ void COption::Update(void)
 void COption::Draw(void)
 {
 	vivid::DrawTexture("data\\debug\\option_bg.png", { 0.0f,0.0f });
-	vivid::DrawText(48, "キャラクターを選択してね", { 0.0f,0.0f });
+	
+	//vivid::DrawText(48, "キャラクターを選択してね", { 0.0f,0.0f });
 
+	
 	//キャラクターを表示
 	for (int i = 0; i < (int)CHARACTER_ID::MAX; i++)
 	{
@@ -122,11 +137,15 @@ void COption::Draw(void)
 		if (m_player1_ok == false)
 		{
 			m_Now_Select = m_Player1_Select;//プレイヤー１選択中
+			vivid::DrawTexture("data\\logo\\black.png", { 0.0f,0.0f });
+			vivid::DrawTexture("data\\logo\\が選んでね1.png", { 250.0f,10 });
 		}
 
 		else
 		{
 			m_Now_Select = m_Player2_Select;
+			vivid::DrawTexture("data\\logo\\black2.png", { 0.0f,0.0f });
+			vivid::DrawTexture("data\\logo\\が選んでね1.png", { m_logo_space,10.0f });
 		}
 
 		//選択中のキャラクター
@@ -142,9 +161,9 @@ void COption::Draw(void)
 		}
 	}
 
-	//ロゴ
-	vivid::DrawTexture("data\\logo\\black.png", { 50.0f,600.0f });
-	vivid::DrawTexture("data\\logo\\black2.png", { (vivid::WINDOW_WIDTH / 2) + 50.0f,600.0f });
+	//ロゴ 1p 2p
+	vivid::DrawTexture("data\\logo\\black.png", { m_logo_pos_x,m_logo_pos_y });
+	vivid::DrawTexture("data\\logo\\black2.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_pos_x,m_logo_pos_y });
 
 	DrawPlayer1();//プレイヤー1関係描画
 	DrawPlayer2();//プレイヤー2関係描画
@@ -155,7 +174,6 @@ void COption::Draw(void)
 	{
 		vivid::DrawTexture("data\\logo\\startUI.png", { (vivid::WINDOW_WIDTH / 2) - 210.0f, (vivid::WINDOW_HEIGHT / 2 - 54) });
 	}
-
 };
 
 //解放
@@ -196,10 +214,10 @@ void COption::SetCharacter(void)
 void COption::DrawPlayer1(void)
 {
 	if (m_player1_ok == true)
-		vivid::DrawTexture("data\\ok.png", { 250.0f,600.0f });
+		vivid::DrawTexture("data\\logo\\ok.png", { m_logo_space,m_logo_pos_y });
 	else
 	{
-		vivid::DrawText(48, "選択中", { 250.0f,600.0f });
+		vivid::DrawTexture("data\\logo\\準備.png", {m_logo_space,m_logo_pos_y });
 	}
 }
 
@@ -207,10 +225,11 @@ void COption::DrawPlayer1(void)
 void COption::DrawPlayer2(void)
 {
 	if (m_player2_ok == true)
-		vivid::DrawTexture("data\\ok.png", { (vivid::WINDOW_WIDTH / 2) + 246.0f,600.0f });
+		vivid::DrawTexture("data\\logo\\ok.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_space,m_logo_pos_y });
 	else
 	{
-		vivid::DrawText(48, "選択中", { (vivid::WINDOW_WIDTH / 2) + 246.0f,600.0f });
+		//vivid::DrawText(48, "選択中", { (vivid::WINDOW_WIDTH / 2) + 246.0f,600.0f });
+		vivid::DrawTexture("data\\logo\\準備.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_space,m_logo_pos_y });
 	}
 }
 ;

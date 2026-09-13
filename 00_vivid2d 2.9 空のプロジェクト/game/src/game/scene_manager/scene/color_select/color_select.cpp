@@ -17,6 +17,9 @@ const const unsigned int CColor_Select::m_selected_color(0xff000000);
 const vivid::Vector2 CColor_Select::m_Cyan_Pos = { (float)m_button_x[0],(float)m_button_y };
 const vivid::Vector2 CColor_Select::m_Yellow_Pos = { (float)m_button_x[1],(float)m_button_y };
 const vivid::Vector2 CColor_Select::m_Magenta_Pos = { (float)m_button_x[2],(float)m_button_y };
+const std::string CColor_Select::m_color_select_path = "data\\logo\\color.png";
+const int CColor_Select::m_color_width = 400;
+
 
 //前回までに選ばれている色を返す関数
 bool CColor_Select::IsEnableColor(COLOR color)
@@ -186,6 +189,9 @@ void CColor_Select::Draw()
 		vivid::DrawTexture(m_button_file[1], m_Yellow_Pos, m_selected_color);
 	if(!m_Magenta)
 		vivid::DrawTexture(m_button_file[2], m_Magenta_Pos, m_selected_color);
+
+	//色選択
+	vivid::DrawTexture(m_color_select_path, { (vivid::WINDOW_WIDTH / 2 - (m_color_width / 2)),0.0f });
 }
 
 //解放
