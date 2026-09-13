@@ -61,6 +61,9 @@ public:
 	CHARACTER_ID GetCharacterPlayer1(void);
 	CHARACTER_ID GetCharacterPlayer2(void);
 
+	//リセット
+	void ResetCharacterSelect(void);
+
 	//キャラ選択
 	CHARACTER_ID m_Player1_Select;
 	CHARACTER_ID m_Player2_Select;

@@ -59,6 +59,8 @@ void CRace_Player1::Draw()
 	vivid::DrawTexture("data\\logo\\small_pink_1p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
 	vivid::DrawTexture("data\\race\\magenta_car.png", m_Draw_Pos);
 
+
+
 	//vivid::DrawText(40, "Accele:" + std::to_string(m_isAccele), { 0.0f,0.0f }, 0xffff0000);
 
 	//vivid::DrawText(40, "NowNum:" + std::to_string(m_Now_Num_Map), { 0.0f,80.f }, 0xffff0000);
