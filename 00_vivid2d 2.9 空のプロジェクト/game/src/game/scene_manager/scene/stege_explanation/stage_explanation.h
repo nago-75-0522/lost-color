@@ -42,5 +42,10 @@ private:
 
 	int m_StageCount;//何回終わったかの判定
 	
+	static const float m_move_pos_x;
+	static const float m_move_pos_y;
+
+	std::string m_explanation_path;	//画像データを入れる配列
+	int			m_glaph_handle;		//動画ハンドル　ハンドルは識別番号的なもの
 
 };

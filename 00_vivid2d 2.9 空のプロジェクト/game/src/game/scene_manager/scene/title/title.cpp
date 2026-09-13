@@ -4,6 +4,7 @@
 #include"../color_select/color_select.h"
 #include"../game_risult/game_risult.h"
 #include"../../../object/player_manager/player_manager.h"
+#include"..\option_character\option.h"
 
 const int CTitle::m_logo_limit_timer = 600;
 
@@ -21,6 +22,9 @@ CTitle::CTitle()
 void CTitle::Initialize(void)
 {
 	
+	//キャラクター選択をリセット呼び出し
+	COption::GetInstance().ResetCharacterSelect();
+
 	//画像の位置
 	m_TitlePos.x = vivid::WINDOW_WIDTH / 2 - (m_title_logo_width/2);
 	m_TitlePos.y = vivid::WINDOW_HEIGHT * 2 / 5 - (m_title_logo_height / 2);

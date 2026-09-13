@@ -355,3 +355,12 @@ CHARACTER_ID COption::GetCharacterPlayer2(void)
 {
 	return m_Player2_Select;
 }
+
+//キャラクター状態のリセット用
+void COption::ResetCharacterSelect(void)
+{
+	m_Player1_Select = CHARACTER_ID::CHARA1;
+	m_Player2_Select = CHARACTER_ID::CHARA1;
+	m_player1_ok = false;
+	m_player2_ok = false;
+}
