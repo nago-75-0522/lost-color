@@ -1,7 +1,7 @@
 ﻿#include"ball_player2.h"
 #include"../../../minigame_manager/ball_manager/ball/ball.h"
 #include"../../../minigame_manager/ball_manager/ball_score/ball_score.h"
-#include"../../../minigame_manager/ball_manager/effect_manager/effect_manager.h"
+#include"../../../effect_manager/effect_manager.h"
 #include"../../../../scene_manager/scene/option_character/option.h"
 
 const int CBallPlayer2::m_width = 280;

@@ -1,5 +1,8 @@
 ﻿#include "race_player2.h"
 #include"../race_player_id.h"
+#include"../../../../effect_manager/effect_manager.h"
+
+const unsigned int CRace_Player2::m_color = 0xff00ffff;
 
 CRace_Player2& CRace_Player2::GetInstance(void)
 {
@@ -12,7 +15,6 @@ CRace_Player2::CRace_Player2(void)
 	: IRace_Player(PLAYER_CATEGORY::PLAYER2)
 {
 }
-
 
 void CRace_Player2::Update(void)
 {
@@ -33,6 +35,7 @@ void CRace_Player2::Update(void)
 				//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
 			{
+				CEffectManager::GetInstance().Create(EFFECT_ID::DIR_SELECT, m_Draw_Pos, m_color, 0.f);
 				m_isPush = true;
 				m_isUp_Move = true;
 			}
@@ -44,6 +47,7 @@ void CRace_Player2::Update(void)
 			//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
 			{
+				CEffectManager::GetInstance().Create(EFFECT_ID::DIR_SELECT, m_Draw_Pos, m_color, 0.f);
 				m_isPush = true;
 				m_isDown_Move = true;
 			}

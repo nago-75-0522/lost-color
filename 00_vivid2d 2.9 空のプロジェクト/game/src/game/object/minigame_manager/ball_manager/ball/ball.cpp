@@ -2,7 +2,7 @@
 #include"ball.h"
 #include"../ball_score/ball_score.h"
 #include"../../../../scene_manager/scene/color_select/color_select.h"
-#include"../.../../effect_manager/effect_manager.h"
+#include"../../../effect_manager/effect_manager.h"
 
 const int			CBall::m_ball_width = 32;
 const int			CBall::m_ball_height = 32;
@@ -53,7 +53,6 @@ void CBall::Initialize(void)
 
 	//SEの読み込み
 	vivid::LoadSound("data\\sound\\ball.wav");//ballキャッチ時
-	CEffectManager::GetInstance().Initialize();//エフェクト読み込み
 
 	m_Cyan = CColor_Select::GetInstance().GetCyan();
 	m_Yellow = CColor_Select::GetInstance().GetYellow();
@@ -81,7 +80,6 @@ void CBall::Update(void)
 		m_SpawnCount = 2;
 
 	SpawnBall();
-	CEffectManager::GetInstance().Update();//エフェクトの更新
 
 	//各更新(有効なもののみ)
 	for (int i = 0; i < m_max_ball; ++i)
@@ -153,8 +151,6 @@ void CBall::Draw(void)
 			break;
 		}
 	}
-
-	CEffectManager::GetInstance().Draw();//エフェクトの描画
 
 #ifdef _DEBUG/*デバックビルドのときのみ有効*/
 #if 0

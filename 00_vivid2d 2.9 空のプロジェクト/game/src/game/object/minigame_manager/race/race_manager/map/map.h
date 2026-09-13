@@ -30,6 +30,8 @@ private:
 
 	void isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_posX); //該当する升目の値を返すために計算する関数
 
+	void SetRootColor(int x, int y); //どっちが加速レーンか決める関数
+
 	static const int m_map_width;
 	static const int m_map_height;
 	static const int m_size;
@@ -44,4 +46,8 @@ private:
 
 	int m_Color_Win_Num; //当たりレーンの色の数 1or2or3（C,Y,M）
 	int m_Color_Lose_Num; //外れレーンの色の数 1or2or3（C,Y,M）
+
+	int m_RandAcceleNum; //加速レーンを決める時に使う変数
+	int m_AcceleDrawCount;
+	bool m_DecisionRandNum; //もうランダムしましたよ
 };

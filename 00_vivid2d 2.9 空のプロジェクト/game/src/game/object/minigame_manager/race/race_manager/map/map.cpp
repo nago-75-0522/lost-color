@@ -15,6 +15,9 @@ CMap::CMap()
 	, m_Player2_Num(0)
 	, m_Color_Win_Num(0)
 	, m_Color_Lose_Num(0)
+	, m_RandAcceleNum(0)
+	, m_AcceleDrawCount(0)
+	, m_DecisionRandNum(false)
 {
 }
 
@@ -81,6 +84,10 @@ void CMap::Inisitalize(void)
 
 	m_Color_Win_Num = 0;
 	m_Color_Lose_Num = 0;
+
+	m_RandAcceleNum = 0;
+	m_AcceleDrawCount = 0;
+	m_DecisionRandNum = false;
 }
 
 void CMap::Update(void)
@@ -101,16 +108,16 @@ void CMap::Update(void)
 	for (int y = startY; y < endY; y++)
 	{
 		if (y < 0 || y >= m_map_height)
-		{
 			continue;
-		}
 
 		for (int x = startX; x < endX; x++)
 		{
 			if (x < 0 || x >= m_map_width)
-			{
 				continue;
-			}
+
+			//加速レーンがどっちか選ぶ
+			if (m_Map[y][x] == 15 || m_Map[y][x] == 16 || m_Map[y][x] == 17 || m_Map[y][x] == 18)
+				SetRootColor(x, y);
 
 			vivid::Vector2 pos;
 
@@ -120,23 +127,8 @@ void CMap::Update(void)
 			float camera_posX = camera.GetCameraPos().x;
 
 			isCharaNumNow(pos, x, y, camera_posX);  //該当する升目の値を返すために計算
-
-			//左から現れたマス
-			if (pos.x == 0.f)
-			{
-				//3と4が出てきたときに、上にいるほうを変数にいれる
-				if (m_Map[y][x] == 4)
-				{
-					//3の場所が半分より上かどうか
-					if (pos.y < m_map_height / 2 * m_size)
-						m_Up_Num = 4;
-					else
-						m_Up_Num = 5;
-				}
-			}
 		}
 	}
-
 }
 
 //描画
@@ -157,16 +149,12 @@ void CMap::Draw(void)
 	for (int y = startY; y < endY; y++)
 	{
 		if (y < 0 || y >= m_map_height)
-		{
 			continue;
-		}
 
 		for (int x = startX; x < endX; x++)
 		{
 			if (x < 0 || x >= m_map_width)
-			{
 				continue;
-			}
 
 			vivid::Vector2 pos;
 
@@ -209,14 +197,6 @@ void CMap::Draw(void)
 			vivid::DrawTexture("data\\race\\color_map.png", pos, 0xffffffff, color_rect);
 		}
 	}
-	//vivid::DrawText(40, "charaNum:" + std::to_string(m_Chara_Num), { 0.f,240.f }, 0xff000000);
-
-#if 0
-	vivid::DrawText(40, "1pNum:" + std::to_string(m_Player1_Num), { 0.0f,160.f }, 0xffff0000);
-	vivid::DrawText(40, "2pNum:" + std::to_string(m_Player2_Num), { 0.0f,200.f }, 0xff0000ff);
-#endif 
-
-
 }
 
 void CMap::Finalize(void)
@@ -306,10 +286,7 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 			m_Chara_Num = m_Map[y][x];
 			pm.SetNowNumMap(PLAYER_CATEGORY::PLAYER1, m_Chara_Num);
 		}
-
-
 	}
-
 
 	//2P	
 	//2pの描画されている場所のX座標
@@ -331,7 +308,6 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 			m_Chara_Num = m_Map[y][x];
 			pm.SetNowNumMap(PLAYER_CATEGORY::PLAYER2, m_Chara_Num);
 		}
-
 	}
 	//上に来た時のマスの番号を返す
 	else if (pm.GetDrawPosition(PLAYER_CATEGORY::PLAYER2).y == UP_P2)
@@ -366,9 +342,77 @@ void CMap::isCharaNumNow(vivid::Vector2& pos, float x, float y, float camera_pos
 			m_Chara_Num = m_Map[y][x];
 			pm.SetNowNumMap(PLAYER_CATEGORY::PLAYER2, m_Chara_Num);
 		}
-
 	}
+}
 
+void CMap::SetRootColor(int x, int y)
+{
+	switch (m_Map[y][x])
+	{
+	case 15:
+		m_AcceleDrawCount = 0;
+
+		if (!m_DecisionRandNum)
+		{
+			m_RandAcceleNum = rand() % 2; //0 or 1
+			m_DecisionRandNum = true;
+		}
+
+		switch (m_RandAcceleNum)
+		{
+		case 0:
+			m_Map[y][x] = 4; //加速
+			m_Up_Num = 4;
+			break;
+		case 1:
+			m_Map[y][x] = 5;
+			m_Up_Num = 5;
+			break;
+		}
+		break;
+	case 16:
+		switch (m_RandAcceleNum)
+		{
+		case 0:
+			m_Map[y][x] = 5;
+			break;
+		case 1:
+			m_Map[y][x] = 4; //加速
+			break;
+		}
+		break;
+	case 17:
+		switch (m_RandAcceleNum)
+		{
+		case 0:
+			m_Map[y][x] = 8; //加速
+			break;
+		case 1:
+			m_Map[y][x] = 1;
+			break;
+		}
+		break;
+	case 18:
+		m_DecisionRandNum = false;
+		m_AcceleDrawCount++;
+		switch (m_RandAcceleNum)
+		{
+		case 0:
+			m_Map[y][x] = 1;
+
+			//3回描いたらリセット
+			if (m_AcceleDrawCount == 3)
+				m_RandAcceleNum = 0; //リセット
+			break;
+		case 1:
+			m_Map[y][x] = 8; //加速
+
+			if (m_AcceleDrawCount == 3)
+				m_RandAcceleNum = 0; //リセット
+			break;
+		}
+		break;
+	}
 }
 
 
@@ -396,6 +440,3 @@ CMap& CMap::operator=(const CMap& rhs)
 
 	return *this;
 }
-
-
-

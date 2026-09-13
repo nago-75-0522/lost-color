@@ -21,4 +21,5 @@ private:
 	CRace_Player2(const CRace_Player2& rhs) = delete;
 	CRace_Player2& operator =(const CRace_Player2& rhs) = delete;
 
+	static const unsigned int m_color;
 };

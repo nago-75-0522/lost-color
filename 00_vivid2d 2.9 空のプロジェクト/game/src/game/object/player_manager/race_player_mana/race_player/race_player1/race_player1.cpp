@@ -1,5 +1,8 @@
 ﻿#include"race_player1.h"
 #include"../race_player_id.h"
+#include"../../../../effect_manager/effect_manager.h"
+
+const unsigned int CRace_Player1::m_color = 0xffff00ff;
 
 CRace_Player1& CRace_Player1::GetInstance(void)
 {
@@ -31,6 +34,7 @@ void CRace_Player1::Update(void)
 			//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
 			{
+				CEffectManager::GetInstance().Create(EFFECT_ID::DIR_SELECT, m_Draw_Pos, m_color, 0.f);
 				m_isPush = true;
 				m_isUp_Move = true;
 			}
@@ -42,6 +46,7 @@ void CRace_Player1::Update(void)
 			//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
 			{
+				CEffectManager::GetInstance().Create(EFFECT_ID::DIR_SELECT, m_Draw_Pos, m_color, 0.f);
 				m_isPush = true;
 				m_isDown_Move = true;
 			}
@@ -58,8 +63,6 @@ void CRace_Player1::Draw()
 
 	vivid::DrawTexture("data\\logo\\small_pink_1p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
 	vivid::DrawTexture("data\\race\\magenta_car.png", m_Draw_Pos);
-
-
 
 	//vivid::DrawText(40, "Accele:" + std::to_string(m_isAccele), { 0.0f,0.0f }, 0xffff0000);
 

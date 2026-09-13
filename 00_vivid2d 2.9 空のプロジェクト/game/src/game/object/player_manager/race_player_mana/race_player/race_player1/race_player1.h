@@ -20,4 +20,6 @@ private:
 	~CRace_Player1(void) = default;
 	CRace_Player1(const CRace_Player1& rhs) = delete;
 	CRace_Player1& operator =(const CRace_Player1 rhs) = delete;
+	
+	static const unsigned int m_color;
 };
