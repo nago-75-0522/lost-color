@@ -11,7 +11,7 @@ const std::string CFall_Player1::m_player1_marker_path = "data/logo/small_pink_1
 const vivid::Vector2 CFall_Player1::m_player1_marker_size = { 64.0f,40.0f };
 const int CFall_Player1::m_item_box_size = 50;
 const vivid::Vector2 CFall_Player1::m_item_pos = { 2.0f,2.0f };
-
+const vivid::Vector2 CFall_Player1::m_pull_pos = { 5.0f,5.0 };
 CFall_Player1::CFall_Player1()
 	: m_Player1_Chara_Pos{ 0.0f,0.0f }
 	, m_Player1_Chara_Rect{ 0,0,m_player1_chara_width,m_player1_chara_height }
@@ -239,7 +239,7 @@ void CFall_Player1::Draw()
 		break;
 	case ITEM_ID::PULL:
 		CItem_Manager::GetInstance().m_Pull_P1.DrawAim(*this);
-		CItem_Manager::GetInstance().m_Pull_P1.Draw(m_item_pos);
+		CItem_Manager::GetInstance().m_Pull_P1.Draw(m_pull_pos);
 		break;
 	case ITEM_ID::UNKNOW:
 		break;
