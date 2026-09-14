@@ -196,7 +196,7 @@ void CBallPlayer2::Update(void)
 				//位置
 				vivid::Vector2 effectPos;
 				effectPos.x = m_Pos.x + m_width * 0.5f;
-				effectPos.y = m_Pos.y + m_height * 0.5f;
+				effectPos.y = m_Pos.y;
 				//エフェクト生成
 				CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
 			}

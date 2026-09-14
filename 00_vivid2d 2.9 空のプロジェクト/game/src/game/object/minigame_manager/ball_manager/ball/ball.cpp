@@ -233,9 +233,11 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 					color = 0xffffff00;//イエロー
 
 				vivid::Vector2 effectPos;
+				vivid::Vector2 effectPos2;
 				//位置
 				effectPos.x = basket1.GetPosition().x;
 				effectPos.y = basket1.GetPosition().y;
+
 				vivid::PlaySound("data\\sound\\爆発.wav", false);
 				//エフェクト生成
 				CEffectManager::GetInstance().Create(EFFECT_ID::HIT, effectPos, 0xffffffff, 0.0f);
@@ -248,6 +250,7 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 				//位置
 				effectPos.x = basket1.GetPosition().x + basket1.GetWidth() * 0.5f;
 				effectPos.y = basket1.GetPosition().y + basket1.GetHeight() * 0.5f;
+
 				//エフェクト生成
 				CEffectManager::GetInstance().Create(EFFECT_ID::CATCH, effectPos, 0xffffffff, 0.0f);
 				vivid::PlaySound("data\\sound\\ball.wav", false);
