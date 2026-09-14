@@ -10,8 +10,8 @@ namespace keyboard = vivid::keyboard;
 
 const float COption::m_logo_pos_y = 600.0f;
 const float COption::m_logo_pos_x = 50.0f;
-const float COption::m_logo_space = 300.0f;
-	
+const float COption::m_logo_space = 500.0f;
+const float COption::m_logo_select_now_pos = 300;
 const int COption::m_start_logo_width = 420;
 const int COption::m_start_logo_heigth = 180;
 
@@ -32,9 +32,9 @@ COption& COption::GetInstance()
 COption::COption(void)
 	:m_Player1_Select(CHARACTER_ID::CHARA1)
 	, m_Player2_Select(CHARACTER_ID::CHARA1)
-	,m_select_button_color(0xff0000cd)
+	, m_select_button_color(0xff0000cd)
 {
-	
+
 }
 
 //キャラクターデータ
@@ -45,7 +45,7 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 		"data\\human.png",
 		1,
 		50.0f,
-		100.0f,
+		150.0f,
 	},
 
 	//CHARACTER_ID::CHARA2
@@ -53,24 +53,24 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 		"data\\cat.png",
 		2,
 		350.0f,
-		100.0f,
+		150.0f,
 	},
 
-//CHARACTER_ID::CHARA3
-	{
-		"data\\bear.png",
-		3,
-		650.0f,
-		100.0f,
-	},
+	//CHARACTER_ID::CHARA3
+		{
+			"data\\bear.png",
+			3,
+			650.0f,
+			150.0f,
+		},
 
-	//CHARACTER_ID::CHARA4
-	{
-		"data\\rabbit.png",
-		4,
-		950.0f,
-		100.0f,
-	}
+		//CHARACTER_ID::CHARA4
+		{
+			"data\\rabbit.png",
+			4,
+			950.0f,
+			150.0f,
+		}
 };
 
 
@@ -91,7 +91,7 @@ void COption::Initialize(void)
 	m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
 
 	vivid::LoadSound("data\\sound\\click.mp3");
-	vivid::PlaySound("data\\sound\\title_bgm.mp3",true);
+	vivid::PlaySound("data\\sound\\title_bgm.mp3", true);
 
 	COption::m_player1_ok = false;
 	COption::m_player2_ok = false;
@@ -105,7 +105,7 @@ void COption::Update(void)
 	//スティック入力取得
 	m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
-	
+
 	SelectCharacter();	//選択中
 	CharacterPic();
 	SetCharacter();		//準備完了シーン切り替え
@@ -126,10 +126,10 @@ void COption::Update(void)
 void COption::Draw(void)
 {
 	vivid::DrawTexture("data\\debug\\option_bg.png", { 0.0f,0.0f });
-	
+
 	//vivid::DrawText(48, "キャラクターを選択してね", { 0.0f,0.0f });
 
-	
+
 	//キャラクターを表示
 	for (int i = 0; i < (int)CHARACTER_ID::MAX; i++)
 	{
@@ -137,15 +137,15 @@ void COption::Draw(void)
 		if (m_player1_ok == false)
 		{
 			m_Now_Select = m_Player1_Select;//プレイヤー１選択中
-			vivid::DrawTexture("data\\logo\\black.png", { 0.0f,0.0f });
-			vivid::DrawTexture("data\\logo\\が選んでね1.png", { m_logo_space,10.0f });
+			vivid::DrawTexture("data\\logo\\black.png", { 250.0f,20.0f });
+			vivid::DrawTexture("data\\logo\\が選んでね1.png", { m_logo_space,30.0f });
 		}
 
 		else
 		{
 			m_Now_Select = m_Player2_Select;
-			vivid::DrawTexture("data\\logo\\black2.png", { 0.0f,0.0f });
-			vivid::DrawTexture("data\\logo\\が選んでね1.png", { m_logo_space,10.0f });
+			vivid::DrawTexture("data\\logo\\black2.png", { 300.0f,20.0f });
+			vivid::DrawTexture("data\\logo\\が選んでね1.png", { m_logo_space,30.0f });
 		}
 
 		//選択中のキャラクター
@@ -156,7 +156,7 @@ void COption::Draw(void)
 
 		else
 		{
-			vivid::DrawTexture(g_CharacterData[i].file, { g_CharacterData[i].posX,g_CharacterData[i].posY },m_select_button_color);
+			vivid::DrawTexture(g_CharacterData[i].file, { g_CharacterData[i].posX,g_CharacterData[i].posY }, m_select_button_color);
 
 		}
 	}
@@ -170,7 +170,7 @@ void COption::Draw(void)
 
 
 	//キャラクター決定後
-	if(m_player1_ok == true && m_player2_ok == true)
+	if (m_player1_ok == true && m_player2_ok == true)
 	{
 		vivid::DrawTexture("data\\logo\\startUI.png", { (vivid::WINDOW_WIDTH / 2) - 210.0f, (vivid::WINDOW_HEIGHT / 2 - 54) });
 	}
@@ -214,10 +214,10 @@ void COption::SetCharacter(void)
 void COption::DrawPlayer1(void)
 {
 	if (m_player1_ok == true)
-		vivid::DrawTexture("data\\logo\\ok.png", { m_logo_space,m_logo_pos_y });
+		vivid::DrawTexture("data\\logo\\ok.png", { m_logo_select_now_pos,m_logo_pos_y });
 	else
 	{
-		vivid::DrawTexture("data\\logo\\選択中.png", {m_logo_space,m_logo_pos_y });
+		vivid::DrawTexture("data\\logo\\選択中.png", { m_logo_select_now_pos,m_logo_pos_y });
 	}
 }
 
@@ -225,11 +225,11 @@ void COption::DrawPlayer1(void)
 void COption::DrawPlayer2(void)
 {
 	if (m_player2_ok == true)
-		vivid::DrawTexture("data\\logo\\ok.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_space,m_logo_pos_y });
+		vivid::DrawTexture("data\\logo\\ok.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_select_now_pos,m_logo_pos_y });
 	else
 	{
 		//vivid::DrawText(48, "選択中", { (vivid::WINDOW_WIDTH / 2) + 246.0f,600.0f });
-		vivid::DrawTexture("data\\logo\\選択中.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_space,m_logo_pos_y });
+		vivid::DrawTexture("data\\logo\\選択中.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_select_now_pos,m_logo_pos_y });
 	}
 }
 ;
@@ -248,7 +248,7 @@ void COption::CharacterPic(void)
 			CSceneManager::GetInstance().ResetTimer();
 		}
 	}
-	
+
 	//プレイヤー２決定処理
 	else if (m_player2_ok == false)
 	{
@@ -315,7 +315,7 @@ void COption::SelectCharacter(void)
 		}
 	}
 
-//プレイヤー1がOKにならないと動かせない
+	//プレイヤー1がOKにならないと動かせない
 	if (m_player1_ok == true && m_player2_ok == false)
 	{
 		/* プレイヤー2 */
@@ -359,7 +359,7 @@ void COption::SelectCharacter(void)
 	player1_prev_stick_x = m_Player1_Stick.x;
 	player2_prev_stick_x = m_Player2_Stick.x;
 
-	
+
 }
 
 

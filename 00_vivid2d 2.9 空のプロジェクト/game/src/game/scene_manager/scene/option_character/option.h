@@ -75,13 +75,13 @@ private:
 	//コンストラクタ・デストラクタ
 	COption(void);
 	~COption(void) = default;
-	
+
 	//コピーコンストラクタ
 	COption(const COption& rhp) = delete;
 	//代入演算子
 	COption& operator=(const COption& rhp) = delete;
 
-	
+
 	const unsigned int m_select_button_color;//灰色
 
 	//文字関連
@@ -95,10 +95,10 @@ private:
 	static const float m_logo_pos_y;//
 
 	static const float m_logo_space;//ロゴの間隔
-
+	static const float m_logo_select_now_pos;
 	static const int m_start_logo_width;	//幅
 	static const int m_start_logo_heigth;	//高さ
-	
+
 	//キャラクター関係
 	bool m_player1_ok;
 	bool m_player2_ok;
@@ -112,6 +112,7 @@ private:
 	vivid::Vector2 m_Player1_Stick;//スティックx左右 y上下
 	vivid::Vector2 m_Player2_Stick;//スティックx左右 y上下
 	CHARACTER_ID m_Now_Select;//選択中のボタン
+
 
 
 };

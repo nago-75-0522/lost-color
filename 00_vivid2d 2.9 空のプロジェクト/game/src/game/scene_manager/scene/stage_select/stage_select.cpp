@@ -13,7 +13,7 @@ const int CStage_Select::m_select_width(612);
 
 const std::string CStage_Select::m_stage_select_path = "data\\logo\\stage_select_logo.png";
 const std::string CStage_Select::m_button_file[] =
-{ "data\\fall_select.png","data\\ball_select.png" ,"data\\race_select.png" };		//ステージ画像***
+{ "data\\stage1.png","data\\stage2.png" ,"data\\stage3.png" };		//ステージ画像***
 STAGE_ID CStage_Select::stage_id = STAGE_ID::MAX;					//stage_id 200000000000000
 const unsigned int CStage_Select::m_select_button_color(0xff0000cd);
 
@@ -42,7 +42,7 @@ void CStage_Select::Initialize(void)
 	m_Finger_Pos.x = m_button_x[(int)m_Now_Select] - m_finger_width;//指のｘ座標の初期化
 	//矢印yは選択中ボタンの高さと変わらないため
 	m_Finger_Pos.y = m_button_y;									//指のy座標の初期化
-	
+
 	//左スティック入力取得
 	m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
@@ -56,14 +56,14 @@ void CStage_Select::Initialize(void)
 
 //更新
 void CStage_Select::Update(void)
-{	
+{
 	namespace controller = vivid::controller;
 	// スティック入力取得
-	 m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
-	 m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
+	m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
+	m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
 	/* ステージカウントが1～3の時 */
 	//ステージ選択中処理
-	StageSelect();	
+	StageSelect();
 }
 
 //描画
@@ -73,7 +73,7 @@ void CStage_Select::Draw(void)
 
 	//背景画像
 	vivid::DrawTexture("data\\option_bg.png", { 0.0f,0.0f });
-	vivid::DrawTexture(m_stage_select_path, { vivid::WINDOW_WIDTH / 2 - (m_select_width / 2 ),50.0f });
+	vivid::DrawTexture(m_stage_select_path, { vivid::WINDOW_WIDTH / 2 - (m_select_width / 2),50.0f });
 	//vivid::DrawTexture("data\\arrow.png", m_Finger_Pos); 指
 
 	for (int i = 0; i < (int)STAGE_ID::MAX; i++)
@@ -131,11 +131,11 @@ void CStage_Select::StageSelect(void)
 			vivid::PlaySound("data\\sound\\select.mp3", false);
 			m_Now_Select = (STAGE_ID)((((int)m_Now_Select - 1) + (int)STAGE_ID::MAX) % (int)STAGE_ID::MAX);
 			CSceneManager::GetInstance().ResetTimer();
-			
+
 		}
 
 		/* 十字キー実装 */
-		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT)||
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT) ||
 			keyboard::Trigger(keyboard::KEY_ID::D))
 		{
 			//選択ボタンの変更
@@ -144,7 +144,7 @@ void CStage_Select::StageSelect(void)
 			CSceneManager::GetInstance().ResetTimer();
 		}
 
-		else if (controller::Trigger(controller::DEVICE_ID::PLAYER1,controller::BUTTON_ID::LEFT)||
+		else if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT) ||
 			keyboard::Trigger(keyboard::KEY_ID::A))
 		{
 			//選択ボタンの変更
@@ -173,7 +173,7 @@ void CStage_Select::StageSelect(void)
 		}
 
 		/* 十字キー実装 */
-		if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT)||
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::RIGHT) ||
 			keyboard::Trigger(keyboard::KEY_ID::RIGHT))
 		{
 			//選択ボタンの変更
@@ -182,7 +182,7 @@ void CStage_Select::StageSelect(void)
 			CSceneManager::GetInstance().ResetTimer();
 		}
 
-		else if (controller::Trigger(controller::DEVICE_ID::PLAYER2,controller::BUTTON_ID::LEFT)||
+		else if (controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT) ||
 			keyboard::Trigger(keyboard::KEY_ID::LEFT))
 		{
 			//選択ボタンの変更
@@ -204,41 +204,41 @@ void CStage_Select::StagePic(void)
 
 	//pレイヤー1
 	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
-		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B)||
+		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B) ||
 			keyboard::Trigger(keyboard::KEY_ID::S))
-	{
-		switch (m_Now_Select)
 		{
-		case STAGE_ID::STAGE1:
-			CStage_Select::SetSelectStage(STAGE_ID::STAGE1);
-			vivid::StopSound("data\\sound\\title_bgm.mp3");
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
-			break;
+			switch (m_Now_Select)
+			{
+			case STAGE_ID::STAGE1:
+				CStage_Select::SetSelectStage(STAGE_ID::STAGE1);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
+				break;
 
-		case STAGE_ID::STAGE2:
-			CStage_Select::SetSelectStage(STAGE_ID::STAGE2);
-			vivid::PlaySound("data\\sound\\click.mp3", false);
-			vivid::StopSound("data\\sound\\title_bgm.mp3");
+			case STAGE_ID::STAGE2:
+				CStage_Select::SetSelectStage(STAGE_ID::STAGE2);
+				vivid::PlaySound("data\\sound\\click.mp3", false);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
 
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
-			break;
-			
-		case STAGE_ID::STAGE3:
-			CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
-			vivid::StopSound("data\\sound\\title_bgm.mp3");
-			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
-			break;
-		
-		case STAGE_ID::MAX:
-			break;
-		default:
-			break;
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
+				break;
+
+			case STAGE_ID::STAGE3:
+				CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
+				vivid::StopSound("data\\sound\\title_bgm.mp3");
+				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
+				break;
+
+			case STAGE_ID::MAX:
+				break;
+			default:
+				break;
+			}
 		}
-	}
 
 	//プレイヤー2
 	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
-		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B)||
+		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B) ||
 			keyboard::Trigger(keyboard::KEY_ID::DOWN))
 		{
 			switch (m_Now_Select)
@@ -259,14 +259,14 @@ void CStage_Select::StagePic(void)
 
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 				break;
-	
+
 			case STAGE_ID::STAGE3:
 				CStage_Select::SetSelectStage(STAGE_ID::STAGE3);
 				vivid::StopSound("data\\sound\\title_bgm.mp3");
 
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 				break;
-			
+
 			case STAGE_ID::MAX:
 				break;
 			default:

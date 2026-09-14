@@ -8,7 +8,7 @@
 //定数
 const vivid::Vector2 CColor_Select::m_panel_pos(0.0f, 0.0f);			//
 const int CColor_Select::m_button_x[] = { 100,490,880 };			//ステージの配置位置
-const int CColor_Select ::m_button_y(100);							//ステージの配置高さ
+const int CColor_Select::m_button_y(200);							//ステージの配置高さ
 const int CColor_Select::m_finger_width(100);						//選択やじるし
 const std::string CColor_Select::m_button_file[] =
 { "data\\C.png","data\\Y.png","data\\M.png" };//色のパネル画像
@@ -26,30 +26,30 @@ bool CColor_Select::IsEnableColor(COLOR color)
 {
 	switch (color)
 	{
-	case COLOR::CYAN:   
+	case COLOR::CYAN:
 		return m_Cyan;
-	case COLOR::YELLOW: 
+	case COLOR::YELLOW:
 		return m_Yellow;
-	case COLOR::MAGENTA:    
+	case COLOR::MAGENTA:
 		return m_Magenta;
-	default:            
+	default:
 		return false;
 	}
 }
 
 CColor_Select::CColor_Select()
 	:m_color_pos{ 0.0f,100.0f }
-	,m_Stage1_Chosen(false)
-	,m_Stage2_Chosen(false)
-	,m_Stage3_Chosen(false)
+	, m_Stage1_Chosen(false)
+	, m_Stage2_Chosen(false)
+	, m_Stage3_Chosen(false)
 {
 }
 
 void CColor_Select::Initialize()
-{	
+{
 	vivid::PlaySound("data\\sound\\title_bgm.mp3", true);
 	vivid::LoadSound("data\\sound\\click.mp3");
-	
+
 	m_Button_Pos = vivid::Vector2::ZERO;//位置
 
 	//ｘは配列に合わせるため
@@ -62,7 +62,7 @@ void CColor_Select::Initialize()
 	m_Player2_Stick = vivid::controller::GetAnalogStickLeft(vivid::controller::DEVICE_ID::PLAYER2);
 
 	//今選ばれているやつが、2回目以降だった場合、過去に選ばれた色を保存する
-	if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1&& m_Stage1_Chosen)
+	if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE1 && m_Stage1_Chosen)
 	{
 		m_Cyan = CFall::GetInstance().GetOldCyan();
 		m_Yellow = CFall::GetInstance().GetOldYellow();
@@ -110,7 +110,7 @@ void CColor_Select::Update()
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 				CSceneManager::GetInstance().ResetTimer();
 			}
-				
+
 
 			if (keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN) ||
 				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::B)
@@ -184,14 +184,14 @@ void CColor_Select::Draw()
 	}
 
 	if (!m_Cyan)
-		vivid::DrawTexture(m_button_file[0], m_Cyan_Pos,m_selected_color);
-	if(!m_Yellow)
+		vivid::DrawTexture(m_button_file[0], m_Cyan_Pos, m_selected_color);
+	if (!m_Yellow)
 		vivid::DrawTexture(m_button_file[1], m_Yellow_Pos, m_selected_color);
-	if(!m_Magenta)
+	if (!m_Magenta)
 		vivid::DrawTexture(m_button_file[2], m_Magenta_Pos, m_selected_color);
 
 	//色選択
-	vivid::DrawTexture(m_color_select_path, { (vivid::WINDOW_WIDTH / 2 - (m_color_width / 2)),0.0f });
+	vivid::DrawTexture(m_color_select_path, { (vivid::WINDOW_WIDTH / 2 - (m_color_width / 2) + 100),0.0f });
 }
 
 //解放
@@ -217,7 +217,7 @@ void CColor_Select::ColorSel(void)
 	{
 		ColorPic();
 		if (player1_prev_stick_x <= DEAD_ZONE && m_Player1_Stick.x > DEAD_ZONE ||
-			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT)||
+			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::RIGHT) ||
 			keyboard::Trigger(keyboard::KEY_ID::D))
 		{
 			int color = (int)m_Now_Color;
@@ -237,7 +237,7 @@ void CColor_Select::ColorSel(void)
 
 		// 左に倒した瞬間
 		else if (player1_prev_stick_x >= -DEAD_ZONE && m_Player1_Stick.x < -DEAD_ZONE ||
-			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT)||
+			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::LEFT) ||
 			keyboard::Trigger(keyboard::KEY_ID::A))
 		{
 			int color = (int)m_Now_Color;
@@ -282,8 +282,8 @@ void CColor_Select::ColorSel(void)
 		}
 		// 左に倒した瞬間
 		else if (player2_prev_stick_x >= -DEAD_ZONE && m_Player2_Stick.x < -DEAD_ZONE ||
-				controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT)||
-				keyboard::Trigger(keyboard::KEY_ID::LEFT))
+			controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::LEFT) ||
+			keyboard::Trigger(keyboard::KEY_ID::LEFT))
 		{
 			int color = (int)m_Now_Color;
 			CSceneManager::GetInstance().ResetTimer();
@@ -304,7 +304,7 @@ void CColor_Select::ColorSel(void)
 	// 現在の値を保存
 	player1_prev_stick_x = m_Player1_Stick.x;
 	player2_prev_stick_x = m_Player2_Stick.x;
-	
+
 }
 void CColor_Select::ColorPic(void)
 {
@@ -313,7 +313,7 @@ void CColor_Select::ColorPic(void)
 
 	if (CPlayer_Manager::GetInstance().Player1_Win() == false)
 	{
-		if (keyboard::Trigger(keyboard::KEY_ID::W)||
+		if (keyboard::Trigger(keyboard::KEY_ID::W) ||
 			controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::A))
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 		if (controller::Trigger(controller::DEVICE_ID::PLAYER1, controller::BUTTON_ID::B) ||
@@ -423,7 +423,7 @@ void CColor_Select::ColorPic(void)
 	//2P
 	if (CPlayer_Manager::GetInstance().Player1_Win() == true)
 	{
-		if (keyboard::Trigger(keyboard::KEY_ID::UP)||
+		if (keyboard::Trigger(keyboard::KEY_ID::UP) ||
 			controller::Trigger(controller::DEVICE_ID::PLAYER2, controller::BUTTON_ID::A))
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 
@@ -479,7 +479,7 @@ void CColor_Select::ColorPic(void)
 				if (CStage_Select::GetInstance().GetStageID() == STAGE_ID::STAGE2)
 				{
 					m_Stage2_Chosen = true;
-					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);					
+					CSceneManager::GetInstance().Change(SCENE_ID::STAGE_MANAGER);
 					vivid::StopSound("data\\sound\\title_bgm.mp3");
 					vivid::PlaySound("data\\sound\\click.mp3", false);
 				}
