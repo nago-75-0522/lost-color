@@ -6,7 +6,7 @@
 #include"../../../object/player_manager/player_manager.h"
 #include"..\option_character\option.h"
 
-const int CTitle::m_logo_limit_timer = 60*500;
+const int CTitle::m_logo_limit_timer =60*500;
 
 CTitle::CTitle()
 	:m_Logo_Time(0)
@@ -16,6 +16,7 @@ CTitle::CTitle()
 	,m_title_logo_height(500)
 	,m_start_logo_width(420)
 	,m_start_logo_height(180)
+	, m_title_movie_play(false)
 {
 }
 
@@ -36,6 +37,12 @@ void CTitle::Initialize(void)
 	vivid::LoadSound("data\\sound\\title_bgm.mp3");
 	vivid::PlaySound("data\\sound\\title_bgm.mp3", true);
 	vivid::LoadSound("data\\sound\\click.mp3");
+
+	m_title_move_handle = LoadGraph("data\\explanation\\title_move.mp4");	//説明動画のダウンロード
+
+	// 動画再生開始
+	PlayMovieToGraph(m_title_move_handle);
+
 
 
 }
@@ -84,12 +91,24 @@ void CTitle::Draw(void)
 	rect.bottom = m_title_logo_height;
 
 
-	//タイトルロゴの表示時間の計算
 	if (m_Logo_Time > m_logo_limit_timer)
 	{
-		/* タイトル動画	 動画再生中にどこかのキーを押すとタイトルに戻る スペース押すと次の処理行く */
-		PlayMovie("data\\db.mp4", 1, DX_MOVIEPLAYTYPE_BCANCEL);//DX_MOVIEPLAYTYPE_BCANCELキー入力あり
+		if (m_title_movie_play == false)
+		{
+			PlayMovieToGraph(m_title_move_handle);
+			m_title_movie_play = true;
+		}
+
+		//拡縮
+		DrawExtendGraph(0, 0, 1280, 720, m_title_move_handle, true);
+		
 	
+		//動画が終了したらタイトル画面に戻す
+		if(GetMovieStateToGraph(m_title_move_handle) == 0)
+		{
+			m_Logo_Time = 0;
+		}
+
 
 		//キーボード用
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
@@ -103,13 +122,6 @@ void CTitle::Draw(void)
 			CColor_Select::GetInstance().IniColor();
 			CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
 		}
-
-		else
-		{
-			//タイマーリセット
-			m_Logo_Time = 0;
-		}
-
 	}
 
 	
