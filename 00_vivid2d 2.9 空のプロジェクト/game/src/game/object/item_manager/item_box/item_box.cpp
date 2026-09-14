@@ -3,8 +3,8 @@ const int CItem_Box::m_random_time = 60 * 5;
 const int CItem_Box::m_floor_size = 64;
 const int CItem_Box::m_item_box_size = 50;
 CItem_Box::CItem_Box()
-	: m_(0)
-	, m_2(0)
+	: m_Random_Length(0)
+	, m_Random_Width(0)
 	, m_Random_Timer(0)
 	, m_Battle_Timer(0)
 {
@@ -13,8 +13,8 @@ CItem_Box::CItem_Box()
 void CItem_Box::Initialize()
 {
 	m_Random_Timer = m_random_time;
-	m_ = 0;
-	m_2 = 0;
+	m_Random_Length = 0;
+	m_Random_Width = 0;
 	m_Battle_Timer = 0;
 	m_Max_Item_Box = 2;
 	v.clear();
@@ -58,10 +58,10 @@ void CItem_Box::Lottery()
 {
 	for (int i = 0; i < m_Max_Item_Box; ++i)
 	{
-		m_ = (rand() % 18) + 1;//横抽選
-		m_2 = (rand() % 10) + 1;//縦抽選
-		m_Chosen_Square.x = m_ * m_floor_size + 11;//
-		m_Chosen_Square.y = m_2 * m_floor_size + 12;
+		m_Random_Length = (rand() % 18) + 1;//横抽選
+		m_Random_Width = (rand() % 10) + 1;//縦抽選
+		m_Chosen_Square.x = m_Random_Length * m_floor_size + 11;//
+		m_Chosen_Square.y = m_Random_Width * m_floor_size + 12;
 		bool Duplicate = false;
 		for (int k = 0; k < v.size(); k++)
 			if (m_Chosen_Square == v[k])

@@ -21,8 +21,8 @@ private:
 	static const int m_item_box_size;
 
 	int m_Random_Timer;
-	int m_;
-	int m_2;
+	int m_Random_Length;
+	int m_Random_Width;
 	int m_Battle_Timer;
 	int m_Max_Item_Box;
 	std::vector<vivid::Vector2>v;
