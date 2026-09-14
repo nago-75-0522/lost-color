@@ -50,7 +50,8 @@ private:
 	static const vivid::Vector2 m_bg_pos;						//背景
 	static const std::string m_button_file[(int)STAGE_ID::MAX];//ボタン画像名
 	static STAGE_ID  stage_id;//ステージ保存用id
-
+	static const std::string m_stage_select_path;//ステージを選んでね
+	static const int m_select_width;			//選択の画像幅
 
 	//変数
 	vivid::Vector2 m_Button_Pos;	//選択中のボタンの座標

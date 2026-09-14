@@ -138,7 +138,7 @@ void COption::Draw(void)
 		{
 			m_Now_Select = m_Player1_Select;//プレイヤー１選択中
 			vivid::DrawTexture("data\\logo\\black.png", { 0.0f,0.0f });
-			vivid::DrawTexture("data\\logo\\が選んでね1.png", { 250.0f,10 });
+			vivid::DrawTexture("data\\logo\\が選んでね1.png", { m_logo_space,10.0f });
 		}
 
 		else
@@ -217,7 +217,7 @@ void COption::DrawPlayer1(void)
 		vivid::DrawTexture("data\\logo\\ok.png", { m_logo_space,m_logo_pos_y });
 	else
 	{
-		vivid::DrawTexture("data\\logo\\準備.png", {m_logo_space,m_logo_pos_y });
+		vivid::DrawTexture("data\\logo\\選択中.png", {m_logo_space,m_logo_pos_y });
 	}
 }
 
@@ -229,7 +229,7 @@ void COption::DrawPlayer2(void)
 	else
 	{
 		//vivid::DrawText(48, "選択中", { (vivid::WINDOW_WIDTH / 2) + 246.0f,600.0f });
-		vivid::DrawTexture("data\\logo\\準備.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_space,m_logo_pos_y });
+		vivid::DrawTexture("data\\logo\\選択中.png", { (vivid::WINDOW_WIDTH / 2) + m_logo_space,m_logo_pos_y });
 	}
 }
 ;

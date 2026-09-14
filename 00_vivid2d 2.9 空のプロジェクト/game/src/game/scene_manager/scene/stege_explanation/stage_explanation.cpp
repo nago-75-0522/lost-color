@@ -75,7 +75,8 @@ void CStage_Explanation::Draw(void)
 
 	//描画するだけ 画像と動画　イニシャライズで受け取った値を描画する
 	DrawExtendGraph(400, 130, 1280, 620, m_glaph_handle, true);
-	vivid::DrawTexture(m_explanation_path, { 0.0f,0.0f });//画像
+	vivid::DrawTexture(m_explanation_path, { 0.0f,0.0f });//説明画像
+
 }
 
 

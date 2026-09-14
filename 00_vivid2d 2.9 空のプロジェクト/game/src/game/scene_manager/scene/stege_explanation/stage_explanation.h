@@ -48,4 +48,6 @@ private:
 	std::string m_explanation_path;	//画像データを入れる配列
 	int			m_glaph_handle;		//動画ハンドル　ハンドルは識別番号的なもの
 
+	
+
 };
