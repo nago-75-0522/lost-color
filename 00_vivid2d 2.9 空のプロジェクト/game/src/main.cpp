@@ -12,7 +12,7 @@
 
 #include "vivid.h"
 #include"game/game.h"
-
+#include"game/scene_manager/scene_manager.h"
 /*!
  *  @brief      •`‰æŠÖ”
  */

@@ -158,7 +158,7 @@ void CHigh_Jump::DrawAim(CFall_Player1& player)
 
         for (int i = 1; i <= count; i++)
         {
-            vivid::Vector2 pos = player.GetCharaPos();
+            vivid::Vector2 pos = player.GetCharaPos() - vivid::Vector2{8.0f,8.0f};
 
             switch (player.GetCharaDirection())
             {
@@ -222,7 +222,7 @@ void CHigh_Jump::DrawAim(CFall_Player2& player)
 
     for (int i = 1; i <= count; i++)
     {
-        vivid::Vector2 pos = player.GetCharaPos();
+        vivid::Vector2 pos = player.GetCharaPos() - vivid::Vector2{ 8.0f,8.0f };
 
         switch (player.GetCharaDirection())
         {

@@ -107,7 +107,7 @@ void CFall::Update()
 {
 	CItem_Manager::GetInstance().Update();
 	
-#if 0
+#if 1
 	if (m_Old_Cyan)
 		m_Old_Cyan = CColor_Select::GetInstance().GetCyan();
 	if (m_Old_Yellow)

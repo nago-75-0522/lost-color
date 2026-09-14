@@ -61,6 +61,7 @@ private:
 	static const vivid::Vector2 m_player1_marker_size;
 	static const int m_item_box_size;
 	static const vivid::Vector2 m_item_pos;
+	static const vivid::Vector2 m_pull_pos;
 	//変数
 	CHARA_DIRECTION m_Player1_Chara_Dir;
 	CHARA_STATE m_Player1_Chara_State;

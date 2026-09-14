@@ -177,13 +177,13 @@ void CKnock_Back::DrawAim(CFall_Player1& player)
         }
         if (count == 0)
         {
-            vivid::DrawTexture("data\\fall\\landing_point.png", player.GetCharaPos(), 0xaafffffff);
+            vivid::DrawTexture("data\\fall\\landing_point.png", player.GetCharaPos() - vivid::Vector2{ 8.0,8.0 }, 0xaafffffff);
             return;
         }
 
         for (int i = 1; i <= count; i++)
         {
-            vivid::Vector2 pos = player.GetCharaPos();
+            vivid::Vector2 pos = player.GetCharaPos() - vivid::Vector2{8.0f,8.0f};
 
             switch (player.GetCharaDirection())
             {
@@ -247,12 +247,12 @@ void CKnock_Back::DrawAim(CFall_Player2& player)
         }
         if (count == 0)
         {
-            vivid::DrawTexture("data\\fall\\landing_point.png", player.GetCharaPos(), 0xaafffffff);
+            vivid::DrawTexture("data\\fall\\landing_point.png", player.GetCharaPos() - vivid::Vector2{ 8.0f,8.0f }, 0xaafffffff);
             return;
         }
         for (int i = 1; i <= count; i++)
         {
-            vivid::Vector2 pos = player.GetCharaPos();
+            vivid::Vector2 pos = player.GetCharaPos() - vivid::Vector2{ 8.0f,8.0f };
 
             switch (player.GetCharaDirection())
             {

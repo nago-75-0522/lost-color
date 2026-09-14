@@ -48,6 +48,7 @@ void CSceneManager::Initialize()
 }
 void CSceneManager::Update()
 {
+	
 	switch (m_FadeState)
 	{
 	case FADE::FADE_NOME:
@@ -102,6 +103,12 @@ void CSceneManager::Update()
 	default:
 		break;
 	}
+
+	if (vivid::keyboard::Released(vivid::keyboard::KEY_ID::EIGHT))
+	{
+		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
+	}
+	
 
 }
 
