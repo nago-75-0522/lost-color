@@ -3,16 +3,16 @@
 #include"../../../../object/minigame_manager/minigame_manager.h"
 
 const int CPhase::m_start_time = 60 * 4 - 1;
-const vivid::Vector2 CPhase::m_number_pos = { vivid::WINDOW_WIDTH / 2 ,vivid::WINDOW_HEIGHT / 2 };
+const vivid::Vector2 CPhase::m_number_pos = { 560 ,280 };
 const unsigned int CPhase::m_color = 0xffffffff;
-const int CPhase::m_digit_width = 32;
-const int CPhase::m_digit_height = 48;
+const int CPhase::m_digit_width = 112;
+const int CPhase::m_digit_height = 167;
 const int CPhase::m_max_digit = 9;
 const float CPhase::m_start_width = 894.0f;
 const float CPhase::m_finish_width = 922.0f;
 
-const vivid::Vector2 CPhase::m_start_logo_pos = { vivid::WINDOW_WIDTH / 2 - (m_start_width / 2) ,vivid::WINDOW_HEIGHT / 2 - 200 / 2 };
-const vivid::Vector2 CPhase::m_finish_logo_pos = { vivid::WINDOW_WIDTH / 2 - (m_finish_width / 2) ,vivid::WINDOW_HEIGHT / 2 - 200 / 2 };
+const vivid::Vector2 CPhase::m_start_logo_pos = { vivid::WINDOW_WIDTH / 2 - (m_start_width / 2) ,vivid::WINDOW_HEIGHT / 2 - 80 };
+const vivid::Vector2 CPhase::m_finish_logo_pos = { vivid::WINDOW_WIDTH / 2 - (m_finish_width / 2) ,vivid::WINDOW_HEIGHT / 2 - 80 };
 
 
 CPhase::CPhase()
@@ -63,7 +63,7 @@ void CPhase::Draw()
 				vivid::PlaySound("data\\sound\\finish.wav", false);
 				m_PlayFinishSE = true;
 			}
-		    vivid::DrawTexture("data/logo/finish1.png", m_finish_logo_pos,m_color);
+			vivid::DrawTexture("data/logo/finish1.png", m_finish_logo_pos, m_color);
 		}
 	}
 
@@ -85,7 +85,8 @@ void CPhase::Draw()
 		rect.right = rect.left + m_digit_width;
 		rect.top = 0;
 		rect.bottom = m_digit_height;
-		vivid::DrawTexture("data/logo/number(黒).png", m_number_pos, m_color, rect);
+
+		vivid::DrawTexture("data/logo/number(brack).png", m_number_pos, m_color, rect);
 	}
 	if (count <= 0)
 	{
@@ -95,7 +96,7 @@ void CPhase::Draw()
 			m_Old_Count = 0;
 		}
 
-      vivid::DrawTexture("data/logo/start1.png",m_start_logo_pos,m_color);
+		vivid::DrawTexture("data/logo/start1.png", m_start_logo_pos, m_color);
 	}
 }
 void CPhase::Finalize()
