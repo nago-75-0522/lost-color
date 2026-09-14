@@ -53,6 +53,7 @@ void CBall::Initialize(void)
 
 	//SEの読み込み
 	vivid::LoadSound("data\\sound\\ball.wav");//ballキャッチ時
+	vivid::LoadSound("data\\sound\\爆発.wav");//爆発時
 
 	m_Cyan = CColor_Select::GetInstance().GetCyan();
 	m_Yellow = CColor_Select::GetInstance().GetYellow();
@@ -235,6 +236,8 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 				//位置
 				effectPos.x = basket1.GetPosition().x;
 				effectPos.y = basket1.GetPosition().y;
+
+				vivid::PlaySound("data\\sound\\爆発.wav", false);
 				//エフェクト生成
 				CEffectManager::GetInstance().Create(EFFECT_ID::HIT, effectPos, 0xffffffff, 0.0f);
 				CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
@@ -246,6 +249,7 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 				//位置
 				effectPos.x = basket1.GetPosition().x + basket1.GetWidth() * 0.5f;
 				effectPos.y = basket1.GetPosition().y + basket1.GetHeight() * 0.5f;
+
 				//エフェクト生成
 				CEffectManager::GetInstance().Create(EFFECT_ID::CATCH, effectPos, 0xffffffff, 0.0f);
 				vivid::PlaySound("data\\sound\\ball.wav", false);
@@ -268,6 +272,7 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 				//位置
 				effectPos.x = basket2.GetPosition().x;
 				effectPos.y = basket2.GetPosition().y;
+				vivid::PlaySound("data\\sound\\爆発.wav", false);
 				//エフェクト生成
 				CEffectManager::GetInstance().Create(EFFECT_ID::HIT, effectPos, 0xffffffff, 0.0f);
 				CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);

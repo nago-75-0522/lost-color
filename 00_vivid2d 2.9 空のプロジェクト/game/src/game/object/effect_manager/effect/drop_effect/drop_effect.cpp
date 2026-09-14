@@ -23,7 +23,7 @@ void CDropEffect::Initialize(const vivid::Vector2& pos, unsigned int color, floa
 	//左右に散らす
 	m_Velocity.x = (float)(rand() % 5 - 2);
 	//上にとばす
-	m_Velocity.y = -2.0f;
+	m_Velocity.y = -5.0f;
 }
 
 void CDropEffect::Update(void)
