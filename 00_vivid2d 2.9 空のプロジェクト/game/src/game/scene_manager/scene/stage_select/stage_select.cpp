@@ -1,4 +1,4 @@
-//ステージ選択
+﻿//ステージ選択
 #include"stage_select.h"
 #include"..\..\scene_manager.h"
 #include"../../../object/player_manager/player_manager.h"
@@ -7,12 +7,14 @@
 //定数
 const vivid::Vector2 CStage_Select::m_bg_pos(0.0f, 0.0f);			//背景
 const int CStage_Select::m_button_x[] = { 100, 490 ,880 };			//ステージの配置位置***
-const int CStage_Select::m_button_y(100);							//ステージの配置高さ
+const int CStage_Select::m_button_y(200);							//ステージの配置高さ
 const int CStage_Select::m_finger_width(100);						//選択やじるし
+const int CStage_Select::m_select_width(612);
+
+const std::string CStage_Select::m_stage_select_path = "data\\logo\\stage_select_logo.png";
 const std::string CStage_Select::m_button_file[] =
 { "data\\stage1.png","data\\stage2.png" ,"data\\stage3.png" };		//ステージ画像***
 STAGE_ID CStage_Select::stage_id = STAGE_ID::MAX;					//stage_id 200000000000000
-
 const unsigned int CStage_Select::m_select_button_color(0xff0000cd);
 
 //インスタンス取得
@@ -70,8 +72,8 @@ void CStage_Select::Draw(void)
 	vivid::DrawText(48, "gamemain", { 0.0f,0.0f });
 
 	//背景画像
-	vivid::DrawTexture("data\\select_bg.png", { 0.0f,0.0f });
-
+	vivid::DrawTexture("data\\option_bg.png", { 0.0f,0.0f });
+	vivid::DrawTexture(m_stage_select_path, { vivid::WINDOW_WIDTH / 2 - (m_select_width / 2 ),50.0f });
 	//vivid::DrawTexture("data\\arrow.png", m_Finger_Pos); 指
 
 	for (int i = 0; i < (int)STAGE_ID::MAX; i++)

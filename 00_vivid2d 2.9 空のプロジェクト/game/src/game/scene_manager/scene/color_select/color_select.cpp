@@ -165,7 +165,7 @@ void CColor_Select::Draw()
 	vivid::DrawText(40, "Color_Select", { 0.0f,0.0f });
 
 	//背景画像
-	vivid::DrawTexture("data\\select_bg.png", { 0.0f,0.0f });
+	vivid::DrawTexture("data\\option_bg.png", { 0.0f,0.0f });
 	for (int i = 0; i < (int)COLOR::MAX; i++)
 	{
 		//ボタン座標を入れる

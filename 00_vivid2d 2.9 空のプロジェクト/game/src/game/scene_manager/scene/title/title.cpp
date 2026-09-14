@@ -6,7 +6,7 @@
 #include"../../../object/player_manager/player_manager.h"
 #include"..\option_character\option.h"
 
-const int CTitle::m_logo_limit_timer = 600;
+const int CTitle::m_logo_limit_timer = 60*500;
 
 CTitle::CTitle()
 	:m_Logo_Time(0)

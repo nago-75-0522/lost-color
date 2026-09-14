@@ -23,7 +23,10 @@ public:
 private:
 	static const int m_start_time;
 	static const unsigned int m_color;
-	static const vivid::Vector2 m_logo_pos;
+	static const float m_start_width;
+	static const float m_finish_width;
+	static const vivid::Vector2 m_start_logo_pos;
+	static const vivid::Vector2 m_finish_logo_pos;
 	static const vivid::Vector2 m_number_pos;
 	static const int m_digit_width;
 	static const int m_digit_height;
@@ -32,4 +35,5 @@ private:
 	int m_Old_Count;
 	bool m_PlayFinishSE;
 	GAME_STATE m_Game_State;
+
 };
