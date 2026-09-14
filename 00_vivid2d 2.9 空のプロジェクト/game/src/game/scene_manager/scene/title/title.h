@@ -39,8 +39,10 @@ private:
 	vivid::Vector2			  m_StartPos;			//ロゴスタートの位置
 
 	int m_Logo_Time;						//ロゴの表示時間
-	static const int m_logo_limit_timer;
+	static const int m_logo_limit_timer;	//過ぎたら動画再生
 	
+	int m_title_move_handle;//タイトル再生動画ハンドル
+	bool m_title_movie_play;//再生するかどうか
 
 	
 
