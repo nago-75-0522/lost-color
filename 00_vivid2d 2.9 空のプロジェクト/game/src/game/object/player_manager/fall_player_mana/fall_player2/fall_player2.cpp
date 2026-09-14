@@ -52,6 +52,8 @@ void CFall_Player2::Initialize()
 	m_Is_Knock_Move = false;
 	m_Knock_Target_Pos = { 0.0f,0.0f };
 	m_Player2_Path = "data\\fall\\humanC.png";
+	vivid::LoadSound("data\\sound\\break.wav");
+
 	//保存したIDの取得
 	CHARACTER_ID player2_id = COption::GetInstance().GetCharacterPlayer2();
 
@@ -365,6 +367,7 @@ bool CFall_Player2::Hit_Item_Box()
 			&& posA.y + hA>posB.y//Aの下辺とBの上辺
 			)
 		{
+			vivid::PlaySound("data\\sound\\break.wav", false);
 			CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM()
 				.erase(CItem_Manager::GetInstance().m_Item_Box.Get_Item_Box_NUM().begin() + i);
 			m_Player2_Get_Item = true;
