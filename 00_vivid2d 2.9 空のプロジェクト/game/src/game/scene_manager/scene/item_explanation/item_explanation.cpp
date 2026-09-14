@@ -45,12 +45,12 @@ void CItem_Explanation::Draw(void)
 	switch (stageid)
 	{
 	case STAGE_ID::STAGE1:
-		vivid::DrawText(48, "アイテム説明1", { 0.0f,0.0f });
+		vivid::DrawTexture("data\\explanation\\fall_item_ex.png", vivid::Vector2::ZERO);
 
 		break;
 
 	case STAGE_ID::STAGE2:
-		vivid::DrawText(48, "アイテム説明2", { 0.0f,0.0f });
+		vivid::DrawTexture("data\\explanation\\ball_ex2.png", vivid::Vector2::ZERO);
 		break;
 
 		//特に何も表示しない
