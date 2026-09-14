@@ -22,4 +22,6 @@ private:
 	CRace_Player2& operator =(const CRace_Player2& rhs) = delete;
 
 	static const unsigned int m_color;
+
+	std::string m_Player2_Path;
 };

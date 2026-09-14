@@ -1,6 +1,7 @@
 ﻿#include"race_player1.h"
 #include"../race_player_id.h"
 #include"../../../../effect_manager/effect_manager.h"
+#include"../../../../../scene_manager/scene\option_character/option.h"
 
 const unsigned int CRace_Player1::m_color = 0xffff00ff;
 
@@ -13,6 +14,7 @@ CRace_Player1& CRace_Player1::GetInstance(void)
 
 CRace_Player1::CRace_Player1(void)
 	: IRace_Player(PLAYER_CATEGORY::PLAYER1)
+	, m_Player1_Path("data\\race\\humanM.png")
 {
 }
 
@@ -61,8 +63,35 @@ void CRace_Player1::Draw()
 	m_Draw_Pos.x = vivid::WINDOW_WIDTH / 2 - m_size / 2 + m_Move_Pos.x;
 	m_Draw_Pos.y = m_Camera_Copy_Pos.y + vivid::WINDOW_HEIGHT / 2 - m_size + m_Move_Pos.y;
 
+	//保存したIDの取得
+	CHARACTER_ID player1_id = COption::GetInstance().GetCharacterPlayer1();
+
+	//選択されたキャラIDのキャラデータ変更
+	switch (player1_id)
+	{
+	case CHARACTER_ID::CHARA1:
+		m_Player1_Path = "data\\race\\magenta_car.png";
+		break;
+
+	case CHARACTER_ID::CHARA2:
+		m_Player1_Path = "data\\race\\magenta_cat.png";
+		break;
+
+	case CHARACTER_ID::CHARA3:
+		m_Player1_Path = "data\\race\\magenta_bear.png";
+		break;
+
+	case CHARACTER_ID::CHARA4:
+		m_Player1_Path = "data\\race\\magenta_rabit.png";
+		break;
+
+	default:
+		break;
+	}
+
 	vivid::DrawTexture("data\\logo\\small_pink_1p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
-	vivid::DrawTexture("data\\race\\magenta_car.png", m_Draw_Pos);
+	vivid::DrawTexture(m_Player1_Path, m_Draw_Pos, 0xffffffff);
+
 
 	//vivid::DrawText(40, "Accele:" + std::to_string(m_isAccele), { 0.0f,0.0f }, 0xffff0000);
 

@@ -1,6 +1,7 @@
 ﻿#include "race_player2.h"
 #include"../race_player_id.h"
 #include"../../../../effect_manager/effect_manager.h"
+#include"../../../../../scene_manager/scene\option_character/option.h"
 
 const unsigned int CRace_Player2::m_color = 0xff00ffff;
 
@@ -13,6 +14,7 @@ CRace_Player2& CRace_Player2::GetInstance(void)
 
 CRace_Player2::CRace_Player2(void)
 	: IRace_Player(PLAYER_CATEGORY::PLAYER2)
+
 {
 }
 
@@ -62,8 +64,34 @@ void CRace_Player2::Draw()
 	m_Draw_Pos.x = vivid::WINDOW_WIDTH / 2 - m_size / 2 + m_Move_Pos.x;
 	m_Draw_Pos.y = m_Camera_Copy_Pos.y + vivid::WINDOW_HEIGHT / 2 + m_Move_Pos.y;
 
-	vivid::DrawTexture("data\\logo\\small_blue_2p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
-	vivid::DrawTexture("data\\race\\cyan_car.png", m_Draw_Pos, 0xffffffff);
+	//保存したIDの取得
+	CHARACTER_ID player2_id = COption::GetInstance().GetCharacterPlayer2();
+
+	//選択されたキャラIDのキャラデータ変更
+	switch (player2_id)
+	{
+	case CHARACTER_ID::CHARA1:
+		m_Player2_Path = "data\\race\\cyan_car.png";
+		break;
+
+	case CHARACTER_ID::CHARA2:
+		m_Player2_Path = "data\\race\\cyan_cat.png";
+		break;
+
+	case CHARACTER_ID::CHARA3:
+		m_Player2_Path = "data\\race\\cyan_bear.png";
+		break;
+
+	case CHARACTER_ID::CHARA4:
+		m_Player2_Path = "data\\race\\cyan_rabit.png";
+		break;
+
+	default:
+		break;
+	}
+
+	vivid::DrawTexture("data\\logo\\small_pink_2p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
+	vivid::DrawTexture(m_Player2_Path, m_Draw_Pos, 0xffffffff);
 
 	//vivid::DrawText(40, "Up:" + std::to_string(m_isUp_Move) + "Down:" + std::to_string(m_isDown_Move), { 0.0f,0.0f }, 0xff0000ff);
 	//vivid::DrawText(40, "UpLane:" + std::to_string(m_isUp_Lane) + "DownLane:" + std::to_string(m_isDown_Lane), { 0.0f,40.0f }, 0xff0000ff);
