@@ -175,11 +175,11 @@ void CColor_Select::Draw()
 		if (i == (int)m_Now_Color)
 		{
 			//選択しているボタンを灰色にする
-			vivid::DrawTexture(m_button_file[i], m_Button_Pos, m_select_color);
+			vivid::DrawTexture(m_button_file[i], m_Button_Pos);
 		}
 		else
 		{
-			vivid::DrawTexture(m_button_file[i], m_Button_Pos);
+			vivid::DrawTexture(m_button_file[i], m_Button_Pos, m_select_color);
 		}
 	}
 
@@ -191,7 +191,7 @@ void CColor_Select::Draw()
 		vivid::DrawTexture(m_button_file[2], m_Magenta_Pos, m_selected_color);
 
 	//色選択
-	vivid::DrawTexture(m_color_select_path, { (vivid::WINDOW_WIDTH / 2 - (m_color_width / 2) + 100),0.0f });
+	vivid::DrawTexture(m_color_select_path, { vivid::WINDOW_WIDTH / 2 - (m_color_width / 2),50.0f });
 }
 
 //解放

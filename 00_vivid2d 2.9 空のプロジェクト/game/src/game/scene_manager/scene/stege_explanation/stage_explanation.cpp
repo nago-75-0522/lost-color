@@ -37,22 +37,22 @@ void CStage_Explanation::Initialize(void)
 	switch (stageid)
 	{
 	case STAGE_ID::STAGE1:
-		m_glaph_handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
-		m_explanation_path ="data\\explanation\\fall_ex.png";		//画像の読み込み
-		PlayMovieToGraph(m_glaph_handle);							//動画再生
+		m_Glaph_Handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
+		m_Explanation_Path ="data\\explanation\\fall_ex.png";		//画像の読み込み
+		PlayMovieToGraph(m_Glaph_Handle);							//動画再生
 		
 		break;
 
 	case STAGE_ID::STAGE2:
-		m_glaph_handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
-		m_explanation_path = "data\\explanation\\ball_ex.png";		//画像の読み込み
-		PlayMovieToGraph(m_glaph_handle);							//動画再生
+		m_Glaph_Handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
+		m_Explanation_Path = "data\\explanation\\ball_ex.png";		//画像の読み込み
+		PlayMovieToGraph(m_Glaph_Handle);							//動画再生
 		break;
 
 	case STAGE_ID::STAGE3:
-		m_glaph_handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
-		m_explanation_path = "data\\explanation\\race_ex.png";		//画像の読み込み
-		PlayMovieToGraph(m_glaph_handle);							//動画再生
+		m_Glaph_Handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
+		m_Explanation_Path = "data\\explanation\\race_ex.png";		//画像の読み込み
+		PlayMovieToGraph(m_Glaph_Handle);							//動画再生
 		break;
 
 	default:
@@ -74,8 +74,8 @@ void CStage_Explanation::Draw(void)
 {
 
 	//描画するだけ 画像と動画　イニシャライズで受け取った値を描画する
-	DrawExtendGraph(400, 130, 1280, 620, m_glaph_handle, true);
-	vivid::DrawTexture(m_explanation_path, { 0.0f,0.0f });//説明画像
+	DrawExtendGraph(400, 130, 1280, 620, m_Glaph_Handle, true);
+	vivid::DrawTexture(m_Explanation_Path, { 0.0f,0.0f });//説明画像
 
 }
 

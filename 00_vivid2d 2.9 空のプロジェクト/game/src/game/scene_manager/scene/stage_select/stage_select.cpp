@@ -13,7 +13,7 @@ const int CStage_Select::m_select_width(612);
 
 const std::string CStage_Select::m_stage_select_path = "data\\logo\\stage_select_logo.png";
 const std::string CStage_Select::m_button_file[] =
-{ "data\\stage1.png","data\\stage2.png" ,"data\\stage3.png" };		//ステージ画像***
+{ "data\\fall_select.png","data\\ball_select.png" ,"data\\race_select.png" };		//ステージ画像***
 STAGE_ID CStage_Select::stage_id = STAGE_ID::MAX;					//stage_id 200000000000000
 const unsigned int CStage_Select::m_select_button_color(0xff0000cd);
 
@@ -85,11 +85,11 @@ void CStage_Select::Draw(void)
 		if (i == (int)m_Now_Select)
 		{
 			//選択しているボタンを灰色にする
-			vivid::DrawTexture(m_button_file[i], m_Button_Pos, m_select_button_color);
+			vivid::DrawTexture(m_button_file[i], m_Button_Pos);
 		}
 		else
 		{
-			vivid::DrawTexture(m_button_file[i], m_Button_Pos);
+			vivid::DrawTexture(m_button_file[i], m_Button_Pos,m_select_button_color);
 		}
 	}
 }

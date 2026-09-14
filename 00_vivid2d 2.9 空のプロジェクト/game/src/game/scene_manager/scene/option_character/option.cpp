@@ -57,20 +57,20 @@ Character g_CharacterData[(int)CHARACTER_ID::MAX] =
 	},
 
 	//CHARACTER_ID::CHARA3
-		{
-			"data\\bear.png",
-			3,
-			650.0f,
-			150.0f,
-		},
+	{
+		"data\\bear.png",
+		3,
+		650.0f,
+		150.0f,
+	},
 
-		//CHARACTER_ID::CHARA4
-		{
-			"data\\rabbit.png",
-			4,
-			950.0f,
-			150.0f,
-		}
+	//CHARACTER_ID::CHARA4
+	{
+		"data\\rabbit.png",
+		4,
+		950.0f,
+		150.0f,
+	}
 };
 
 

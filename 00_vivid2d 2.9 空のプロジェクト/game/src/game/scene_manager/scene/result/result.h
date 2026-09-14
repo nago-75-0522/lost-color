@@ -25,5 +25,10 @@ private:
 
 	~CResult(void) = default;
 
-	static const vivid::Vector2 m_ScorePos;
+	static const int m_win_width;
+	static const int m_win_height;
+	static const vivid::Vector2 m_win_pos;
+	static const int m_draw_width;
+	static const int m_draw_height;
+	static const vivid::Vector2 m_draw_pos;
 };

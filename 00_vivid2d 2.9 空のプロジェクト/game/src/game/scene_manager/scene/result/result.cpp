@@ -6,7 +6,12 @@
 #include"../game_risult/game_risult.h"
 #include"..\stage_manager\stage2\stage2.h"
 
-const vivid::Vector2 CResult::m_ScorePos = {420,300};
+const int CResult::m_win_width = 700;
+const int CResult::m_win_height = 144;
+const vivid::Vector2 CResult::m_win_pos = { vivid::WINDOW_WIDTH / 2 - m_win_width / 2,vivid::WINDOW_HEIGHT / 2 - m_win_height / 2 };
+const int CResult::m_draw_width = 650;
+const int CResult::m_draw_height = 144;
+const vivid::Vector2 CResult::m_draw_pos = { vivid::WINDOW_WIDTH / 2 - m_draw_width / 2,vivid::WINDOW_HEIGHT / 2 - m_draw_height / 2 };
 
 //インスタンス取得
 CResult& CResult::GetInstance()
@@ -58,13 +63,19 @@ void CResult::Update(void)
 //描画
 void CResult::Draw(void)
 {
-	vivid::DrawText(48, "Result", { 0.0f,0.0f });
+	vivid::DrawTexture("data\\result_bg.png", vivid::Vector2::ZERO);
 	if (CGame_Result::GetInstance().Get_Player1_Score() == CGame_Result::GetInstance().Get_Player2_Score())
-		vivid::DrawText(110, "DRAW!!", { m_ScorePos });
-	else if(CGame_Result::GetInstance().Get_Player1_Score()> CGame_Result::GetInstance().Get_Player2_Score())
-		vivid::DrawText(110, "1PWIN!!", { m_ScorePos });
+	{
+		vivid::DrawTexture("data\\logo\\draw.png", m_win_pos);
+	}
+	else if (CGame_Result::GetInstance().Get_Player1_Score() > CGame_Result::GetInstance().Get_Player2_Score())
+	{
+		vivid::DrawTexture("data\\logo\\1p_win.png", m_win_pos);
+	}
 	if (CGame_Result::GetInstance().Get_Player1_Score() < CGame_Result::GetInstance().Get_Player2_Score())
-		vivid::DrawText(110, "2PWIN!!", { m_ScorePos });
+	{
+		vivid::DrawTexture("data\\logo\\2p_win.png", m_win_pos);
+	}
 }
 
 //解放
