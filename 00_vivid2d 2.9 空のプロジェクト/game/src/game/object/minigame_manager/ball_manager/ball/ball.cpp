@@ -233,7 +233,6 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 					color = 0xffffff00;//イエロー
 
 				vivid::Vector2 effectPos;
-				vivid::Vector2 effectPos2;
 				//位置
 				effectPos.x = basket1.GetPosition().x;
 				effectPos.y = basket1.GetPosition().y;
