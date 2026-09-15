@@ -117,12 +117,12 @@ void CStage_Explanation::Draw(void)
 	case STAGE_ID::STAGE3:
 
 
-		vivid::DrawTexture(m_Bg_Path, { 0.0f,0.0f });//背景画像
+		vivid::DrawTexture(m_Bg_Path, vivid::Vector2::ZERO);//背景画像
 
 		//描画するだけ画像と動画イニシャライズで受け取った値を描画する
 		DrawExtendGraph(473, 200, 1243, 524, m_Glaph_Handle, true);
 
-		vivid::DrawTexture(m_Explanation_Path, { 0.0f,0.0f });//説明画像
+		vivid::DrawTexture(m_Explanation_Path, vivid::Vector2::ZERO);//説明画像
 
 
 

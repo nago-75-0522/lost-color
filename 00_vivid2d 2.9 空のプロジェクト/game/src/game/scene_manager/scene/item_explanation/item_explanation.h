@@ -27,7 +27,6 @@ public:
 	void BackChengeScene(void);
 
 
-
 private:
 	//コンストラクタ
 	CItem_Explanation(void);
@@ -42,6 +41,10 @@ private:
 	CItem_Explanation& operator=(const CItem_Explanation& rhp) = delete;
 
 	int m_StageCount;//何回終わったかの判定
+
+	std::string m_Item_Path;		//画像データを入れる配列
+	int			m_Glaph_Handle;		//動画ハンドル　ハンドルは識別番号的なもの
+
 
 
 };
