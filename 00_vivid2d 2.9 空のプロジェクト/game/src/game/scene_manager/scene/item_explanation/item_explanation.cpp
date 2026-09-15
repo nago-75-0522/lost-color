@@ -25,11 +25,46 @@ CItem_Explanation::CItem_Explanation(void)
 void CItem_Explanation::Initialize(void)
 {
 	CItem_Explanation::m_StageCount = CSceneManager::GetInstance().FinishStage();
+
+	//保存したIDの取得
+	STAGE_ID stageid = CStage_Select::GetInstance().GetStageID();
+
+	switch (stageid)
+	{
+	case STAGE_ID::STAGE1:
+		m_Item_Path = "data\\explanation\\fall_item_ex.png";
+		m_Glaph_Handle = LoadGraph("data\\move\\fall_item.mp4");	//説明動画のダウンロード
+		PlayMovieToGraph(m_Glaph_Handle);							//動画再生
+
+
+		break;
+
+
+
+	case STAGE_ID::STAGE2:
+		m_Item_Path = "data\\explanation\\ball_ex2.png";
+		m_Glaph_Handle = LoadGraph("data\\move\\ball_item.mp4");	//説明動画のダウンロード
+		PlayMovieToGraph(m_Glaph_Handle);							//動画再生
+
+		break;
+
+	default:
+		break;
+	}
 }
 
 //更新
 void CItem_Explanation::Update(void)
 {
+	if (m_Glaph_Handle != -1)
+	{
+		if (GetMovieStateToGraph(m_Glaph_Handle) == 0)
+		{
+			SeekMovieToGraph(m_Glaph_Handle, 0);
+			PlayMovieToGraph(m_Glaph_Handle);
+		}
+	}
+
 	//呼び出し
 	BackChengeScene();
 	NextChangeScene();
@@ -39,31 +74,9 @@ void CItem_Explanation::Update(void)
 //描画
 void CItem_Explanation::Draw(void)
 {
-	//保存したIDの取得
-	STAGE_ID stageid = CStage_Select::GetInstance().GetStageID();
-
-	switch (stageid)
-	{
-	case STAGE_ID::STAGE1:
-		vivid::DrawTexture("data\\explanation\\fall_item_ex.png", vivid::Vector2::ZERO);
-
-		break;
-
-	case STAGE_ID::STAGE2:
-		vivid::DrawTexture("data\\explanation\\ball_ex2.png", vivid::Vector2::ZERO);
-		break;
-
-		//特に何も表示しない
-		/*
-	case STAGE_ID::STAGE3:
-		vivid::DrawText(48, "説明3", { 0.0f,0.0f });
-		break;
-		*/
-
-	default:
-		break;
-	}
-
+	
+	vivid::DrawTexture(m_Item_Path, vivid::Vector2::ZERO);
+	DrawExtendGraph(690, 200, 1251, 654, m_Glaph_Handle, true);
 }
 
 
