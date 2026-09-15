@@ -6,17 +6,20 @@
 #include"../../../object/player_manager/player_manager.h"
 #include"..\option_character\option.h"
 
-const int CTitle::m_logo_limit_timer = 5;//60*500;
+const int CTitle::m_logo_limit_timer = 60 * 500;
 
 CTitle::CTitle()
 	:m_Logo_Time(0)
 	,m_title_logo_file("data\\logo\\ge-mulogo1.png")
-	, m_start_logo_file("data\\logo\\startUI.png")
+	,m_start_logo_file("data\\logo\\startUI.png")
 	,m_title_logo_width(1000)
 	,m_title_logo_height(500)
 	,m_start_logo_width(420)
 	,m_start_logo_height(180)
-	, m_title_movie_play(false)
+	,m_fade_speed(5)
+	,m_Start_Alpha_State(START_ALPHA::DUMMY)
+	,m_Start_Color(0xffffffff)
+	,m_title_movie_play(false)
 {
 }
 
@@ -39,8 +42,8 @@ void CTitle::Initialize(void)
 	vivid::LoadSound("data\\sound\\click.mp3");
 
 	m_title_move_handle = LoadGraph("data\\move\\title_move.mp4");	//ロード
-
-
+	m_Start_Alpha_State = START_ALPHA::SUBTRACT;
+	m_Start_Color = 0xffffffff;
 }
 
 void CTitle::Update(void)
@@ -98,7 +101,7 @@ void CTitle::Update(void)
 void CTitle::Draw(void)
 {
 
-	vivid::DrawText(48, "title", { 0.0f,0.0f });
+	//vivid::DrawText(48, "title", { 0.0f,0.0f });
 
 	//タイトル背景
 	vivid::DrawTexture("data\\title_bg2.png", { 0.0f,0.0f });
@@ -110,8 +113,6 @@ void CTitle::Draw(void)
 	//動画再生中
 	if(m_title_movie_play == true)
 	{
-		
-
 		DrawExtendGraph(0, 0, 1280, 720, m_title_move_handle, true);//動画サイズの拡縮
 		vivid::DrawTexture(m_start_logo_file, { (float)vivid::WINDOW_WIDTH - (float)m_start_logo_width,(float)vivid::WINDOW_HEIGHT -(float)m_start_logo_height});
 
@@ -128,14 +129,27 @@ void CTitle::Draw(void)
 		return;
 	}
 
+	//フェード処理
+	int alpha = (m_Start_Color & 0xff000000) >> 24;
+
+	if (m_Start_Alpha_State == START_ALPHA::ADD)
+		alpha += m_fade_speed;
+	else
+		alpha -= m_fade_speed;
+
+	if (alpha <= 0)
+		m_Start_Alpha_State = START_ALPHA::ADD;
+	else if (alpha >= 0xff)
+		m_Start_Alpha_State = START_ALPHA::SUBTRACT;
+
+	m_Start_Color = (alpha << 24) | (m_Start_Color & 0x00ffffff);
+
 	//タイトルロゴ
 	vivid::DrawTexture(m_title_logo_file, m_TitlePos);
 
 	//スタートロゴ
-	vivid::DrawTexture(m_start_logo_file, m_StartPos);
+	vivid::DrawTexture(m_start_logo_file, m_StartPos,m_Start_Color);
 	
-
-
 }
 
 void CTitle::Finalize(void)

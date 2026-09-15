@@ -31,12 +31,21 @@ private:
 	const int		  m_title_logo_height;		//高さ
 
 	/* スタート */
+	enum class START_ALPHA
+	{
+		DUMMY,
+		ADD,
+		SUBTRACT,
+	}m_Start_Alpha_State;
+
 	const std::string m_start_logo_file;		//スタート画像
 	const int		  m_start_logo_width;		//幅
 	const int		  m_start_logo_height;		//高さ
+	const int m_fade_speed;
 
 	vivid::Vector2			  m_TitlePos;			//タイトル画像表示位置
 	vivid::Vector2			  m_StartPos;			//ロゴスタートの位置
+	unsigned int m_Start_Color;
 
 	int m_Logo_Time;						//ロゴの表示時間
 	static const int m_logo_limit_timer;	//過ぎたら動画再生
