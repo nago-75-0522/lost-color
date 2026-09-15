@@ -33,24 +33,27 @@ void CStage_Explanation::Initialize(void)
 	STAGE_ID stageid = CStage_Select::GetInstance().GetStageID();
 
 	
-	//どのステージの動画をロード　スイッチ　画像も　画像は文字列だけ受け取って受け取ってある変数の値で描画
+	//どのステージの動画をロードスイッチ画像も画像は文字列だけ受け取って受け取ってある変数の値で描画
 	switch (stageid)
 	{
 	case STAGE_ID::STAGE1:
-		m_Glaph_Handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
-		m_Explanation_Path ="data\\explanation\\fall_ex.png";		//画像の読み込み
+		m_Explanation_Path = "data\\explanation\\fall_ex.png";		//画像の読み込み
+		m_Bg_Path = "data\\stage_bg.png";		//画像の読み込み
+		m_Glaph_Handle = LoadGraph("data\\move\\fall.mp4");	//説明動画のダウンロード
 		PlayMovieToGraph(m_Glaph_Handle);							//動画再生
 		
 		break;
 
 	case STAGE_ID::STAGE2:
-		m_Glaph_Handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
+		m_Bg_Path = "data\\explanation\\race_bg.png";		//画像の読み込み
+		m_Glaph_Handle = LoadGraph("data\\move\\ball.mp4");	//説明動画のダウンロード
 		m_Explanation_Path = "data\\explanation\\ball_ex.png";		//画像の読み込み
 		PlayMovieToGraph(m_Glaph_Handle);							//動画再生
 		break;
 
 	case STAGE_ID::STAGE3:
-		m_Glaph_Handle = LoadGraph("data\\explanation\\0911.mp4");	//説明動画のダウンロード
+		m_Bg_Path = "data\\explanation\\race_bg.png";		//画像の読み込み
+		m_Glaph_Handle = LoadGraph("data\\move\\race2.mp4");	//説明動画のダウンロード
 		m_Explanation_Path = "data\\explanation\\race_ex.png";		//画像の読み込み
 		PlayMovieToGraph(m_Glaph_Handle);							//動画再生
 		break;
@@ -63,6 +66,15 @@ void CStage_Explanation::Initialize(void)
 //更新
 void CStage_Explanation::Update(void)
 {
+	if(m_Glaph_Handle != -1)
+	{
+		if (GetMovieStateToGraph(m_Glaph_Handle) == 0)
+		{
+			SeekMovieToGraph(m_Glaph_Handle, 0);
+			PlayMovieToGraph(m_Glaph_Handle);
+		}
+	}
+
 	//呼び出し
 	BackChengeScene();
 	NextChangeScene();
@@ -73,9 +85,52 @@ void CStage_Explanation::Update(void)
 void CStage_Explanation::Draw(void)
 {
 
-	//描画するだけ 画像と動画　イニシャライズで受け取った値を描画する
-	DrawExtendGraph(400, 130, 1280, 620, m_Glaph_Handle, true);
-	vivid::DrawTexture(m_Explanation_Path, { 0.0f,0.0f });//説明画像
+
+	
+
+	//保存したIDの取得 ステージ1の時だけ動画を前にする
+	STAGE_ID stageid = CStage_Select::GetInstance().GetStageID();
+	switch (stageid)
+	{
+	case STAGE_ID::STAGE1:
+
+		vivid::DrawTexture(m_Bg_Path, { 0.0f,0.0f });//背景画像
+
+
+		//描画するだけ画像と動画イニシャライズで受け取った値を描画する
+		DrawExtendGraph(476, 177, 1213, 553, m_Glaph_Handle, true);
+		vivid::DrawTexture(m_Explanation_Path, { 0.0f,0.0f });//説明画像
+
+		break;
+
+	case STAGE_ID::STAGE2:
+
+		vivid::DrawTexture(m_Bg_Path, { 0.0f,0.0f });//背景画像
+
+		//描画するだけ画像と動画イニシャライズで受け取った値を描画する
+		DrawExtendGraph(460, 164, 1232, 558, m_Glaph_Handle, true);
+
+		vivid::DrawTexture(m_Explanation_Path, { 0.0f,0.0f });//説明画像
+
+		break;
+
+	case STAGE_ID::STAGE3:
+
+
+		vivid::DrawTexture(m_Bg_Path, { 0.0f,0.0f });//背景画像
+
+		//描画するだけ画像と動画イニシャライズで受け取った値を描画する
+		DrawExtendGraph(473, 200, 1243, 524, m_Glaph_Handle, true);
+
+		vivid::DrawTexture(m_Explanation_Path, { 0.0f,0.0f });//説明画像
+
+
+
+		break;
+
+	default:
+		break;
+	}
 
 }
 
