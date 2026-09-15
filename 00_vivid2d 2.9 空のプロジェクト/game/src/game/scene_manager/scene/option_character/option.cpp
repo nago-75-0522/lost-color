@@ -144,7 +144,7 @@ void COption::Draw(void)
 		else
 		{
 			m_Now_Select = m_Player2_Select;
-			vivid::DrawTexture("data\\logo\\black2.png", { 300.0f,20.0f });
+			vivid::DrawTexture("data\\logo\\black2.png", { 250.0f,20.0f });
 			vivid::DrawTexture("data\\logo\\が選んでね1.png", { m_logo_space,30.0f });
 		}
 

@@ -11,11 +11,12 @@
 
 const float CSceneManager::m_fade_speed = 1.0f;
 const int	CSceneManager::m_oparation_limit_time = 60 * 500;//リセット時間
-
+const int CSceneManager::m_reset_time = 60 * 3;
 CSceneManager::CSceneManager()
 	:m_Scene(nullptr)
 	, m_StageCount(0)
 	,m_NotOparation_Time(0.0f)
+	,m_Reset_Timer(m_reset_time)
 {
 }
 
@@ -28,8 +29,6 @@ CSceneManager& CSceneManager::GetInstance()
 //初期化
 void CSceneManager::Initialize()
 {
-	
-
 	//フェードインから開始
 	m_FadeState = FADE::FADE_IN;
 	m_FadeAlpha = 1.0f;
@@ -44,7 +43,7 @@ void CSceneManager::Initialize()
 		m_CurrentID = m_NextID;
 	}
 
-
+	m_Reset_Timer = m_reset_time;
 }
 void CSceneManager::Update()
 {
@@ -104,11 +103,16 @@ void CSceneManager::Update()
 		break;
 	}
 
-	if (vivid::keyboard::Released(vivid::keyboard::KEY_ID::EIGHT))
+	if (vivid::keyboard::Button(vivid::keyboard::KEY_ID::EIGHT))
 	{
-		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
+		if (--m_Reset_Timer <= 0)
+		{
+			m_Reset_Timer = m_reset_time;
+			CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
+		}
 	}
-	
+	else if (vivid::keyboard::Released(vivid::keyboard::KEY_ID::EIGHT))
+		m_Reset_Timer = m_reset_time;
 
 }
 

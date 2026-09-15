@@ -66,13 +66,17 @@ private:
 
 	/* フェード */
 	static const	float m_fade_speed;				//フェード速度
-					FADE	m_FadeState;			//フェード状態
-					float	m_FadeAlpha;			//フェード透明度
-
-					int m_StageCount;//ステージ回数
-
-					float  m_NotOparation_Time;			//操作なし時間
 	static	const	int m_oparation_limit_time;			//タイトル戻るまでの時間
+	static const int m_reset_time;
+
+	FADE	m_FadeState;			//フェード状態
+	float	m_FadeAlpha;			//フェード透明度
+
+	int m_StageCount;//ステージ回数
+
+	float  m_NotOparation_Time;			//操作なし時間
+
+	int	m_Reset_Timer;
 
 };
 
