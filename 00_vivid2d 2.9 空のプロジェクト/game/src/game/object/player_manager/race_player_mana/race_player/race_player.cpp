@@ -65,6 +65,7 @@ void IRace_Player::Initialize()
 	m_Is_Sound = false;
 
 	vivid::LoadSound("data\\sound\\acceleration.wav");
+	vivid::LoadSound("data\\sound\\select.mp3");
 }
 
 void IRace_Player::Update(void)

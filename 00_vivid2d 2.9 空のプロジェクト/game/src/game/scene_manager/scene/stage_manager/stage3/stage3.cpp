@@ -30,7 +30,7 @@ void CStage3::Initialize(void)
 	CMinigame_Manager::GetInstance().Initialize();
 	CPlayer_Manager::GetInstance().Initialize();
 
-	m_Win_Color_Pos.x = vivid::WINDOW_WIDTH / 2 - m_win_color_size * m_chara_count / 2;
+	m_Win_Color_Pos.x = vivid::WINDOW_WIDTH / 2 - m_win_color_size * m_chara_count / 2 - 90;
 	m_Win_Color_Pos.y = vivid::WINDOW_HEIGHT / 2 - m_win_color_size / 2;
 	m_Win_Color_Velocity = { 0.0f,0.0f };
 
@@ -86,7 +86,7 @@ void CStage3::Draw(void)
 	rect.bottom = m_win_color_size;
 
 	vivid::DrawTexture("data\\race\\win_color.png", m_Win_Color_Pos, 0xffffffff, rect); //当たりの色表示
-	vivid::DrawText(64, "select", { m_Win_Color_Pos.x + m_win_color_size,m_Win_Color_Pos.y }, 0xff000000);
+	vivid::DrawTexture("data\\logo\\to_select.png", { m_Win_Color_Pos.x + m_win_color_size,m_Win_Color_Pos.y }, 0xffffffff);
 
 	if (m_Race_State == RACE_STATE::MAIN)
 		m_Phase.Draw();

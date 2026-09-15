@@ -36,6 +36,7 @@ void CRace_Player1::Update(void)
 			//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
 			{
+				vivid::PlaySound("data\\sound\\select.mp3", false);
 				CEffectManager::GetInstance().Create(EFFECT_ID::DIR_SELECT, m_Draw_Pos, m_color, 0.f);
 				m_isPush = true;
 				m_isUp_Move = true;
@@ -48,6 +49,7 @@ void CRace_Player1::Update(void)
 			//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
 			{
+				vivid::PlaySound("data\\sound\\select.mp3", false);
 				CEffectManager::GetInstance().Create(EFFECT_ID::DIR_SELECT, m_Draw_Pos, m_color, 0.f);
 				m_isPush = true;
 				m_isDown_Move = true;

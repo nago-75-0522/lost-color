@@ -143,7 +143,7 @@ void CGame_Result::Draw()
 	vivid::DrawTexture("data\\title_bg2.png", vivid::Vector2(0.0f, 0.0f));
 	vivid::DrawTexture("data\\logo\\black.png", vivid::Vector2{ 330,270 });
 	vivid::DrawTexture("data\\logo\\black2.png", vivid::Vector2{ 810,270 });
-	vivid::DrawTexture("data\\logo\\score1.png", vivid::Vector2{ 0.0f,0.0f }, 0xff000000);
+	vivid::DrawTexture("data\\logo\\score1.png", vivid::Vector2{ 20.0f,20.0f }, 0xffffffff);
 	if (CPlayer_Manager::GetInstance().Draw_Battle())
 		vivid::DrawTexture("data\\logo\\Draw1.png", vivid::Vector2{ 470.0f,160.0f });
 	else if (CPlayer_Manager::GetInstance().Player1_Win())

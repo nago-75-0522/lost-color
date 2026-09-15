@@ -37,6 +37,7 @@ void CRace_Player2::Update(void)
 				//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
 			{
+				vivid::PlaySound("data\\sound\\select.mp3", false);
 				CEffectManager::GetInstance().Create(EFFECT_ID::DIR_SELECT, m_Draw_Pos, m_color, 0.f);
 				m_isPush = true;
 				m_isUp_Move = true;
@@ -49,6 +50,7 @@ void CRace_Player2::Update(void)
 			//キーが押されてなかったら押した判定にする
 			if (!m_isPush)
 			{
+				vivid::PlaySound("data\\sound\\select.mp3", false);
 				CEffectManager::GetInstance().Create(EFFECT_ID::DIR_SELECT, m_Draw_Pos, m_color, 0.f);
 				m_isPush = true;
 				m_isDown_Move = true;
@@ -90,7 +92,7 @@ void CRace_Player2::Draw()
 		break;
 	}
 
-	vivid::DrawTexture("data\\logo\\small_pink_2p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
+	vivid::DrawTexture("data\\logo\\small_blue_2p.png", { m_Draw_Pos.x + m_size, m_Draw_Pos.y + m_size - 40.f });
 	vivid::DrawTexture(m_Player2_Path, m_Draw_Pos, 0xffffffff);
 
 	//vivid::DrawText(40, "Up:" + std::to_string(m_isUp_Move) + "Down:" + std::to_string(m_isDown_Move), { 0.0f,0.0f }, 0xff0000ff);

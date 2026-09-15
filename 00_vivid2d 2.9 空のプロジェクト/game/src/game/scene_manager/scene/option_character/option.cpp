@@ -90,6 +90,7 @@ void COption::Initialize(void)
 	m_Player1_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER1);
 	m_Player2_Stick = controller::GetAnalogStickLeft(controller::DEVICE_ID::PLAYER2);
 
+	vivid::LoadSound("data\\sound\\select.mp3");
 	vivid::LoadSound("data\\sound\\click.mp3");
 	vivid::PlaySound("data\\sound\\title_bgm.mp3", true);
 
