@@ -184,11 +184,8 @@ void CBallPlayer1::Update(void)
 			//1度も相手に当たらなかった
 			if (!m_AttackHit)
 			{
-				if (!m_AttackHit)
+				if (CBallScore::GetInstance().GetPlayer1Score() > 0)
 				{
-					// 空振りペナルティ
-					CBallScore::GetInstance().AddPlayer1Score(-10);
-
 					unsigned int color;
 					if (CBall::GetInstance().GetPlayer1Color() == CBall::BALL_COLOR::MAGENTA)
 						color = 0xffff00ff;
@@ -202,6 +199,8 @@ void CBallPlayer1::Update(void)
 					//エフェクト生成
 					CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
 				}
+				// 空振りペナルティ
+				CBallScore::GetInstance().AddPlayer1Score(-10);
 			}
 		}
 	}

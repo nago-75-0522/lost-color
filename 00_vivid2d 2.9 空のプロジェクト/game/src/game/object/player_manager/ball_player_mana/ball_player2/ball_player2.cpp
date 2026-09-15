@@ -185,20 +185,23 @@ void CBallPlayer2::Update(void)
 			//1度も相手に当たらなかった
 			if (!m_AttackHit)
 			{
+				if (CBallScore::GetInstance().GetPlayer2Score() > 0)
+				{
+					unsigned int color;
+					if (CBall::GetInstance().GetPlayer2Color() == CBall::BALL_COLOR::CYAN)
+						color = 0xff00ffff;//シアン
+					else
+						color = 0xffffff00;//イエロー
+
+					//位置
+					vivid::Vector2 effectPos;
+					effectPos.x = m_Pos.x + m_width * 0.5f;
+					effectPos.y = m_Pos.y;
+					//エフェクト生成
+					CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
+				}
 				//空振りペナルティ
 				CBallScore::GetInstance().AddPlayer2Score(-10);
-				unsigned int color;
-				if (CBall::GetInstance().GetPlayer2Color() == CBall::BALL_COLOR::CYAN)
-					color = 0xff00ffff;//シアン
-				else
-					color = 0xffffff00;//イエロー
-
-				//位置
-				vivid::Vector2 effectPos;
-				effectPos.x = m_Pos.x + m_width * 0.5f;
-				effectPos.y = m_Pos.y;
-				//エフェクト生成
-				CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
 			}
 		}
 	}

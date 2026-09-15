@@ -240,7 +240,11 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 				vivid::PlaySound("data\\sound\\爆発.wav", false);
 				//エフェクト生成
 				CEffectManager::GetInstance().Create(EFFECT_ID::HIT, effectPos, 0xffffffff, 0.0f);
-				CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
+
+				if (CBallScore::GetInstance().GetPlayer1Score() > 0)
+				{
+					CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
+				}
 			}
 			else
 			{
@@ -265,7 +269,7 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 				unsigned int color;
 				if (GetPlayer2Color() == BALL_COLOR::CYAN)
 					color = 0xff00ffff;//シアン
-				else
+				else  
 					color = 0xffffff00;//イエロー
 
 				vivid::Vector2 effectPos;
@@ -275,7 +279,10 @@ void CBall::CheckHit(const CBasket& basket1, const CBasket& basket2)
 				vivid::PlaySound("data\\sound\\爆発.wav", false);
 				//エフェクト生成
 				CEffectManager::GetInstance().Create(EFFECT_ID::HIT, effectPos, 0xffffffff, 0.0f);
-				CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
+				if (CBallScore::GetInstance().GetPlayer2Score() > 0)
+				{
+					CEffectManager::GetInstance().Create(EFFECT_ID::DROP, effectPos, color, 0.0f);
+				}
 			}
 			else
 			{
