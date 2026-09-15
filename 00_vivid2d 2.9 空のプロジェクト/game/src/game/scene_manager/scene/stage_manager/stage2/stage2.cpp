@@ -107,6 +107,8 @@ void CStage2::Draw(void)
 	}
 	else
 	{
+		vivid::DrawTexture("data\\ball\\result_bg.png", { 0.0f,0.0f });
+
 		//1p
 		CBall::BALL_COLOR color1 = CBall::GetInstance().GetPlayer1Color();
 		if (color1 == CBall::BALL_COLOR::MAGENTA) {
@@ -125,7 +127,7 @@ void CStage2::Draw(void)
 		}
 
 		// 総得点
-		vivid::DrawText(50, "総得点", { 50.0f,170.0f });
+		vivid::DrawTexture("data\\logo\\score2.png",{ 5.0f, 160.0f });
 		CBallScore::GetInstance().Draw({ 320.0f,100.0f }, CBallScore::GetInstance().GetPlayer1Score());
 		CBallScore::GetInstance().Draw({ 900.0f,100.0f }, CBallScore::GetInstance().GetPlayer2Score());
 
