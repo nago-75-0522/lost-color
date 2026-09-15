@@ -1,4 +1,4 @@
-#include"title.h"
+﻿#include"title.h"
 #include"..\..\scene_manager.h"
 #include"vivid.h"
 #include"../color_select/color_select.h"
@@ -6,7 +6,7 @@
 #include"../../../object/player_manager/player_manager.h"
 #include"..\option_character\option.h"
 
-const int CTitle::m_logo_limit_timer =60*500;
+const int CTitle::m_logo_limit_timer = 5;//60*500;
 
 CTitle::CTitle()
 	:m_Logo_Time(0)
@@ -38,11 +38,7 @@ void CTitle::Initialize(void)
 	vivid::PlaySound("data\\sound\\title_bgm.mp3", true);
 	vivid::LoadSound("data\\sound\\click.mp3");
 
-	m_title_move_handle = LoadGraph("data\\explanation\\title_move.mp4");	//説明動画のダウンロード
-
-	// 動画再生開始
-	PlayMovieToGraph(m_title_move_handle);
-
+	m_title_move_handle = LoadGraph("data\\move\\title_move.mp4");	//ロード
 
 
 }
@@ -52,6 +48,13 @@ void CTitle::Update(void)
 	++m_Logo_Time;
 
 	CSceneManager::GetInstance().ResetStageCount();//カウントリセット
+
+	//動画再生 設定した時間を超えたら再生
+	if (m_Logo_Time > m_logo_limit_timer && m_title_movie_play == false)
+	{
+		PlayMovieToGraph(m_title_move_handle);
+		m_title_movie_play = true;
+	}
 
 	//キーボード用
 	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
@@ -76,6 +79,20 @@ void CTitle::Update(void)
 
 	}
 
+#if 0
+	//キーボード用
+	if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
+	{
+		CColor_Select::GetInstance().IniColor();
+		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
+	}
+	//コントローラー用
+	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
+	{
+		CColor_Select::GetInstance().IniColor();
+		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
+	}
+#endif 0
 }
 
 void CTitle::Draw(void)
@@ -90,47 +107,33 @@ void CTitle::Draw(void)
 	rect.right = m_title_logo_width;
 	rect.bottom = m_title_logo_height;
 
-
-	if (m_Logo_Time > m_logo_limit_timer)
+	//動画再生中
+	if(m_title_movie_play == true)
 	{
-		if (m_title_movie_play == false)
-		{
-			PlayMovieToGraph(m_title_move_handle);
-			m_title_movie_play = true;
-		}
-
-		//拡縮
-		DrawExtendGraph(0, 0, 1280, 720, m_title_move_handle, true);
 		
-	
-		//動画が終了したらタイトル画面に戻す
+
+		DrawExtendGraph(0, 0, 1280, 720, m_title_move_handle, true);//動画サイズの拡縮
+		vivid::DrawTexture(m_start_logo_file, { (float)vivid::WINDOW_WIDTH - (float)m_start_logo_width,(float)vivid::WINDOW_HEIGHT -(float)m_start_logo_height});
+
+		//動画終了
 		if(GetMovieStateToGraph(m_title_move_handle) == 0)
 		{
+			//動画を最初に戻す
+			SeekMovieToGraph(0, m_title_move_handle);
+
+			m_title_movie_play = false;
 			m_Logo_Time = 0;
 		}
 
-
-		//キーボード用
-		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::SPACE))
-		{
-			CColor_Select::GetInstance().IniColor();
-			CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
-		}
-		//コントローラー用
-		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
-		{
-			CColor_Select::GetInstance().IniColor();
-			CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
-		}
+		return;
 	}
-
-	
 
 	//タイトルロゴ
 	vivid::DrawTexture(m_title_logo_file, m_TitlePos);
 
 	//スタートロゴ
 	vivid::DrawTexture(m_start_logo_file, m_StartPos);
+	
 
 
 }
