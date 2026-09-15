@@ -6,11 +6,11 @@
 #include"../../../object/player_manager/player_manager.h"
 #include"..\option_character\option.h"
 
-const int CTitle::m_logo_limit_timer = 5;//60*500;
+const int CTitle::m_logo_limit_timer = 60 * 500;
 
 CTitle::CTitle()
 	:m_Logo_Time(0)
-	,m_title_logo_file("data\\logo\\ge-mulogo1.png")
+	,m_title_logo_file("data\\logo\\title.png")
 	, m_start_logo_file("data\\logo\\startUI.png")
 	,m_title_logo_width(1000)
 	,m_title_logo_height(500)
@@ -52,6 +52,8 @@ void CTitle::Update(void)
 	//動画再生 設定した時間を超えたら再生
 	if (m_Logo_Time > m_logo_limit_timer && m_title_movie_play == false)
 	{
+		//動画を最初に戻す
+		SeekMovieToGraph(m_title_move_handle, 0);
 		PlayMovieToGraph(m_title_move_handle);
 		m_title_movie_play = true;
 	}
@@ -118,12 +120,12 @@ void CTitle::Draw(void)
 		//動画終了
 		if(GetMovieStateToGraph(m_title_move_handle) == 0)
 		{
-			//動画を最初に戻す
-			SeekMovieToGraph(0, m_title_move_handle);
-
+			SeekMovieToGraph(m_title_move_handle, 0);
 			m_title_movie_play = false;
 			m_Logo_Time = 0;
+
 		}
+
 
 		return;
 	}
