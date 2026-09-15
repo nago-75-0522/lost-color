@@ -7,7 +7,6 @@
 #include"..\option_character\option.h"
 
 const int CTitle::m_logo_limit_timer = 60 * 500;
-
 CTitle::CTitle()
 	:m_Logo_Time(0)
 	,m_title_logo_file("data\\logo\\title.png")
@@ -17,12 +16,13 @@ CTitle::CTitle()
 	,m_start_logo_width(420)
 	,m_start_logo_height(180)
 	, m_title_movie_play(false)
+	, m_Start_Alpha_State(START_ALPHA::DUMMY)
+	, m_fade_speed(5)
 {
 }
 
 void CTitle::Initialize(void)
 {
-	
 	//キャラクター選択をリセット呼び出し
 	COption::GetInstance().ResetCharacterSelect();
 
@@ -40,7 +40,8 @@ void CTitle::Initialize(void)
 
 	m_title_move_handle = LoadGraph("data\\move\\title_move.mp4");	//ロード
 
-
+	m_Start_Alpha_State = START_ALPHA::SUBTRACT;
+	m_Start_Color = 0xffffffff;
 }
 
 void CTitle::Update(void)
@@ -99,9 +100,6 @@ void CTitle::Update(void)
 
 void CTitle::Draw(void)
 {
-
-	vivid::DrawText(48, "title", { 0.0f,0.0f });
-
 	//タイトル背景
 	vivid::DrawTexture("data\\title_bg2.png", { 0.0f,0.0f });
 	
@@ -130,11 +128,25 @@ void CTitle::Draw(void)
 		return;
 	}
 
+	int alpha = (m_Start_Color & 0xff000000) >> 24;
+	
+	if (m_Start_Alpha_State == START_ALPHA::ADD)
+		alpha += m_fade_speed;
+	else
+		alpha -= m_fade_speed;
+
+	if (alpha <= 0)
+		m_Start_Alpha_State = START_ALPHA::ADD;
+	else if (alpha >= 0xff)
+		m_Start_Alpha_State = START_ALPHA::SUBTRACT;
+
+	m_Start_Color = (alpha << 24) | (m_Start_Color & 0x00ffffff);
+
 	//タイトルロゴ
 	vivid::DrawTexture(m_title_logo_file, m_TitlePos);
 
 	//スタートロゴ
-	vivid::DrawTexture(m_start_logo_file, m_StartPos);
+	vivid::DrawTexture(m_start_logo_file, m_StartPos,m_Start_Color);
 	
 
 
