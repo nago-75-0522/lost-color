@@ -67,6 +67,7 @@ void CTitle::Update(void)
 		CGame_Result::GetInstance().IniScore();
 		CColor_Select::GetInstance().IniColor();
 		CPlayer_Manager::GetInstance().Win_Ini();
+		PauseMovieToGraph(m_title_move_handle);
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
 	}
 

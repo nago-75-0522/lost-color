@@ -95,6 +95,7 @@ void CItem_Explanation::NextChangeScene(void)
 		/* キーボード用 */
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
 		{
+			PauseMovieToGraph(m_Glaph_Handle);
 			//カラーセレクトに行く
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 		}
@@ -102,6 +103,7 @@ void CItem_Explanation::NextChangeScene(void)
 		/* コントローラー用 */
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B)) //||vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{
+			PauseMovieToGraph(m_Glaph_Handle);
 			//カラーセレクトに行く
 			CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 
@@ -118,6 +120,7 @@ void CItem_Explanation::NextChangeScene(void)
 			/* キーボード用 */
 			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::DOWN))
 			{
+				PauseMovieToGraph(m_Glaph_Handle);
 				//カラーセレクトに行く
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			}
@@ -125,6 +128,7 @@ void CItem_Explanation::NextChangeScene(void)
 			/* コントローラー用 */
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 			{
+				PauseMovieToGraph(m_Glaph_Handle);
 				//カラーセレクトに行く
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			}
@@ -135,6 +139,7 @@ void CItem_Explanation::NextChangeScene(void)
 			/* キーボード用 */
 			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::S))
 			{
+				PauseMovieToGraph(m_Glaph_Handle);
 				//カラーセレクトに行く
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			}
@@ -142,6 +147,7 @@ void CItem_Explanation::NextChangeScene(void)
 			/* コントローラー用 */
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 			{
+				PauseMovieToGraph(m_Glaph_Handle);
 				//カラーセレクトに行く
 				CSceneManager::GetInstance().Change(SCENE_ID::COLOR_SELECT);
 			}
@@ -160,6 +166,7 @@ void CItem_Explanation::BackChengeScene(void)
 		/* キーボード用 */
 		if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::W) || vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::UP))
 		{
+			PauseMovieToGraph(m_Glaph_Handle);
 			//カラーセレクトに行く
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 		}
@@ -167,6 +174,7 @@ void CItem_Explanation::BackChengeScene(void)
 		/* コントローラー用 */
 		if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::A)) //||vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::B))
 		{
+			PauseMovieToGraph(m_Glaph_Handle);
 			//カラーセレクトに行く
 			CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 
@@ -183,6 +191,7 @@ void CItem_Explanation::BackChengeScene(void)
 			/* キーボード用 */
 			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::UP))
 			{
+				PauseMovieToGraph(m_Glaph_Handle);
 				//カラーセレクトに行く
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 			}
@@ -190,6 +199,7 @@ void CItem_Explanation::BackChengeScene(void)
 			/* コントローラー用 */
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER2, vivid::controller::BUTTON_ID::A))
 			{
+				PauseMovieToGraph(m_Glaph_Handle);
 				//カラーセレクトに行く
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_SELECT);
 			}
@@ -200,6 +210,7 @@ void CItem_Explanation::BackChengeScene(void)
 			/* キーボード用 */
 			if (vivid::keyboard::Trigger(vivid::keyboard::KEY_ID::W))
 			{
+				PauseMovieToGraph(m_Glaph_Handle);
 				//ステージ説明
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			}
@@ -207,6 +218,8 @@ void CItem_Explanation::BackChengeScene(void)
 			/* コントローラー用 */
 			if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::A))
 			{
+				PauseMovieToGraph(m_Glaph_Handle);
+
 				CSceneManager::GetInstance().Change(SCENE_ID::STAGE_EXPLANATION);
 			}
 		}
