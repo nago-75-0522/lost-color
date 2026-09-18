@@ -40,20 +40,15 @@ void CResult::Update(void)
 	{
 		CColor_Select::GetInstance().IniColor();//色初期化
 		CColor_Select::GetInstance().IniChosen();
-		CFall::GetInstance().IniOld();
-		CBall::GetInstance().IniOld();
 		CStage2::GetInstance().RisultIni();
 		vivid::StopSound("data\\sound\\result.mp3");
 		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);
-
 	}
 	//コントローラー用
 	if (vivid::controller::Trigger(vivid::controller::DEVICE_ID::PLAYER1, vivid::controller::BUTTON_ID::B))
 	{
 		CColor_Select::GetInstance().IniColor();
 		CColor_Select::GetInstance().IniChosen();
-		CFall::GetInstance().IniOld();
-		CBall::GetInstance().IniOld();
 		CStage2::GetInstance().RisultIni();
 		vivid::StopSound("data\\sound\\result.mp3");
 		CSceneManager::GetInstance().Change(SCENE_ID::TITLE);

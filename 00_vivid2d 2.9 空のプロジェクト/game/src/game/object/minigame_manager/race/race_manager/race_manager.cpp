@@ -3,6 +3,13 @@
 #include"camera/camera.h"
 #include"../../../../scene_manager/scene/color_select/color_select.h"
 
+void CRace_Manager::Ini_Old()
+{
+	m_Old_Cyan=true;
+	m_Old_Yellow = true;
+	m_Old_Magenta = true;
+}
+
 CRace_Manager::CRace_Manager(void)
 	: m_Old_Magenta(true)
 	, m_Old_Cyan(true)

@@ -5,6 +5,9 @@
 #include"../game_risult/game_risult.h"
 #include"../../../object/player_manager/player_manager.h"
 #include"..\option_character\option.h"
+#include"../../../object/minigame_manager/ball_manager/ball/ball.h"
+#include"../../../object/minigame_manager/fall_manager/fall.h"
+#include"../../../object/minigame_manager/race/race_manager/race_manager.h"
 
 const int CTitle::m_logo_limit_timer = 60 * 500;
 CTitle::CTitle()
@@ -67,6 +70,9 @@ void CTitle::Update(void)
 		CGame_Result::GetInstance().IniScore();
 		CColor_Select::GetInstance().IniColor();
 		CPlayer_Manager::GetInstance().Win_Ini();
+		CFall::GetInstance().IniOld();
+		CBall::GetInstance().IniOld();
+		CRace_Manager::GetInstance().Ini_Old();
 		PauseMovieToGraph(m_title_move_handle);
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
 	}
@@ -79,6 +85,9 @@ void CTitle::Update(void)
 		CGame_Result::GetInstance().IniScore();
 		CColor_Select::GetInstance().IniColor();
 		CPlayer_Manager::GetInstance().Win_Ini();
+		CFall::GetInstance().IniOld();
+		CBall::GetInstance().IniOld();
+		CRace_Manager::GetInstance().Ini_Old();
 		CSceneManager::GetInstance().Change(SCENE_ID::OPTION);
 
 	}

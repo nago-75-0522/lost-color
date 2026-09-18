@@ -20,6 +20,8 @@ public:
 	bool GetOldYellow() { return m_Old_Yellow; }
 
 	int GetWinColor(void) { return m_Win_Color; }
+
+	void Ini_Old();
 private:
 	CRace_Manager(void);
 	~CRace_Manager(void) = default;
