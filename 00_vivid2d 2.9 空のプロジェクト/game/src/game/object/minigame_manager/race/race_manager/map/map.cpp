@@ -60,10 +60,19 @@ void CMap::Inisitalize(void)
 
 			//10～の２桁以上の数字も読み込む
 			int value = strtol(&buf[i], &end, 10);
+#if 0
+			if (k >= 5993)
+			{
+				printf("k=%d, i=%d, value=%d\n", k, i, value);
+				__debugbreak();
+			}
 
+#endif
 			//データ入力
-			m_Map[k / m_map_width][k % m_map_width] = (unsigned char)value;
-
+			if (k < m_map_width * m_map_height)
+			{
+				m_Map[k / m_map_width][k % m_map_width] = (unsigned char)value;
+			}
 			++k;
 
 			//読み込んだ数字の最後までiを進める
